@@ -1,0 +1,82 @@
+$text-color: #333;
+$default-font-family: "Helvetica Neue Light", "HelveticaNeue-Light", "Helvetica Neue", Calibri, Helvetica, Arial, sans-serif;
+
+.tabs-wrapper {
+  margin: 25px;
+  background: #fff;
+  border: 1px solid #e5e5e5;
+  border-radius: 3px;
+
+  .tab-list {
+    margin: 0;
+    padding: 0;
+    border-bottom: 2px solid #f5f5f5;
+
+    div {
+      display: inline-block;
+
+      a {
+        padding: 8px 12px;
+        display: block;
+        color: #444;
+        text-decoration: none;
+      }
+    }
+    .active {
+      border-bottom: 2px solid #337ab7;
+      background: #f8f8f8;
+    }
+
+    .default-widget {
+      .tab-element {
+        display: inline-block;
+      }
+
+      .copy-widget {
+        display: inline-block;
+        cursor: pointer;
+        background: white;
+        padding: 3px 12px;
+        font-size: 22px;
+        vertical-align: middle;
+
+        &:hover{
+          background: #c8c9c8;
+        }
+      }
+    }
+  }
+  .tab-content {
+    .provider {
+      & {
+        width: 98%;
+        margin: 0 auto;
+      }
+
+      &:not(:last-child) {
+        border-bottom: 1px solid #cccccc;
+        padding-bottom: 10px;
+      }
+
+      &:not(:first-child) {
+        padding-top: 10px;
+      }
+    }
+    .line {
+      .label {
+        font-family: $default-font-family;
+        min-width: 30%;
+        color: $text-color;
+        text-align: left;
+        font-size: 16px;
+        display: block;
+        float: left;
+        padding: 2px 0;
+      }
+
+      input[type=text] {
+        width: 300px;
+      }
+    }
+  }
+}
