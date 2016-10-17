@@ -282,6 +282,10 @@ window.AppDispatcher = {
                 tabStore.tabsList.splice(payload.newItem[0], 1);
                 tabStore.activeTabId = 0;
                 break;
+            case 'options-information-loaded':
+                tabStore.tabsList = payload.newItem[0];
+                console.log(tabStore);
+                break;
         }
 
         tabStore.trigger('change');
@@ -292,6 +296,38 @@ window.AppDispatcher = {
 };
 
 var App = React.createClass({
+    getInitialState: function() {
+        return {
+            data: null
+        };
+    },
+
+    changeState: function () {
+        this.forceUpdate();
+    },
+
+    loadParametresFromServer: function() {
+        var url = '/bitrix/tools/weather_service/get_all_option_list.php';
+
+        $.ajax({
+            type: "POST",
+            url: url,
+            dataType: 'json',
+            success: function (data) {
+                AppDispatcher.dispatch({
+                    eventName: 'options-information-loaded',
+                    newItem: [data, null]
+                });
+            }.bind(this)
+        });
+    },
+
+    componentDidMount: function(){
+        window.Tabs.bind('change', this.changeState);
+
+        this.loadParametresFromServer();
+    },
+
     render: function () {
         var _this = this;
         var storage = window.Tabs;

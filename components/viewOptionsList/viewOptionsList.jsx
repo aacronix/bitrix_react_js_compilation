@@ -6,7 +6,6 @@ import reactCSS from 'reactcss'
 
 var ViewOptionsList = React.createClass({
     componentDidMount: function () {
-        console.log(window.Tabs.tabsList);
     },
 
     getInitialState: function () {

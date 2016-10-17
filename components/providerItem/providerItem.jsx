@@ -54,6 +54,7 @@ var ProviderItem = React.createClass({
 
         var _this = this;
         var props = this.props.data;
+        
         var providerInfo = providersInfo.ru[props.name];
 
         var ApiLine;

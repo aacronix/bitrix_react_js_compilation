@@ -13,7 +13,8 @@ var ProviderList = React.createClass({
             <div className="providers b-option">
                 <p className="title">Провайдеры</p>
                 {props.providerList.map((element, i) => (
-                    <ProviderItem data={element} key={i} activeProvider={activeProvider} providerId={_this.props.providerId}/>
+                    <ProviderItem data={element} key={i} activeProvider={activeProvider}
+                                  providerId={_this.props.providerId}/>
                 ))}
             </div>
         );

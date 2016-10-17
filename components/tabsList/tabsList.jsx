@@ -31,16 +31,16 @@ var TabsList = React.createClass({
         var activeClass = (storage.activeTabId === key ? 'active' : '');
         
         var widget = storage.tabsList[key];
-        
+
         var element = <div key={key} id={widget.name} className={activeClass}>
             <a href={'#' + widget.name} onClick={function(){_this._handleClick(key)}}
-               className="tab-element">{widget.widget_name}</a>
+               className="tab-element">{widget.widget_title}</a>
         </div>;
 
         if (key == 0) {
             element = <div key={key} id={widget.name} className={activeClass+ ' default-widget'}>
                 <a href={'#' + widget.name} onClick={function(){_this._handleClick(key)}}
-                   className="tab-element">{widget.widget_name}</a>
+                   className="tab-element">{widget.widget_title}</a>
                 <span onClick={_this._handleCopyWidget} className="copy-widget">+</span>
             </div>
         }

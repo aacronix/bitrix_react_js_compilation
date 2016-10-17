@@ -321,6 +321,10 @@
 	                tabStore.tabsList.splice(payload.newItem[0], 1);
 	                tabStore.activeTabId = 0;
 	                break;
+	            case 'options-information-loaded':
+	                tabStore.tabsList = payload.newItem[0];
+	                console.log(tabStore);
+	                break;
 	        }
 
 	        tabStore.trigger('change');
@@ -332,6 +336,38 @@
 
 	var App = _react2.default.createClass({
 	    displayName: 'App',
+
+	    getInitialState: function getInitialState() {
+	        return {
+	            data: null
+	        };
+	    },
+
+	    changeState: function changeState() {
+	        this.forceUpdate();
+	    },
+
+	    loadParametresFromServer: function loadParametresFromServer() {
+	        var url = '/bitrix/tools/weather_service/get_all_option_list.php';
+
+	        $.ajax({
+	            type: "POST",
+	            url: url,
+	            dataType: 'json',
+	            success: function (data) {
+	                AppDispatcher.dispatch({
+	                    eventName: 'options-information-loaded',
+	                    newItem: [data, null]
+	                });
+	            }.bind(this)
+	        });
+	    },
+
+	    componentDidMount: function componentDidMount() {
+	        window.Tabs.bind('change', this.changeState);
+
+	        this.loadParametresFromServer();
+	    },
 
 	    render: function render() {
 	        var _this = this;
@@ -23251,7 +23287,7 @@
 	                        _this._handleClick(key);
 	                    },
 	                    className: 'tab-element' },
-	                widget.widget_name
+	                widget.widget_title
 	            )
 	        );
 
@@ -23265,7 +23301,7 @@
 	                            _this._handleClick(key);
 	                        },
 	                        className: 'tab-element' },
-	                    widget.widget_name
+	                    widget.widget_title
 	                ),
 	                _react2.default.createElement(
 	                    'span',
@@ -23357,7 +23393,8 @@
 	                '\u041F\u0440\u043E\u0432\u0430\u0439\u0434\u0435\u0440\u044B'
 	            ),
 	            props.providerList.map(function (element, i) {
-	                return _react2.default.createElement(_providerItem2.default, { data: element, key: i, activeProvider: activeProvider, providerId: _this.props.providerId });
+	                return _react2.default.createElement(_providerItem2.default, { data: element, key: i, activeProvider: activeProvider,
+	                    providerId: _this.props.providerId });
 	            })
 	        );
 	    }
@@ -23433,6 +23470,7 @@
 
 	        var _this = this;
 	        var props = this.props.data;
+
 	        var providerInfo = providersInfo.ru[props.name];
 
 	        var ApiLine;
@@ -23508,9 +23546,7 @@
 	var ViewOptionsList = _react2.default.createClass({
 	    displayName: 'ViewOptionsList',
 
-	    componentDidMount: function componentDidMount() {
-	        console.log(window.Tabs.tabsList);
-	    },
+	    componentDidMount: function componentDidMount() {},
 
 	    getInitialState: function getInitialState() {
 	        return {
