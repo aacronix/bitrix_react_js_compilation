@@ -36,7 +36,7 @@ var YandexMap = React.createClass({
         marker = <Marker lat={objectPositionLat} lon={objectPositionLon}>
             <MarkerLayout>
                 <div style={markerStyles}>
-                    <img src="../images/resized/pin-object-position.png"/>
+                    <img src="/react/images/resized/pin-object-position.png"/>
                 </div>
             </MarkerLayout>
         </Marker>;

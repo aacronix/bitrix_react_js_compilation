@@ -47,6 +47,10 @@
     padding: 2px 0; }
   .tabs-wrapper .tab-content .line input[type=text] {
     width: 300px; }
+  .tabs-wrapper .tab-content .line .valid {
+    box-shadow: 0 0 8px rgba(0, 255, 50, 0.5); }
+  .tabs-wrapper .tab-content .line .invalid {
+    box-shadow: 0 0 9px rgba(255, 25, 25, 0.5); }
 
 a.active {
   color: #000000 !important;

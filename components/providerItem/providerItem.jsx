@@ -6,12 +6,24 @@ var ProviderItem = React.createClass({
     getInitialState: function () {
         return {
             selectedOption: this.props.providerId,
-            provider: this.props.data.activeProvider
+            name: this.props.data.name,
+            id: this.props.id,
+            valid: true,
+            validationStarted: false
         };
     },
 
-    validateKey: function(provider, apiKey, appKey){
-        var url = ENTRY_POINT + '/bitrix/tools//weather_api.php';
+    handleOptionChange: function (event) {
+        AppDispatcher.dispatch({
+            eventName: 'change-provider',
+            newItem: [this.state.selectedOption, event.target.value]
+        });
+    },
+
+    validateKey: function () {
+        var storage = window.Tabs.tabsList;
+        var providers = storage[this.state.selectedOption].providers_list;
+        var url = ENTRY_POINT + '/bitrix/tools/weather_service/weather_api.php';
 
         return $.ajax({
             typ: "GET",
@@ -19,65 +31,89 @@ var ProviderItem = React.createClass({
             dataType: 'json',
             data: {
                 action: 'validateKey',
-                provider: provider,
-                apiKey: apiKey,
-                appKey: appKey
+                provider: this.state.name,
+                apiKey: providers[this.state.id].api_key,
+                appKey: providers[this.state.id].app_key
             },
-            dataFilter: function (data) {
-                console.log(data);
-                // var data = JSON.parse(data);
-                //
-                // var response = [];
-                // response = {
-                //     code: data.code,
-                //     widget: report.widget,
-                //     provider: report.provider,
-                //     apiKeyValidation: report.apiKeyValidation,
-                //     appKeyValidation: report.appKeyValidation,
-                //     apiKey: report.appKey,
-                //     appKey: report.appKey
-                // };
-                //
-                // return JSON.stringify(response);
-            }
+            success: function (data) {
+                this.setState({valid: (data.code == 1)});
+                this.setState({validationStarted: true});
+            }.bind(this)
         });
     },
 
-    handleOptionChange: function () {
+    _handleApiInputBlur: function () {
+        this.validateKey();
+    },
+
+    _handleAppInputBlur: function () {
+        this.validateKey();
+    },
+
+    _handleApiKeyChange: function (event) {
         AppDispatcher.dispatch({
-            eventName: 'change-provider',
-            newItem: [this.state.selectedOption, this.state.provider]
+            eventName: 'change-api-key-input',
+            newItem: [this.state.selectedOption, {id: this.state.id, name: this.state.name, value: event.target.value}]
         });
     },
+
+    _handleAppKeyChange: function (event) {
+        AppDispatcher.dispatch({
+            eventName: 'change-app-key-input',
+            newItem: [this.state.selectedOption, {id: this.state.id, name: this.state.name, value: event.target.value}]
+        });
+    },
+
     render: function () {
         var storage = window.Tabs.tabsList;
+        var providers = storage[this.state.selectedOption].providers_list;
 
         var _this = this;
         var props = this.props.data;
-        
-        var providerInfo = providersInfo.ru[props.name];
+        var id = this.state.id;
+
+        var providerInfo = providersInfo.ru[this.state.name];
 
         var ApiLine;
         var AppLine;
+        var className;
 
-        if (providerInfo.api){
+        if (this.state.validationStarted) {
+            className = (this.state.valid ? "valid" : "invalid");
+        }
+
+        if (providerInfo.api) {
             ApiLine = <div className="line clearfix">
                 <p className="label">Api key:</p>
-                <input type="text" name={props.name + '_api_key'} value={props.api_key} onChange={function(){_this.validateKey(props.name, props.api_key, props.app_key)}}/>
+                <input type="text"
+                       className={className}
+                       name={this.state.name + '_api_key'}
+                       value={providers[id].api_key}
+                       onBlur={this._handleApiInputBlur}
+                       onChange={this._handleApiKeyChange}/>
             </div>;
         }
 
-        if (providerInfo.app){
+        if (providerInfo.app) {
             AppLine = <div className="line clearfix">
                 <p className="label">App key:</p>
-                <input type="text" name={props.name + '_app_key'}  value={props.app_key}/>
+                <input type="text"
+                       className={className}
+                       name={this.state.name + '_app_key'}
+                       value={providers[id].app_key}
+                       onBlur={this._handleAppInputBlur}
+                       onChange={this._handleAppKeyChange}/>
             </div>
         }
 
         return (
             <div className="provider">
                 <div className="line clearfix">
-                    <input name="weather-provider" type="radio" value={props.name} checked={props.name === storage[this.state.selectedOption].weather_provider} onChange={this.handleOptionChange}/>
+                    <input name="weather-provider"
+                           type="radio"
+                           value={this.state.name}
+                           checked={this.state.name === storage[this.state.selectedOption].weather_provider}
+                           onChange={this.handleOptionChange}/>
                     <a className="provider-name" href={providerInfo.link} target="_blank">{providerInfo.name}</a>
                 </div>
                 {ApiLine}

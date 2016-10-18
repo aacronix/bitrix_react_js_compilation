@@ -77,6 +77,14 @@ $default-font-family: "Helvetica Neue Light", "HelveticaNeue-Light", "Helvetica 
       input[type=text] {
         width: 300px;
       }
+
+      .valid{
+        box-shadow: 0 0 8px rgba(0, 255, 50, 0.5)
+      }
+
+      .invalid{
+        box-shadow: 0 0 9px rgba(255, 25, 25, 0.5)
+      }
     }
   }
 }

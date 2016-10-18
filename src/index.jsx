@@ -3,10 +3,12 @@ import ReactDOM from 'react-dom';
 import YandexMap from '../components/yandexMap/yandexMap.jsx';
 import TabsList from '../components/tabsList/tabsList.jsx';
 
+var deepcopy = require("deepcopy");
+
 import {MaterialPicker} from 'react-color';
 
-
 console.clear();
+console.log(window.pageLang);
 
 window.PointsList = {
     objectPosition: [],
@@ -33,12 +35,6 @@ window.providersInfo = {
             api: true,
             app: true
         },
-        "yahooweather": {
-            name: "Yahoo Weather",
-            link: "https://developer.yahoo.com/weather/",
-            api: false,
-            app: false
-        },
         "forecastio": {
             name: "Darksky Net",
             link: "https://www.wunderground.com/weather/api",
@@ -49,6 +45,12 @@ window.providersInfo = {
             name: "Wunderground",
             link: "https://darksky.net/dev/",
             api: true,
+            app: false
+        },
+        "yahooweather": {
+            name: "Yahoo Weather",
+            link: "https://developer.yahoo.com/weather/",
+            api: false,
             app: false
         }
     }
@@ -62,7 +64,7 @@ window.Tabs = {
         "longitude": 44.45,
         "weather_provider": "yahooweather",
         "widget_title": "Погода в Йошкар-Оле",
-        "widget_name" : "default",
+        "widget_name": "default",
         "wunderground_api_key": "",
         "forecastio_api_key": "",
         "weathertrigger_api_key": "",
@@ -92,17 +94,17 @@ window.Tabs = {
                 "app_key": ""
             },
             {
-                "name" : "yahooweather",
+                "name": "yahooweather",
                 "api_key": "",
                 "app_key": ""
             },
             {
-                "name" : "forecastio",
+                "name": "forecastio",
                 "api_key": "",
                 "app_key": ""
             },
             {
-                "name" : "wunderground",
+                "name": "wunderground",
                 "api_key": "",
                 "app_key": ""
             }
@@ -117,7 +119,7 @@ window.Tabs = {
         "name": "w_1",
         "latitude": 45.55,
         "longitude": 44.45,
-        "widget_name" : "Казань",
+        "widget_name": "Казань",
         "weather_provider": "forecastio",
         "widget_title": "Погода в Казани",
         "wunderground_api_key": "",
@@ -149,17 +151,17 @@ window.Tabs = {
                 "app_key": "aofiuyh387rq48rcfml"
             },
             {
-                "name" : "yahooweather",
+                "name": "yahooweather",
                 "api_key": "",
                 "app_key": ""
             },
             {
-                "name" : "forecastio",
+                "name": "forecastio",
                 "api_key": "",
                 "app_key": ""
             },
             {
-                "name" : "wunderground",
+                "name": "wunderground",
                 "api_key": "",
                 "app_key": ""
             }
@@ -176,7 +178,7 @@ window.Tabs = {
         "longitude": 44.45,
         "weather_provider": "apixu",
         "widget_title": "Погода в Нижнем Новгороде",
-        "widget_name" : "Нижний Новгород",
+        "widget_name": "Нижний Новгород",
         "wunderground_api_key": "",
         "forecastio_api_key": "",
         "weathertrigger_api_key": "",
@@ -206,17 +208,17 @@ window.Tabs = {
                 "app_key": "aofiuyh387rq48rcfml"
             },
             {
-                "name" : "yahooweather",
+                "name": "yahooweather",
                 "api_key": "",
                 "app_key": ""
             },
             {
-                "name" : "forecastio",
+                "name": "forecastio",
                 "api_key": "",
                 "app_key": ""
             },
             {
-                "name" : "wunderground",
+                "name": "wunderground",
                 "api_key": "",
                 "app_key": ""
             }
@@ -274,7 +276,7 @@ window.AppDispatcher = {
                 break;
             case 'copy-widget':
                 var sliced = tabStore.tabsList.slice();
-                var newObject = Object.assign({}, sliced[0]);
+                var newObject = deepcopy(sliced[0]);
                 newObject.super = false;
                 tabStore.tabsList.push(newObject);
                 break;
@@ -284,7 +286,12 @@ window.AppDispatcher = {
                 break;
             case 'options-information-loaded':
                 tabStore.tabsList = payload.newItem[0];
-                console.log(tabStore);
+                break;
+            case 'change-api-key-input':
+                tabStore.tabsList[payload.newItem[0]].providers_list[payload.newItem[1].id].api_key = payload.newItem[1].value;
+                break;
+            case 'change-app-key-input':
+                tabStore.tabsList[payload.newItem[0]].providers_list[payload.newItem[1].id].app_key = payload.newItem[1].value;
                 break;
         }
 
@@ -296,7 +303,7 @@ window.AppDispatcher = {
 };
 
 var App = React.createClass({
-    getInitialState: function() {
+    getInitialState: function () {
         return {
             data: null
         };
@@ -306,7 +313,7 @@ var App = React.createClass({
         this.forceUpdate();
     },
 
-    loadParametresFromServer: function() {
+    loadParametresFromServer: function () {
         var url = '/bitrix/tools/weather_service/get_all_option_list.php';
 
         $.ajax({
@@ -322,7 +329,7 @@ var App = React.createClass({
         });
     },
 
-    componentDidMount: function(){
+    componentDidMount: function () {
         window.Tabs.bind('change', this.changeState);
 
         this.loadParametresFromServer();
@@ -333,8 +340,8 @@ var App = React.createClass({
         var storage = window.Tabs;
         return (
             <div className="bitrix-frendly">
-                <YandexMap/>
-                <TabsList data={storage.tabsList}/>
+                    <YandexMap/>
+                    <TabsList data={storage.tabsList}/>
             </div>
         )
     }
