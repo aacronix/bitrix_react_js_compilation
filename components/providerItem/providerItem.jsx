@@ -2,6 +2,23 @@ import React from 'react';
 
 const ENTRY_POINT = "http://bitrix-module-experience.local/";
 
+function prevBeKey(name, key, qualifier){
+    if (qualifier == 'api'){
+        for (var i = 0; i < window.providersInfo.ru[name].rightKeys.api.length; i++){
+            if(window.providersInfo.ru[name].rightKeys.api[i] == key){
+                return true;
+            }
+        }
+    } else if (qualifier = 'app') {
+        for (var i = 0; i < window.providersInfo.ru[name].rightKeys.app.length; i++) {
+            if (window.providersInfo.ru[name].rightKeys.app[i] == key) {
+                return true;
+            }
+        }
+    }
+
+    return false;
+}
 var ProviderItem = React.createClass({
     getInitialState: function () {
         return {
@@ -25,21 +42,39 @@ var ProviderItem = React.createClass({
         var providers = storage[this.state.selectedOption].providers_list;
         var url = ENTRY_POINT + '/bitrix/tools/weather_service/weather_api.php';
 
-        return $.ajax({
-            typ: "GET",
-            url: url,
-            dataType: 'json',
-            data: {
-                action: 'validateKey',
-                provider: this.state.name,
-                apiKey: providers[this.state.id].api_key,
-                appKey: providers[this.state.id].app_key
-            },
-            success: function (data) {
-                this.setState({valid: (data.code == 1)});
-                this.setState({validationStarted: true});
-            }.bind(this)
-        });
+        var bePrevApiKey = prevBeKey(this.state.name, providers[this.state.id].api_key, 'api');
+        var bePrevAppKey = prevBeKey(this.state.name, providers[this.state.id].app_key, 'app');
+
+        if (!bePrevApiKey || !bePrevAppKey) {
+            return $.ajax({
+                typ: "GET",
+                url: url,
+                dataType: 'json',
+                data: {
+                    action: 'validateKey',
+                    provider: this.state.name,
+                    apiKey: providers[this.state.id].api_key,
+                    appKey: providers[this.state.id].app_key
+                },
+                success: function (data) {
+                    if (data.code == 1) {
+                        this.setState({valid: true});
+                        window.providersInfo.ru[this.state.name].rightKeys.api.push(providers[this.state.id].api_key);
+                        window.providersInfo.ru[this.state.name].rightKeys.app.push(providers[this.state.id].app_key);
+                    } else {
+                        this.setState({valid: false});
+                    }
+
+                    console.log(window.providersInfo);
+
+                    this.setState({validationStarted: true});
+                }.bind(this)
+            });
+        } else {
+            console.log('key be prev');
+            this.setState({valid: true});
+            this.setState({validationStarted: true});
+        }
     },
 
     _handleApiInputBlur: function () {

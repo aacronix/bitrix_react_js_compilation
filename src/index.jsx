@@ -21,37 +21,61 @@ window.providersInfo = {
             name: "Open Weather",
             link: "https://openweathermap.org/",
             api: true,
-            app: false
+            app: false,
+            rightKeys: {
+                api: [],
+                app: []
+            }
         },
         "apixu": {
             name: "Apixu",
             link: "http://www.apixu.com/",
             api: true,
-            app: false
+            app: false,
+            rightKeys: {
+                api: [],
+                app: []
+            }
         },
         "weathertrigger": {
             name: "Weather Trigger",
             link: "http://www.weatherunlocked.com/",
             api: true,
-            app: true
+            app: true,
+            rightKeys: {
+                api: [],
+                app: []
+            }
         },
         "forecastio": {
             name: "Darksky Net",
             link: "https://www.wunderground.com/weather/api",
             api: true,
-            app: false
+            app: false,
+            rightKeys: {
+                api: [],
+                app: []
+            }
         },
         "wunderground": {
             name: "Wunderground",
             link: "https://darksky.net/dev/",
             api: true,
-            app: false
+            app: false,
+            rightKeys: {
+                api: [],
+                app: []
+            }
         },
         "yahooweather": {
             name: "Yahoo Weather",
             link: "https://developer.yahoo.com/weather/",
             api: false,
-            app: false
+            app: false,
+            rightKeys: {
+                api: [],
+                app: []
+            }
         }
     }
 };
