@@ -270,9 +270,13 @@ window.AppDispatcher = {
                 break;
             case 'tab-changing':
                 tabStore.activeTabId = payload.newItem;
+                tabStore.trigger('change-tab');
                 break;
             case 'change-provider':
-                tabStore.tabsList[payload.newItem[0]].weather_provider = payload.newItem[1];
+                for (var i = 0; i < tabStore.tabsList[payload.newItem[0]].providers_list.length; i++){
+                    tabStore.tabsList[payload.newItem[0]].providers_list[i].activity = false;
+                }
+                tabStore.tabsList[payload.newItem[0]].providers_list[payload.newItem[1]].activity = true;
                 break;
             case 'change-update-interval':
                 tabStore.tabsList[payload.newItem[0]].update_interval = payload.newItem[1];
@@ -302,6 +306,7 @@ window.AppDispatcher = {
                 var sliced = tabStore.tabsList.slice();
                 var newObject = deepcopy(sliced[0]);
                 newObject.super = false;
+                newObject.name = Date.now();
                 tabStore.tabsList.push(newObject);
                 break;
             case 'delete-widget':
@@ -333,10 +338,6 @@ var App = React.createClass({
         };
     },
 
-    changeState: function () {
-        this.forceUpdate();
-    },
-
     loadParametresFromServer: function () {
         var url = '/bitrix/tools/weather_service/get_all_option_list.php';
 
@@ -354,8 +355,6 @@ var App = React.createClass({
     },
 
     componentDidMount: function () {
-        window.Tabs.bind('change', this.changeState);
-
         this.loadParametresFromServer();
     },
 

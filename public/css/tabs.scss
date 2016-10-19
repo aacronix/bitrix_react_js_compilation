@@ -47,6 +47,12 @@ $default-font-family: "Helvetica Neue Light", "HelveticaNeue-Light", "Helvetica 
     }
   }
   .tab-content {
+    display: none;
+
+    &.active{
+      display: block;
+    }
+
     .provider {
       & {
         width: 98%;
