@@ -9,14 +9,6 @@ var YandexMap = React.createClass({
         };
     },
 
-    componentDidMount: function () {
-        window.GlobalStorage.bind('change', this.changeState);
-    },
-
-    changeState: function () {
-        this.forceUpdate();
-    },
-
     _handleMapClick: function (event) {
         var clickCoords = event.get('coords');
         AppDispatcher.dispatch({eventName: 'map-click', newItem: clickCoords});

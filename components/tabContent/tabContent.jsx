@@ -13,7 +13,7 @@ var TabContent = React.createClass({
     },
 
     componentDidMount: function () {
-        window.GlobalStorage.bind('delete-widget', this.componentWillUnmount);
+        
     },
 
     componentWillUnmount: function () {

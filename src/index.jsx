@@ -6,6 +6,7 @@ import {MaterialPicker} from 'react-color';
 
 var deepcopy = require("deepcopy");
 
+const WS_TAG = "bitrix_weather_module";
 
 console.clear();
 console.log(window.pageLang);
@@ -86,7 +87,7 @@ window.GlobalStorage = {
             widget_id: 'w_0',
             active: true,
             name: 'Default',
-            super: true,
+            super: true
         },
         options: {
             information: {
@@ -203,7 +204,8 @@ window.GlobalStorage = {
                 ]
             }
         }],
-    activeTabId: 0
+    activeTabId: 0,
+    savedWS: false
 };
 
 MicroEvent.mixin(GlobalStorage);
@@ -211,11 +213,12 @@ MicroEvent.mixin(GlobalStorage);
 window.AppDispatcher = {
     register: function (payload) {
         var widgetStore = window.GlobalStorage;
+        widgetStore.savedWS = false;
 
         switch (payload.eventName) {
             case 'map-click':
-                widgetStore.widgetsList[widgetStore.activeTabId].options.latitude = payload.newItem[0];
-                widgetStore.widgetsList[widgetStore.activeTabId].options.longitude = payload.newItem[1];
+                widgetStore.widgetsList[widgetStore.activeTabId].options.information.latitude = payload.newItem[0];
+                widgetStore.widgetsList[widgetStore.activeTabId].options.information.longitude = payload.newItem[1];
                 break;
             case 'tab-changing':
                 widgetStore.activeTabId = payload.newItem;
@@ -253,10 +256,11 @@ window.AppDispatcher = {
                 break;
             case 'copy-widget':
                 widgetStore.widgetsList.push(payload.newItem);
+                widgetStore.savedWS = true;
                 break;
             case 'delete-widget':
-                widgetStore.widgetsList.splice(payload.newItem[0], 1);
-                widgetStore.activeTabId = 0;
+                widgetStore.widgetsList.splice(widgetStore.activeTabId, 1);
+                widgetStore.activeTabId--;
                 widgetStore.trigger('delete-widget');
                 break;
             case 'options-information-loaded':
@@ -268,6 +272,8 @@ window.AppDispatcher = {
             case 'change-app-key-input':
                 widgetStore.widgetsList[payload.newItem[0]].options.providers_list[payload.newItem[1].id].app_key = payload.newItem[1].value;
                 break;
+            default:
+                widgetStore.savedWS = false;
         }
 
         widgetStore.trigger('change');
@@ -286,6 +292,7 @@ var App = React.createClass({
             url: url,
             dataType: 'json',
             success: function (data) {
+                console.log(data);
                 AppDispatcher.dispatch({
                     eventName: 'options-information-loaded',
                     newItem: data
@@ -294,7 +301,12 @@ var App = React.createClass({
         });
     },
 
+    changeState: function () {
+        this.forceUpdate();
+    },
+
     componentDidMount: function () {
+        window.GlobalStorage.bind('change', this.changeState);
         this.loadParametresFromServer();
     },
 

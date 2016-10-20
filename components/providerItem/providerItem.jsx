@@ -61,6 +61,7 @@ var ProviderItem = React.createClass({
                     appKey: providers[this.state.id].app_key
                 },
                 success: function (data) {
+                    console.log(data);
                     if (data.code == 1) {
                         this.setState({valid: true});
                         window.providersInfo.ru[providers[this.state.id].name].rightKeys.api.push(providers[this.state.id].api_key);

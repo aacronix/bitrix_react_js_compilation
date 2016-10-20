@@ -68,6 +68,8 @@
 
 	var deepcopy = __webpack_require__(424);
 
+	var WS_TAG = "bitrix_weather_module";
+
 	console.clear();
 	console.log(window.pageLang);
 
@@ -249,7 +251,8 @@
 	            }]
 	        }
 	    }],
-	    activeTabId: 0
+	    activeTabId: 0,
+	    savedWS: false
 	};
 
 	MicroEvent.mixin(GlobalStorage);
@@ -257,11 +260,12 @@
 	window.AppDispatcher = {
 	    register: function register(payload) {
 	        var widgetStore = window.GlobalStorage;
+	        widgetStore.savedWS = false;
 
 	        switch (payload.eventName) {
 	            case 'map-click':
-	                widgetStore.widgetsList[widgetStore.activeTabId].options.latitude = payload.newItem[0];
-	                widgetStore.widgetsList[widgetStore.activeTabId].options.longitude = payload.newItem[1];
+	                widgetStore.widgetsList[widgetStore.activeTabId].options.information.latitude = payload.newItem[0];
+	                widgetStore.widgetsList[widgetStore.activeTabId].options.information.longitude = payload.newItem[1];
 	                break;
 	            case 'tab-changing':
 	                widgetStore.activeTabId = payload.newItem;
@@ -299,10 +303,11 @@
 	                break;
 	            case 'copy-widget':
 	                widgetStore.widgetsList.push(payload.newItem);
+	                widgetStore.savedWS = true;
 	                break;
 	            case 'delete-widget':
-	                widgetStore.widgetsList.splice(payload.newItem[0], 1);
-	                widgetStore.activeTabId = 0;
+	                widgetStore.widgetsList.splice(widgetStore.activeTabId, 1);
+	                widgetStore.activeTabId--;
 	                widgetStore.trigger('delete-widget');
 	                break;
 	            case 'options-information-loaded':
@@ -314,6 +319,8 @@
 	            case 'change-app-key-input':
 	                widgetStore.widgetsList[payload.newItem[0]].options.providers_list[payload.newItem[1].id].app_key = payload.newItem[1].value;
 	                break;
+	            default:
+	                widgetStore.savedWS = false;
 	        }
 
 	        widgetStore.trigger('change');
@@ -334,6 +341,7 @@
 	            url: url,
 	            dataType: 'json',
 	            success: function (data) {
+	                console.log(data);
 	                AppDispatcher.dispatch({
 	                    eventName: 'options-information-loaded',
 	                    newItem: data
@@ -342,7 +350,12 @@
 	        });
 	    },
 
+	    changeState: function changeState() {
+	        this.forceUpdate();
+	    },
+
 	    componentDidMount: function componentDidMount() {
+	        window.GlobalStorage.bind('change', this.changeState);
 	        this.loadParametresFromServer();
 	    },
 
@@ -21749,14 +21762,6 @@
 	        };
 	    },
 
-	    componentDidMount: function componentDidMount() {
-	        window.GlobalStorage.bind('change', this.changeState);
-	    },
-
-	    changeState: function changeState() {
-	        this.forceUpdate();
-	    },
-
 	    _handleMapClick: function _handleMapClick(event) {
 	        var clickCoords = event.get('coords');
 	        AppDispatcher.dispatch({ eventName: 'map-click', newItem: clickCoords });
@@ -23284,9 +23289,7 @@
 	        };
 	    },
 
-	    componentDidMount: function componentDidMount() {
-	        window.GlobalStorage.bind('delete-widget', this.componentWillUnmount);
-	    },
+	    componentDidMount: function componentDidMount() {},
 
 	    componentWillUnmount: function componentWillUnmount() {
 	        // React.unmountComponentAtNode(document.getElementById(this.state.DomId));
@@ -23441,6 +23444,7 @@
 	                    appKey: providers[this.state.id].app_key
 	                },
 	                success: function (data) {
+	                    console.log(data);
 	                    if (data.code == 1) {
 	                        this.setState({ valid: true });
 	                        window.providersInfo.ru[providers[this.state.id].name].rightKeys.api.push(providers[this.state.id].api_key);
@@ -23595,8 +23599,6 @@
 	var ViewOptionsList = _react2.default.createClass({
 	    displayName: 'ViewOptionsList',
 
-	    componentDidMount: function componentDidMount() {},
-
 	    getInitialState: function getInitialState() {
 	        return {
 	            provider: this.props.activeProvider,
@@ -23686,12 +23688,30 @@
 	    },
 
 	    _handleDeleteWidgetButtonClick: function _handleDeleteWidgetButtonClick() {
-	        AppDispatcher.dispatch({
-	            eventName: 'delete-widget',
-	            newItem: [this.state.provider, null]
-	        });
+	        var storage = window.GlobalStorage.widgetsList;
+	        var activeWidget = this.state.provider;
+	        var id = storage[activeWidget].widget.widget_id;
 
-	        this.forceUpdate();
+	        this._deleteWidget(id);
+	    },
+
+	    _deleteWidget: function _deleteWidget(id) {
+	        var url = '/bitrix/tools/weather_service/delete_widget.php';
+
+	        $.ajax({
+	            type: "POST",
+	            url: url,
+	            dataType: 'json',
+	            data: {
+	                id: id
+	            },
+	            success: function success() {
+	                AppDispatcher.dispatch({
+	                    eventName: 'delete-widget',
+	                    newItem: null
+	                });
+	            }
+	        });
 	    },
 
 	    render: function render() {
@@ -23748,7 +23768,8 @@
 	            _react2.default.createElement('input', { type: 'button', name: 'delete_widget', value: '\u0423\u0434\u0430\u043B\u0438\u0442\u044C \u0432\u0438\u0434\u0436\u0435\u0442', onClick: this._handleDeleteWidgetButtonClick })
 	        );
 
-	        if (storage[activeWidget].widget.super) {
+	        // TODO: какая-то хэ с БД, а именно с bool
+	        if (storage[activeWidget].widget.super == "1") {
 	            deletePermission = '';
 	        }
 

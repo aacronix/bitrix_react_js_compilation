@@ -5,9 +5,6 @@ import {SketchPicker} from 'react-color';
 import reactCSS from 'reactcss'
 
 var ViewOptionsList = React.createClass({
-    componentDidMount: function () {
-    },
-
     getInitialState: function () {
         return {
             provider: this.props.activeProvider,
@@ -97,12 +94,30 @@ var ViewOptionsList = React.createClass({
     },
 
     _handleDeleteWidgetButtonClick: function () {
-        AppDispatcher.dispatch({
-            eventName: 'delete-widget',
-            newItem: [this.state.provider, null]
-        });
+        var storage = window.GlobalStorage.widgetsList;
+        var activeWidget = this.state.provider;
+        var id = storage[activeWidget].widget.widget_id;
 
-        this.forceUpdate();
+        this._deleteWidget(id);
+    },
+
+    _deleteWidget: function (id) {
+        var url = '/bitrix/tools/weather_service/delete_widget.php';
+
+        $.ajax({
+            type: "POST",
+            url: url,
+            dataType: 'json',
+            data: {
+                id: id
+            },
+            success: function () {
+                AppDispatcher.dispatch({
+                    eventName: 'delete-widget',
+                    newItem: null
+                });
+            }
+        });
     },
 
     render: function () {
@@ -158,7 +173,8 @@ var ViewOptionsList = React.createClass({
             <input type="button" name="delete_widget" value="Удалить виджет" onClick={this._handleDeleteWidgetButtonClick}/>
         </div>;
 
-        if (storage[activeWidget].widget.super){
+        // TODO: какая-то хэ с БД, а именно с bool
+        if (storage[activeWidget].widget.super == "1"){
             deletePermission = '';
         }
 
