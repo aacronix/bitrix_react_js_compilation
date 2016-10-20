@@ -17,15 +17,12 @@ var ProviderList = React.createClass({
     },
 
     render: function () {
-        var storage = window.Tabs;
-
-        var _this = this;
-        var activeProvider = storage.activeTabId;
+        var storage = window.GlobalStorage;
 
         return (
             <div className="providers b-option">
                 <p className="title">Провайдеры</p>
-                {storage.tabsList[this.state.widgetId].providers_list.map((element, i) => (
+                {storage.widgetsList[this.state.widgetId].options.providers_list.map((element, i) => (
                     <ProviderItem key={'provider_item_' + i}
                                   name={element.name}
                                   providerId={i}

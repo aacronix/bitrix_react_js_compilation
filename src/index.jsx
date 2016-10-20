@@ -2,10 +2,10 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import YandexMap from '../components/yandexMap/yandexMap.jsx';
 import TabsList from '../components/tabsList/tabsList.jsx';
+import {MaterialPicker} from 'react-color';
 
 var deepcopy = require("deepcopy");
 
-import {MaterialPicker} from 'react-color';
 
 console.clear();
 console.log(window.pageLang);
@@ -80,251 +80,197 @@ window.providersInfo = {
     }
 };
 
-window.Tabs = {
-    tabsList: [{
-        "super": true,
-        "name": "w_0",
-        "latitude": 55.55,
-        "longitude": 44.45,
-        "weather_provider": "yahooweather",
-        "widget_title": "Погода в Йошкар-Оле",
-        "widget_name": "default",
-        "wunderground_api_key": "",
-        "forecastio_api_key": "",
-        "weathertrigger_api_key": "",
-        "weathertrigger_app_key": "",
-        "apixu_api_key": "",
-        "openweather_api_key": "",
-        "background_color": "rgba(255, 0, 255, 1)",
-        "major_text_color": "#ffffff",
-        "extra_text_color": "#ffffff",
-        "update_interval": 30,
-        "show_provider_info": false,
-        "measurement_system": "metrical",
-        "providers_list": [
-            {
-                "name": "openweather",
-                "api_key": "3856eec20ac69363422392a1f2ce262f",
-                "app_key": ""
+window.GlobalStorage = {
+    widgetsList: [{
+        widget: {
+            widget_id: 'w_0',
+            active: true,
+            name: 'Default',
+            super: true,
+        },
+        options: {
+            information: {
+                name: "w_0",
+                latitude: 0,
+                longitude: 0,
+                weather_provider: "yahooweather",
+                widget_title: "default",
+                background_color: "rgba(255, 0, 0, 1)",
+                major_text_color: "#ffffff",
+                extra_text_color: "#ffffff",
+                update_interval: 120,
+                show_provider_info: false,
+                measurement_system: "metrical",
             },
-            {
-                "name": "apixu",
-                "api_key": "b813f52733db4348bfc140812161409",
-                "app_key": ""
-            },
-            {
-                "name": "weathertrigger",
-                "api_key": "",
-                "app_key": ""
-            },
-            {
-                "name": "yahooweather",
-                "api_key": "",
-                "app_key": ""
-            },
-            {
-                "name": "forecastio",
-                "api_key": "",
-                "app_key": ""
-            },
-            {
-                "name": "wunderground",
-                "api_key": "",
-                "app_key": ""
-            }
-        ],
-        "active_provider_ref": {
-            "name": "yahooweather",
-            "api_key": "",
-            "app_key": ""
+            providers_list: [
+                {
+                    name: "wunderground",
+                    api_key: "",
+                    app_key: "",
+                    activity: false
+                },
+                {
+                    name: "forecastio",
+                    api_key: "",
+                    app_key: "",
+                    activity: false
+                },
+                {
+                    name: "weathertrigger",
+                    api_key: "",
+                    app_key: "",
+                    activity: false
+                },
+                {
+                    name: "apixu",
+                    api_key: "",
+                    app_key: "",
+                    activity: false
+                },
+                {
+                    name: "openweather",
+                    api_key: "",
+                    app_key: "",
+                    activity: false
+                },
+                {
+                    name: "yahooweather",
+                    api_key: "",
+                    app_key: "",
+                    activity: true
+                }
+            ]
         }
-    }, {
-        "super": false,
-        "name": "w_1",
-        "latitude": 45.55,
-        "longitude": 44.45,
-        "widget_name": "Казань",
-        "weather_provider": "forecastio",
-        "widget_title": "Погода в Казани",
-        "wunderground_api_key": "",
-        "forecastio_api_key": "",
-        "weathertrigger_api_key": "",
-        "weathertrigger_app_key": "",
-        "apixu_api_key": "",
-        "openweather_api_key": "",
-        "background_color": "rgba(0, 0, 0, 1)",
-        "major_text_color": "#ffffff",
-        "extra_text_color": "#ffffff",
-        "update_interval": 360,
-        "show_provider_info": true,
-        "measurement_system": "metrical",
-        "providers_list": [
-            {
-                "name": "openweather",
-                "api_key": "3856eec20ac69363422392a1f2ce262f",
-                "app_key": ""
+    },
+        {
+            widget: {
+                widget_id: 'w_1',
+                active: true,
+                name: 'Default 1',
+                super: false
             },
-            {
-                "name": "apixu",
-                "api_key": "b813f52733db4348bfc140812161409",
-                "app_key": ""
-            },
-            {
-                "name": "weathertrigger",
-                "api_key": "safb813f52733db4348bfc140812161409",
-                "app_key": "aofiuyh387rq48rcfml"
-            },
-            {
-                "name": "yahooweather",
-                "api_key": "",
-                "app_key": ""
-            },
-            {
-                "name": "forecastio",
-                "api_key": "",
-                "app_key": ""
-            },
-            {
-                "name": "wunderground",
-                "api_key": "",
-                "app_key": ""
+            options: {
+                information: {
+                    name: "w_1",
+                    latitude: 0,
+                    longitude: 0,
+                    weather_provider: "yahooweather",
+                    widget_title: "default 2",
+                    background_color: "rgba(0, 0, 0, 1)",
+                    major_text_color: "#ffffff",
+                    extra_text_color: "#ffffff",
+                    update_interval: 120,
+                    show_provider_info: false,
+                    measurement_system: "metrical",
+                },
+                providers_list: [
+                    {
+                        name: "wunderground",
+                        api_key: "",
+                        app_key: "",
+                        activity: false
+                    },
+                    {
+                        name: "forecastio",
+                        api_key: "",
+                        app_key: "",
+                        activity: false
+                    },
+                    {
+                        name: "weathertrigger",
+                        api_key: "",
+                        app_key: "",
+                        activity: false
+                    },
+                    {
+                        name: "apixu",
+                        api_key: "",
+                        app_key: "",
+                        activity: false
+                    },
+                    {
+                        name: "openweather",
+                        api_key: "",
+                        app_key: "",
+                        activity: false
+                    },
+                    {
+                        name: "yahooweather",
+                        api_key: "",
+                        app_key: "",
+                        activity: true
+                    }
+                ]
             }
-        ],
-        "active_provider_ref": {
-            "name": "yahooweather",
-            "api_key": "",
-            "app_key": ""
-        }
-    }, {
-        "super": false,
-        "name": "w_2",
-        "latitude": 35.55,
-        "longitude": 44.45,
-        "weather_provider": "apixu",
-        "widget_title": "Погода в Нижнем Новгороде",
-        "widget_name": "Нижний Новгород",
-        "wunderground_api_key": "",
-        "forecastio_api_key": "",
-        "weathertrigger_api_key": "",
-        "weathertrigger_app_key": "",
-        "apixu_api_key": "",
-        "openweather_api_key": "",
-        "background_color": "rgba(0, 0, 0, 1)",
-        "major_text_color": "#f0f",
-        "extra_text_color": "#3d3",
-        "update_interval": 120,
-        "show_provider_info": true,
-        "measurement_system": "britain",
-        "providers_list": [
-            {
-                "name": "openweather",
-                "api_key": "3856eec20ac69363422392a1f2ce262f",
-                "app_key": ""
-            },
-            {
-                "name": "apixu",
-                "api_key": "b813f52733db4348bfc140812161409",
-                "app_key": ""
-            },
-            {
-                "name": "weathertrigger",
-                "api_key": "safb813f52733db4348bfc140812161409",
-                "app_key": "aofiuyh387rq48rcfml"
-            },
-            {
-                "name": "yahooweather",
-                "api_key": "",
-                "app_key": ""
-            },
-            {
-                "name": "forecastio",
-                "api_key": "",
-                "app_key": ""
-            },
-            {
-                "name": "wunderground",
-                "api_key": "",
-                "app_key": ""
-            }
-        ],
-        "active_provider_ref": {
-            "name": "yahooweather",
-            "api_key": "",
-            "app_key": ""
-        }
-    }],
+        }],
     activeTabId: 0
 };
 
-MicroEvent.mixin(PointsList);
-MicroEvent.mixin(Tabs);
+MicroEvent.mixin(GlobalStorage);
 
 window.AppDispatcher = {
     register: function (payload) {
-        var tabStore = window.Tabs;
+        var widgetStore = window.GlobalStorage;
 
         switch (payload.eventName) {
             case 'map-click':
-                tabStore.tabsList[tabStore.activeTabId].latitude = payload.newItem[0];
-                tabStore.tabsList[tabStore.activeTabId].longitude = payload.newItem[1];
+                widgetStore.widgetsList[widgetStore.activeTabId].options.latitude = payload.newItem[0];
+                widgetStore.widgetsList[widgetStore.activeTabId].options.longitude = payload.newItem[1];
                 break;
             case 'tab-changing':
-                tabStore.activeTabId = payload.newItem;
-                tabStore.trigger('change-tab');
+                widgetStore.activeTabId = payload.newItem;
+                widgetStore.trigger('change-tab');
                 break;
             case 'change-provider':
-                for (var i = 0; i < tabStore.tabsList[payload.newItem[0]].providers_list.length; i++){
-                    tabStore.tabsList[payload.newItem[0]].providers_list[i].activity = false;
+                for (var i = 0; i < widgetStore.widgetsList[payload.newItem[0]].options.providers_list.length; i++) {
+                    widgetStore.widgetsList[payload.newItem[0]].options.providers_list[i].activity = false;
                 }
-                tabStore.tabsList[payload.newItem[0]].providers_list[payload.newItem[1]].activity = true;
+                widgetStore.widgetsList[payload.newItem[0]].options.providers_list[payload.newItem[1]].activity = true;
                 break;
             case 'change-update-interval':
-                tabStore.tabsList[payload.newItem[0]].update_interval = payload.newItem[1];
+                widgetStore.widgetsList[payload.newItem[0]].options.information.update_interval = payload.newItem[1];
                 break;
             case 'change-measurement-system':
-                tabStore.tabsList[payload.newItem[0]].measurement_system = payload.newItem[1];
+                widgetStore.widgetsList[payload.newItem[0]].options.information.measurement_system = payload.newItem[1];
                 break;
             case 'change-bg-color':
-                tabStore.tabsList[payload.newItem[0]].background_color = payload.newItem[1];
+                widgetStore.widgetsList[payload.newItem[0]].options.information.background_color = payload.newItem[1];
                 break;
             case 'change-major-text-color':
-                tabStore.tabsList[payload.newItem[0]].major_text_color = payload.newItem[1];
+                widgetStore.widgetsList[payload.newItem[0]].options.information.major_text_color = payload.newItem[1];
                 break;
             case 'change-extra-text-color':
-                tabStore.tabsList[payload.newItem[0]].extra_text_color = payload.newItem[1];
+                widgetStore.widgetsList[payload.newItem[0]].options.information.extra_text_color = payload.newItem[1];
                 break;
             case 'change-widget-title':
-                tabStore.tabsList[payload.newItem[0]].widget_title = payload.newItem[1];
+                widgetStore.widgetsList[payload.newItem[0]].options.information.widget_title = payload.newItem[1];
                 break;
             case 'change-widget-name':
-                tabStore.tabsList[payload.newItem[0]].widget_name = payload.newItem[1];
+                widgetStore.widgetsList[payload.newItem[0]].widget.name = payload.newItem[1];
                 break;
             case 'change-show-provider-info':
-                tabStore.tabsList[payload.newItem[0]].show_provider_info = payload.newItem[1];
+                widgetStore.widgetsList[payload.newItem[0]].options.information.show_provider_info = payload.newItem[1];
                 break;
             case 'copy-widget':
-                var sliced = tabStore.tabsList.slice();
-                var newObject = deepcopy(sliced[0]);
-                newObject.super = false;
-                newObject.name = Date.now();
-                tabStore.tabsList.push(newObject);
+                widgetStore.widgetsList.push(payload.newItem);
                 break;
             case 'delete-widget':
-                tabStore.tabsList.splice(payload.newItem[0], 1);
-                tabStore.activeTabId = 0;
+                widgetStore.widgetsList.splice(payload.newItem[0], 1);
+                widgetStore.activeTabId = 0;
+                widgetStore.trigger('delete-widget');
                 break;
             case 'options-information-loaded':
-                tabStore.tabsList = payload.newItem[0];
+                widgetStore.widgetsList = payload.newItem;
                 break;
             case 'change-api-key-input':
-                tabStore.tabsList[payload.newItem[0]].providers_list[payload.newItem[1].id].api_key = payload.newItem[1].value;
+                widgetStore.widgetsList[payload.newItem[0]].options.providers_list[payload.newItem[1].id].api_key = payload.newItem[1].value;
                 break;
             case 'change-app-key-input':
-                tabStore.tabsList[payload.newItem[0]].providers_list[payload.newItem[1].id].app_key = payload.newItem[1].value;
+                widgetStore.widgetsList[payload.newItem[0]].options.providers_list[payload.newItem[1].id].app_key = payload.newItem[1].value;
                 break;
         }
 
-        tabStore.trigger('change');
+        widgetStore.trigger('change');
     },
     dispatch: function (payload) {
         this.register(payload);
@@ -332,12 +278,6 @@ window.AppDispatcher = {
 };
 
 var App = React.createClass({
-    getInitialState: function () {
-        return {
-            data: null
-        };
-    },
-
     loadParametresFromServer: function () {
         var url = '/bitrix/tools/weather_service/get_all_option_list.php';
 
@@ -348,7 +288,7 @@ var App = React.createClass({
             success: function (data) {
                 AppDispatcher.dispatch({
                     eventName: 'options-information-loaded',
-                    newItem: [data, null]
+                    newItem: data
                 });
             }.bind(this)
         });
@@ -359,12 +299,10 @@ var App = React.createClass({
     },
 
     render: function () {
-        var _this = this;
-        var storage = window.Tabs;
         return (
             <div className="bitrix-frendly">
-                    <YandexMap/>
-                    <TabsList data={storage.tabsList}/>
+                <YandexMap/>
+                <TabsList/>
             </div>
         )
     }

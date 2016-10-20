@@ -141,230 +141,182 @@
 	    }
 	};
 
-	window.Tabs = {
-	    tabsList: [{
-	        "super": true,
-	        "name": "w_0",
-	        "latitude": 55.55,
-	        "longitude": 44.45,
-	        "weather_provider": "yahooweather",
-	        "widget_title": "Погода в Йошкар-Оле",
-	        "widget_name": "default",
-	        "wunderground_api_key": "",
-	        "forecastio_api_key": "",
-	        "weathertrigger_api_key": "",
-	        "weathertrigger_app_key": "",
-	        "apixu_api_key": "",
-	        "openweather_api_key": "",
-	        "background_color": "rgba(255, 0, 255, 1)",
-	        "major_text_color": "#ffffff",
-	        "extra_text_color": "#ffffff",
-	        "update_interval": 30,
-	        "show_provider_info": false,
-	        "measurement_system": "metrical",
-	        "providers_list": [{
-	            "name": "openweather",
-	            "api_key": "3856eec20ac69363422392a1f2ce262f",
-	            "app_key": ""
-	        }, {
-	            "name": "apixu",
-	            "api_key": "b813f52733db4348bfc140812161409",
-	            "app_key": ""
-	        }, {
-	            "name": "weathertrigger",
-	            "api_key": "",
-	            "app_key": ""
-	        }, {
-	            "name": "yahooweather",
-	            "api_key": "",
-	            "app_key": ""
-	        }, {
-	            "name": "forecastio",
-	            "api_key": "",
-	            "app_key": ""
-	        }, {
-	            "name": "wunderground",
-	            "api_key": "",
-	            "app_key": ""
-	        }],
-	        "active_provider_ref": {
-	            "name": "yahooweather",
-	            "api_key": "",
-	            "app_key": ""
+	window.GlobalStorage = {
+	    widgetsList: [{
+	        widget: {
+	            widget_id: 'w_0',
+	            active: true,
+	            name: 'Default',
+	            super: true
+	        },
+	        options: {
+	            information: {
+	                name: "w_0",
+	                latitude: 0,
+	                longitude: 0,
+	                weather_provider: "yahooweather",
+	                widget_title: "default",
+	                background_color: "rgba(255, 0, 0, 1)",
+	                major_text_color: "#ffffff",
+	                extra_text_color: "#ffffff",
+	                update_interval: 120,
+	                show_provider_info: false,
+	                measurement_system: "metrical"
+	            },
+	            providers_list: [{
+	                name: "wunderground",
+	                api_key: "",
+	                app_key: "",
+	                activity: false
+	            }, {
+	                name: "forecastio",
+	                api_key: "",
+	                app_key: "",
+	                activity: false
+	            }, {
+	                name: "weathertrigger",
+	                api_key: "",
+	                app_key: "",
+	                activity: false
+	            }, {
+	                name: "apixu",
+	                api_key: "",
+	                app_key: "",
+	                activity: false
+	            }, {
+	                name: "openweather",
+	                api_key: "",
+	                app_key: "",
+	                activity: false
+	            }, {
+	                name: "yahooweather",
+	                api_key: "",
+	                app_key: "",
+	                activity: true
+	            }]
 	        }
 	    }, {
-	        "super": false,
-	        "name": "w_1",
-	        "latitude": 45.55,
-	        "longitude": 44.45,
-	        "widget_name": "Казань",
-	        "weather_provider": "forecastio",
-	        "widget_title": "Погода в Казани",
-	        "wunderground_api_key": "",
-	        "forecastio_api_key": "",
-	        "weathertrigger_api_key": "",
-	        "weathertrigger_app_key": "",
-	        "apixu_api_key": "",
-	        "openweather_api_key": "",
-	        "background_color": "rgba(0, 0, 0, 1)",
-	        "major_text_color": "#ffffff",
-	        "extra_text_color": "#ffffff",
-	        "update_interval": 360,
-	        "show_provider_info": true,
-	        "measurement_system": "metrical",
-	        "providers_list": [{
-	            "name": "openweather",
-	            "api_key": "3856eec20ac69363422392a1f2ce262f",
-	            "app_key": ""
-	        }, {
-	            "name": "apixu",
-	            "api_key": "b813f52733db4348bfc140812161409",
-	            "app_key": ""
-	        }, {
-	            "name": "weathertrigger",
-	            "api_key": "safb813f52733db4348bfc140812161409",
-	            "app_key": "aofiuyh387rq48rcfml"
-	        }, {
-	            "name": "yahooweather",
-	            "api_key": "",
-	            "app_key": ""
-	        }, {
-	            "name": "forecastio",
-	            "api_key": "",
-	            "app_key": ""
-	        }, {
-	            "name": "wunderground",
-	            "api_key": "",
-	            "app_key": ""
-	        }],
-	        "active_provider_ref": {
-	            "name": "yahooweather",
-	            "api_key": "",
-	            "app_key": ""
-	        }
-	    }, {
-	        "super": false,
-	        "name": "w_2",
-	        "latitude": 35.55,
-	        "longitude": 44.45,
-	        "weather_provider": "apixu",
-	        "widget_title": "Погода в Нижнем Новгороде",
-	        "widget_name": "Нижний Новгород",
-	        "wunderground_api_key": "",
-	        "forecastio_api_key": "",
-	        "weathertrigger_api_key": "",
-	        "weathertrigger_app_key": "",
-	        "apixu_api_key": "",
-	        "openweather_api_key": "",
-	        "background_color": "rgba(0, 0, 0, 1)",
-	        "major_text_color": "#f0f",
-	        "extra_text_color": "#3d3",
-	        "update_interval": 120,
-	        "show_provider_info": true,
-	        "measurement_system": "britain",
-	        "providers_list": [{
-	            "name": "openweather",
-	            "api_key": "3856eec20ac69363422392a1f2ce262f",
-	            "app_key": ""
-	        }, {
-	            "name": "apixu",
-	            "api_key": "b813f52733db4348bfc140812161409",
-	            "app_key": ""
-	        }, {
-	            "name": "weathertrigger",
-	            "api_key": "safb813f52733db4348bfc140812161409",
-	            "app_key": "aofiuyh387rq48rcfml"
-	        }, {
-	            "name": "yahooweather",
-	            "api_key": "",
-	            "app_key": ""
-	        }, {
-	            "name": "forecastio",
-	            "api_key": "",
-	            "app_key": ""
-	        }, {
-	            "name": "wunderground",
-	            "api_key": "",
-	            "app_key": ""
-	        }],
-	        "active_provider_ref": {
-	            "name": "yahooweather",
-	            "api_key": "",
-	            "app_key": ""
+	        widget: {
+	            widget_id: 'w_1',
+	            active: true,
+	            name: 'Default 1',
+	            super: false
+	        },
+	        options: {
+	            information: {
+	                name: "w_1",
+	                latitude: 0,
+	                longitude: 0,
+	                weather_provider: "yahooweather",
+	                widget_title: "default 2",
+	                background_color: "rgba(0, 0, 0, 1)",
+	                major_text_color: "#ffffff",
+	                extra_text_color: "#ffffff",
+	                update_interval: 120,
+	                show_provider_info: false,
+	                measurement_system: "metrical"
+	            },
+	            providers_list: [{
+	                name: "wunderground",
+	                api_key: "",
+	                app_key: "",
+	                activity: false
+	            }, {
+	                name: "forecastio",
+	                api_key: "",
+	                app_key: "",
+	                activity: false
+	            }, {
+	                name: "weathertrigger",
+	                api_key: "",
+	                app_key: "",
+	                activity: false
+	            }, {
+	                name: "apixu",
+	                api_key: "",
+	                app_key: "",
+	                activity: false
+	            }, {
+	                name: "openweather",
+	                api_key: "",
+	                app_key: "",
+	                activity: false
+	            }, {
+	                name: "yahooweather",
+	                api_key: "",
+	                app_key: "",
+	                activity: true
+	            }]
 	        }
 	    }],
 	    activeTabId: 0
 	};
 
-	MicroEvent.mixin(PointsList);
-	MicroEvent.mixin(Tabs);
+	MicroEvent.mixin(GlobalStorage);
 
 	window.AppDispatcher = {
 	    register: function register(payload) {
-	        var tabStore = window.Tabs;
+	        var widgetStore = window.GlobalStorage;
 
 	        switch (payload.eventName) {
 	            case 'map-click':
-	                tabStore.tabsList[tabStore.activeTabId].latitude = payload.newItem[0];
-	                tabStore.tabsList[tabStore.activeTabId].longitude = payload.newItem[1];
+	                widgetStore.widgetsList[widgetStore.activeTabId].options.latitude = payload.newItem[0];
+	                widgetStore.widgetsList[widgetStore.activeTabId].options.longitude = payload.newItem[1];
 	                break;
 	            case 'tab-changing':
-	                tabStore.activeTabId = payload.newItem;
-	                tabStore.trigger('change-tab');
+	                widgetStore.activeTabId = payload.newItem;
+	                widgetStore.trigger('change-tab');
 	                break;
 	            case 'change-provider':
-	                for (var i = 0; i < tabStore.tabsList[payload.newItem[0]].providers_list.length; i++) {
-	                    tabStore.tabsList[payload.newItem[0]].providers_list[i].activity = false;
+	                for (var i = 0; i < widgetStore.widgetsList[payload.newItem[0]].options.providers_list.length; i++) {
+	                    widgetStore.widgetsList[payload.newItem[0]].options.providers_list[i].activity = false;
 	                }
-	                tabStore.tabsList[payload.newItem[0]].providers_list[payload.newItem[1]].activity = true;
+	                widgetStore.widgetsList[payload.newItem[0]].options.providers_list[payload.newItem[1]].activity = true;
 	                break;
 	            case 'change-update-interval':
-	                tabStore.tabsList[payload.newItem[0]].update_interval = payload.newItem[1];
+	                widgetStore.widgetsList[payload.newItem[0]].options.information.update_interval = payload.newItem[1];
 	                break;
 	            case 'change-measurement-system':
-	                tabStore.tabsList[payload.newItem[0]].measurement_system = payload.newItem[1];
+	                widgetStore.widgetsList[payload.newItem[0]].options.information.measurement_system = payload.newItem[1];
 	                break;
 	            case 'change-bg-color':
-	                tabStore.tabsList[payload.newItem[0]].background_color = payload.newItem[1];
+	                widgetStore.widgetsList[payload.newItem[0]].options.information.background_color = payload.newItem[1];
 	                break;
 	            case 'change-major-text-color':
-	                tabStore.tabsList[payload.newItem[0]].major_text_color = payload.newItem[1];
+	                widgetStore.widgetsList[payload.newItem[0]].options.information.major_text_color = payload.newItem[1];
 	                break;
 	            case 'change-extra-text-color':
-	                tabStore.tabsList[payload.newItem[0]].extra_text_color = payload.newItem[1];
+	                widgetStore.widgetsList[payload.newItem[0]].options.information.extra_text_color = payload.newItem[1];
 	                break;
 	            case 'change-widget-title':
-	                tabStore.tabsList[payload.newItem[0]].widget_title = payload.newItem[1];
+	                widgetStore.widgetsList[payload.newItem[0]].options.information.widget_title = payload.newItem[1];
 	                break;
 	            case 'change-widget-name':
-	                tabStore.tabsList[payload.newItem[0]].widget_name = payload.newItem[1];
+	                widgetStore.widgetsList[payload.newItem[0]].widget.name = payload.newItem[1];
 	                break;
 	            case 'change-show-provider-info':
-	                tabStore.tabsList[payload.newItem[0]].show_provider_info = payload.newItem[1];
+	                widgetStore.widgetsList[payload.newItem[0]].options.information.show_provider_info = payload.newItem[1];
 	                break;
 	            case 'copy-widget':
-	                var sliced = tabStore.tabsList.slice();
-	                var newObject = deepcopy(sliced[0]);
-	                newObject.super = false;
-	                newObject.name = Date.now();
-	                tabStore.tabsList.push(newObject);
+	                widgetStore.widgetsList.push(payload.newItem);
 	                break;
 	            case 'delete-widget':
-	                tabStore.tabsList.splice(payload.newItem[0], 1);
-	                tabStore.activeTabId = 0;
+	                widgetStore.widgetsList.splice(payload.newItem[0], 1);
+	                widgetStore.activeTabId = 0;
+	                widgetStore.trigger('delete-widget');
 	                break;
 	            case 'options-information-loaded':
-	                tabStore.tabsList = payload.newItem[0];
+	                widgetStore.widgetsList = payload.newItem;
 	                break;
 	            case 'change-api-key-input':
-	                tabStore.tabsList[payload.newItem[0]].providers_list[payload.newItem[1].id].api_key = payload.newItem[1].value;
+	                widgetStore.widgetsList[payload.newItem[0]].options.providers_list[payload.newItem[1].id].api_key = payload.newItem[1].value;
 	                break;
 	            case 'change-app-key-input':
-	                tabStore.tabsList[payload.newItem[0]].providers_list[payload.newItem[1].id].app_key = payload.newItem[1].value;
+	                widgetStore.widgetsList[payload.newItem[0]].options.providers_list[payload.newItem[1].id].app_key = payload.newItem[1].value;
 	                break;
 	        }
 
-	        tabStore.trigger('change');
+	        widgetStore.trigger('change');
 	    },
 	    dispatch: function dispatch(payload) {
 	        this.register(payload);
@@ -373,12 +325,6 @@
 
 	var App = _react2.default.createClass({
 	    displayName: 'App',
-
-	    getInitialState: function getInitialState() {
-	        return {
-	            data: null
-	        };
-	    },
 
 	    loadParametresFromServer: function loadParametresFromServer() {
 	        var url = '/bitrix/tools/weather_service/get_all_option_list.php';
@@ -390,7 +336,7 @@
 	            success: function (data) {
 	                AppDispatcher.dispatch({
 	                    eventName: 'options-information-loaded',
-	                    newItem: [data, null]
+	                    newItem: data
 	                });
 	            }.bind(this)
 	        });
@@ -401,13 +347,11 @@
 	    },
 
 	    render: function render() {
-	        var _this = this;
-	        var storage = window.Tabs;
 	        return _react2.default.createElement(
 	            'div',
 	            { className: 'bitrix-frendly' },
 	            _react2.default.createElement(_yandexMap2.default, null),
-	            _react2.default.createElement(_tabsList2.default, { data: storage.tabsList })
+	            _react2.default.createElement(_tabsList2.default, null)
 	        );
 	    }
 	});
@@ -21806,24 +21750,22 @@
 	    },
 
 	    componentDidMount: function componentDidMount() {
-	        window.Tabs.bind('change', this.changeState);
+	        window.GlobalStorage.bind('change', this.changeState);
 	    },
 
 	    changeState: function changeState() {
 	        this.forceUpdate();
 	    },
 
-	    handleChange: function handleChange(evt) {},
-
-	    handleMapClick: function handleMapClick(event) {
+	    _handleMapClick: function _handleMapClick(event) {
 	        var clickCoords = event.get('coords');
 	        AppDispatcher.dispatch({ eventName: 'map-click', newItem: clickCoords });
 	    },
 
 	    render: function render() {
-	        var store = window.Tabs;
-	        var objectPositionLat = store.tabsList[store.activeTabId].latitude;
-	        var objectPositionLon = store.tabsList[store.activeTabId].longitude;
+	        var storage = window.GlobalStorage;
+	        var objectPositionLat = storage.widgetsList[storage.activeTabId].options.information.latitude;
+	        var objectPositionLon = storage.widgetsList[storage.activeTabId].options.information.longitude;
 	        var mapCenterLat = this.state.latitude;
 	        var mapCenterLon = this.state.longitude;
 	        var marker;
@@ -21847,7 +21789,7 @@
 	            { className: 'yandex-map' },
 	            _react2.default.createElement(
 	                _yandexMapReact.Map,
-	                { onClick: this.handleMapClick,
+	                { onClick: this._handleMapClick,
 	                    onAPIAvailable: function onAPIAvailable() {
 	                        console.log('API loaded');
 	                    },
@@ -23281,7 +23223,7 @@
 	    displayName: 'TabsList',
 
 	    componentDidMount: function componentDidMount() {
-	        window.Tabs.bind('change', this.changeState);
+	        window.GlobalStorage.bind('change', this.changeState);
 	    },
 
 	    changeState: function changeState() {
@@ -23295,14 +23237,14 @@
 	            _react2.default.createElement(
 	                'div',
 	                { className: 'tab-list' },
-	                window.Tabs.tabsList.map(function (element, i) {
+	                window.GlobalStorage.widgetsList.map(function (element, i) {
 	                    return _react2.default.createElement(_tab2.default, { id: i, key: 'tab_' + i });
 	                })
 	            ),
 	            _react2.default.createElement(
 	                'div',
 	                { className: 'content-list' },
-	                window.Tabs.tabsList.map(function (element, i) {
+	                window.GlobalStorage.widgetsList.map(function (element, i) {
 	                    return _react2.default.createElement(_tabContent2.default, { id: i, key: 'tab_content_' + i });
 	                })
 	            )
@@ -23337,20 +23279,28 @@
 
 	    getInitialState: function getInitialState() {
 	        return {
-	            id: this.props.id
+	            id: this.props.id,
+	            DomId: 'tab_content_' + this.props.id
 	        };
 	    },
 
+	    componentDidMount: function componentDidMount() {
+	        window.GlobalStorage.bind('delete-widget', this.componentWillUnmount);
+	    },
+
+	    componentWillUnmount: function componentWillUnmount() {
+	        // React.unmountComponentAtNode(document.getElementById(this.state.DomId));
+	    },
+
 	    render: function render() {
-	        var storage = window.Tabs;
-	        var widget = window.Tabs.tabsList[this.state.id];
+	        var storage = window.GlobalStorage;
 	        var id = this.state.id;
 
 	        var activeClass = storage.activeTabId === id ? 'active' : '';
 
 	        return _react2.default.createElement(
 	            'div',
-	            { className: activeClass + ' tab-content clearfix' },
+	            { id: 'tab_content_' + id, className: activeClass + ' tab-content clearfix' },
 	            _react2.default.createElement(_providerList2.default, { key: 'tab_content_' + id, widgetId: id }),
 	            _react2.default.createElement(_viewOptionsList2.default, { activeProvider: id })
 	        );
@@ -23392,12 +23342,9 @@
 	    },
 
 	    render: function render() {
-	        var _this2 = this;
-
-	        var storage = window.Tabs;
-
 	        var _this = this;
-	        var activeProvider = storage.activeTabId;
+
+	        var storage = window.GlobalStorage;
 
 	        return _react2.default.createElement(
 	            'div',
@@ -23407,11 +23354,11 @@
 	                { className: 'title' },
 	                '\u041F\u0440\u043E\u0432\u0430\u0439\u0434\u0435\u0440\u044B'
 	            ),
-	            storage.tabsList[this.state.widgetId].providers_list.map(function (element, i) {
+	            storage.widgetsList[this.state.widgetId].options.providers_list.map(function (element, i) {
 	                return _react2.default.createElement(_providerItem2.default, { key: 'provider_item_' + i,
 	                    name: element.name,
 	                    providerId: i,
-	                    widgetId: _this2.state.widgetId });
+	                    widgetId: _this.state.widgetId });
 	            })
 	        );
 	    }
@@ -23458,7 +23405,7 @@
 	        return {
 	            widgetId: this.props.widgetId,
 	            name: this.props.name,
-	            selectedOption: window.Tabs.activeTabId,
+	            activeTabId: window.GlobalStorage.activeTabId,
 	            id: this.props.providerId,
 	            valid: true,
 	            validationStarted: false
@@ -23474,9 +23421,9 @@
 	    /*
 	    * валидация ключа, если ключ до этого уже проверялся и он был валиден, то он не отправляется на сервер для проверки
 	    */
-	    validateKey: function validateKey() {
-	        var storage = window.Tabs.tabsList;
-	        var providers = storage[this.state.widgetId].providers_list;
+	    _validateKey: function _validateKey() {
+	        var storage = window.GlobalStorage;
+	        var providers = storage.widgetsList[this.state.widgetId].options.providers_list;
 	        var url = ENTRY_POINT + '/bitrix/tools/weather_service/weather_api.php';
 
 	        var bePrevApiKey = prevBeKey(providers[this.state.id].name, providers[this.state.id].api_key, 'api');
@@ -23515,16 +23462,16 @@
 	    },
 
 	    _handleApiInputBlur: function _handleApiInputBlur() {
-	        this.validateKey();
+	        this._validateKey();
 	    },
 
 	    _handleAppInputBlur: function _handleAppInputBlur() {
-	        this.validateKey();
+	        this._validateKey();
 	    },
 
 	    _handleApiKeyChange: function _handleApiKeyChange(event) {
-	        var storage = window.Tabs.tabsList;
-	        var providers = storage[this.state.selectedOption].providers_list;
+	        var storage = window.GlobalStorage;
+	        var providers = storage.widgetsList[this.state.activeTabId].options.providers_list;
 
 	        AppDispatcher.dispatch({
 	            eventName: 'change-api-key-input',
@@ -23533,8 +23480,10 @@
 	    },
 
 	    _handleAppKeyChange: function _handleAppKeyChange(event) {
-	        var storage = window.Tabs.tabsList;
-	        var providers = storage[this.state.selectedOption].providers_list;
+	        var storage = window.GlobalStorage;
+	        var providers = storage.widgetsList[this.state.activeTabId].options.providers_list;
+
+	        console.log(providers);
 
 	        AppDispatcher.dispatch({
 	            eventName: 'change-app-key-input',
@@ -23543,8 +23492,8 @@
 	    },
 
 	    render: function render() {
-	        var storage = window.Tabs.tabsList;
-	        var providers = storage[this.state.widgetId].providers_list;
+	        var storage = window.GlobalStorage;
+	        var providers = storage.widgetsList[this.state.widgetId].options.providers_list;
 
 	        var id = this.state.id;
 
@@ -23609,7 +23558,7 @@
 	                _react2.default.createElement('input', { name: 'weather_provider_' + this.state.widgetId,
 	                    type: 'radio',
 	                    value: providers[id].name,
-	                    checked: storage[this.state.widgetId].providers_list[this.state.id].activity,
+	                    checked: providers[id].activity,
 	                    onChange: this.handleOptionChange }),
 	                _react2.default.createElement(
 	                    'a',
@@ -23666,77 +23615,77 @@
 	        }
 	    },
 
-	    handleUpdateIntervalChange: function handleUpdateIntervalChange(event) {
+	    _handleUpdateIntervalChange: function _handleUpdateIntervalChange(event) {
 	        AppDispatcher.dispatch({
 	            eventName: 'change-update-interval',
 	            newItem: [this.state.provider, event.target.value]
 	        });
 	    },
 
-	    handleMeasurementSystemChange: function handleMeasurementSystemChange(event) {
+	    _handleMeasurementSystemChange: function _handleMeasurementSystemChange(event) {
 	        AppDispatcher.dispatch({
 	            eventName: 'change-measurement-system',
 	            newItem: [this.state.provider, event.target.value]
 	        });
 	    },
 
-	    handleChangeBgColor: function handleChangeBgColor(color) {
+	    _handleChangeBgColor: function _handleChangeBgColor(color) {
 	        AppDispatcher.dispatch({
 	            eventName: 'change-bg-color',
 	            newItem: [this.state.provider, "rgba(" + color.rgb.r + ", " + color.rgb.g + ", " + color.rgb.b + ", " + color.rgb.a + ")"]
 	        });
 	    },
 
-	    handleChangeMajorTextColor: function handleChangeMajorTextColor(color) {
+	    _handleChangeMajorTextColor: function _handleChangeMajorTextColor(color) {
 	        AppDispatcher.dispatch({
 	            eventName: 'change-major-text-color',
 	            newItem: [this.state.provider, color.hex]
 	        });
 	    },
 
-	    handleChangeExtraTextColor: function handleChangeExtraTextColor(color) {
+	    _handleChangeExtraTextColor: function _handleChangeExtraTextColor(color) {
 	        AppDispatcher.dispatch({
 	            eventName: 'change-extra-text-color',
 	            newItem: [this.state.provider, color.hex]
 	        });
 	    },
 
-	    handleChangeBgColorPickerActivity: function handleChangeBgColorPickerActivity() {
+	    _handleChangeBgColorPickerActivity: function _handleChangeBgColorPickerActivity() {
 	        this.setState({ showColorBgPicker: !this.state.showColorBgPicker });
 	    },
 
-	    handleChangeMajorTextColorPickerActivity: function handleChangeMajorTextColorPickerActivity() {
+	    _handleChangeMajorTextColorPickerActivity: function _handleChangeMajorTextColorPickerActivity() {
 	        this.setState({ showColorMajorTextPicker: !this.state.showColorMajorTextPicker });
 	    },
 
-	    handleChangeExtraTextColorPickerActivity: function handleChangeExtraTextColorPickerActivity() {
+	    _handleChangeExtraTextColorPickerActivity: function _handleChangeExtraTextColorPickerActivity() {
 	        this.setState({ showColorExtraTextPicker: !this.state.showColorExtraTextPicker });
 	    },
 
-	    handleTitleChange: function handleTitleChange(event) {
+	    _handleTitleChange: function _handleTitleChange(event) {
 	        AppDispatcher.dispatch({
 	            eventName: 'change-widget-title',
 	            newItem: [this.state.provider, event.target.value]
 	        });
 	    },
 
-	    handleChangeShowProviderInfo: function handleChangeShowProviderInfo() {
-	        var storage = window.Tabs.tabsList;
+	    _handleChangeShowProviderInfo: function _handleChangeShowProviderInfo() {
+	        var widgetsList = window.GlobalStorage.widgetsList;
 
 	        AppDispatcher.dispatch({
 	            eventName: 'change-show-provider-info',
-	            newItem: [this.state.provider, !storage[this.state.provider].show_provider_info]
+	            newItem: [this.state.provider, !widgetsList[this.state.provider].options.show_provider_info]
 	        });
 	    },
 
-	    handleNameChange: function handleNameChange(event) {
+	    _handleWidgetNameChange: function _handleWidgetNameChange(event) {
 	        AppDispatcher.dispatch({
 	            eventName: 'change-widget-name',
 	            newItem: [this.state.provider, event.target.value]
 	        });
 	    },
 
-	    handleDeleteWidgetButtonClick: function handleDeleteWidgetButtonClick() {
+	    _handleDeleteWidgetButtonClick: function _handleDeleteWidgetButtonClick() {
 	        AppDispatcher.dispatch({
 	            eventName: 'delete-widget',
 	            newItem: [this.state.provider, null]
@@ -23746,11 +23695,10 @@
 	    },
 
 	    render: function render() {
-	        var storage = window.Tabs.tabsList;
+	        var storage = window.GlobalStorage.widgetsList;
 
-	        var _this = this;
-	        var props = this.props;
-	        var activeProvider = this.state.provider;
+	        var activeWidget = this.state.provider;
+	        var information = storage[activeWidget].options.information;
 
 	        var styles = (0, _reactcss2.default)({
 	            'default': {
@@ -23758,19 +23706,19 @@
 	                    width: '36px',
 	                    height: '14px',
 	                    borderRadius: '2px',
-	                    background: storage[activeProvider].background_color
+	                    background: information.background_color
 	                },
 	                majorTextColor: {
 	                    width: '36px',
 	                    height: '14px',
 	                    borderRadius: '2px',
-	                    background: storage[activeProvider].major_text_color
+	                    background: information.major_text_color
 	                },
 	                extraTextColor: {
 	                    width: '36px',
 	                    height: '14px',
 	                    borderRadius: '2px',
-	                    background: storage[activeProvider].extra_text_color
+	                    background: information.extra_text_color
 	                },
 	                swatch: {
 	                    padding: '5px',
@@ -23797,10 +23745,10 @@
 	        var deletePermission = _react2.default.createElement(
 	            'div',
 	            { className: 'line clearfix' },
-	            _react2.default.createElement('input', { type: 'button', name: 'delete_widget', value: '\u0423\u0434\u0430\u043B\u0438\u0442\u044C \u0432\u0438\u0434\u0436\u0435\u0442', onClick: this.handleDeleteWidgetButtonClick })
+	            _react2.default.createElement('input', { type: 'button', name: 'delete_widget', value: '\u0423\u0434\u0430\u043B\u0438\u0442\u044C \u0432\u0438\u0434\u0436\u0435\u0442', onClick: this._handleDeleteWidgetButtonClick })
 	        );
 
-	        if (storage[activeProvider].super) {
+	        if (storage[activeWidget].widget.super) {
 	            deletePermission = '';
 	        }
 
@@ -23820,7 +23768,7 @@
 	                    { className: 'label' },
 	                    '\u0417\u0430\u0433\u043E\u043B\u043E\u0432\u043E\u043A \u0432\u0438\u0434\u0436\u0435\u0442\u0430'
 	                ),
-	                _react2.default.createElement('input', { type: 'text', name: 'widget_title', value: storage[activeProvider].widget_title, onChange: this.handleTitleChange })
+	                _react2.default.createElement('input', { type: 'text', name: 'widget_title', value: information.widget_title, onChange: this._handleTitleChange })
 	            ),
 	            _react2.default.createElement(
 	                'div',
@@ -23832,7 +23780,7 @@
 	                ),
 	                _react2.default.createElement(
 	                    'select',
-	                    { onChange: this.handleUpdateIntervalChange, value: storage[activeProvider].update_interval },
+	                    { onChange: this._handleUpdateIntervalChange, value: information.update_interval },
 	                    _react2.default.createElement(
 	                        'option',
 	                        { value: '30' },
@@ -23865,8 +23813,8 @@
 	                ),
 	                _react2.default.createElement(
 	                    'select',
-	                    { onChange: this.handleMeasurementSystemChange,
-	                        value: storage[activeProvider].measurement_system },
+	                    { onChange: this._handleMeasurementSystemChange,
+	                        value: information.measurement_system },
 	                    _react2.default.createElement(
 	                        'option',
 	                        { value: 'metrical' },
@@ -23889,15 +23837,15 @@
 	                ),
 	                _react2.default.createElement(
 	                    'div',
-	                    { style: styles.swatch, onClick: this.handleChangeBgColorPickerActivity },
+	                    { style: styles.swatch, onClick: this._handleChangeBgColorPickerActivity },
 	                    _react2.default.createElement('div', { style: styles.bgColor })
 	                ),
 	                this.state.showColorBgPicker ? _react2.default.createElement(
 	                    'div',
 	                    { style: styles.popover },
-	                    _react2.default.createElement('div', { style: styles.cover, onClick: this.handleChangeBgColorPickerActivity }),
-	                    _react2.default.createElement(_reactColor.SketchPicker, { color: storage[activeProvider].background_color,
-	                        onChange: this.handleChangeBgColor })
+	                    _react2.default.createElement('div', { style: styles.cover, onClick: this._handleChangeBgColorPickerActivity }),
+	                    _react2.default.createElement(_reactColor.SketchPicker, { color: information.background_color,
+	                        onChange: this._handleChangeBgColor })
 	                ) : null
 	            ),
 	            _react2.default.createElement(
@@ -23910,15 +23858,15 @@
 	                ),
 	                _react2.default.createElement(
 	                    'div',
-	                    { style: styles.swatch, onClick: this.handleChangeMajorTextColorPickerActivity },
+	                    { style: styles.swatch, onClick: this._handleChangeMajorTextColorPickerActivity },
 	                    _react2.default.createElement('div', { style: styles.majorTextColor })
 	                ),
 	                this.state.showColorMajorTextPicker ? _react2.default.createElement(
 	                    'div',
 	                    { style: styles.popover },
-	                    _react2.default.createElement('div', { style: styles.cover, onClick: this.handleChangeMajorTextColorPickerActivity }),
-	                    _react2.default.createElement(_reactColor.SketchPicker, { disableAlpha: true, color: storage[activeProvider].major_text_color,
-	                        onChange: this.handleChangeMajorTextColor })
+	                    _react2.default.createElement('div', { style: styles.cover, onClick: this._handleChangeMajorTextColorPickerActivity }),
+	                    _react2.default.createElement(_reactColor.SketchPicker, { disableAlpha: true, color: information.major_text_color,
+	                        onChange: this._handleChangeMajorTextColor })
 	                ) : null
 	            ),
 	            _react2.default.createElement(
@@ -23931,15 +23879,15 @@
 	                ),
 	                _react2.default.createElement(
 	                    'div',
-	                    { style: styles.swatch, onClick: this.handleChangeExtraTextColorPickerActivity },
+	                    { style: styles.swatch, onClick: this._handleChangeExtraTextColorPickerActivity },
 	                    _react2.default.createElement('div', { style: styles.extraTextColor })
 	                ),
 	                this.state.showColorExtraTextPicker ? _react2.default.createElement(
 	                    'div',
 	                    { style: styles.popover },
-	                    _react2.default.createElement('div', { style: styles.cover, onClick: this.handleChangeExtraTextColorPickerActivity }),
-	                    _react2.default.createElement(_reactColor.SketchPicker, { disableAlpha: true, color: storage[activeProvider].extra_text_color,
-	                        onChange: this.handleChangeExtraTextColor })
+	                    _react2.default.createElement('div', { style: styles.cover, onClick: this._handleChangeExtraTextColorPickerActivity }),
+	                    _react2.default.createElement(_reactColor.SketchPicker, { disableAlpha: true, color: information.extra_text_color,
+	                        onChange: this._handleChangeExtraTextColor })
 	                ) : null
 	            ),
 	            _react2.default.createElement(
@@ -23950,7 +23898,7 @@
 	                    { className: 'label' },
 	                    '\u041F\u043E\u043A\u0430\u0437\u044B\u0432\u0430\u0442\u044C \u043F\u0440\u043E\u0432\u0430\u0439\u0434\u0435\u0440\u0430 \u043D\u0430 \u0432\u0438\u0434\u0436\u0435\u0442\u0435?'
 	                ),
-	                _react2.default.createElement('input', { type: 'checkbox', name: 'show_provider_info', checked: storage[activeProvider].show_provider_info, onChange: this.handleChangeShowProviderInfo })
+	                _react2.default.createElement('input', { type: 'checkbox', name: 'show_provider_info', checked: information.show_provider_info, onChange: this._handleChangeShowProviderInfo })
 	            ),
 	            _react2.default.createElement(
 	                'div',
@@ -23960,7 +23908,7 @@
 	                    { className: 'label' },
 	                    '\u041D\u0430\u0437\u0432\u0430\u043D\u0438\u0435 \u0432\u0438\u0434\u0436\u0435\u0442\u0430'
 	                ),
-	                _react2.default.createElement('input', { type: 'text', name: 'widget_name', value: storage[activeProvider].widget_name, onChange: this.handleNameChange })
+	                _react2.default.createElement('input', { type: 'text', name: 'widget_name', value: storage[activeWidget].widget.name, onChange: this._handleWidgetNameChange })
 	            ),
 	            deletePermission
 	        );
@@ -37281,8 +37229,17 @@
 
 	    getInitialState: function getInitialState() {
 	        return {
-	            id: this.props.id
+	            id: this.props.id,
+	            DomId: 'tab_' + this.props.id
 	        };
+	    },
+
+	    componentDidMount: function componentDidMount() {
+	        window.GlobalStorage.bind('delete-widget', this.componentWillUnmount);
+	    },
+
+	    componentWillUnmount: function componentWillUnmount() {
+	        // React.unmountComponentAtNode(document.getElementById(this.state.DomId));
 	    },
 
 	    _handleClick: function _handleClick() {
@@ -37292,30 +37249,55 @@
 	        });
 	    },
 
-	    _handleCopyWidget: function _handleCopyWidget() {
-	        AppDispatcher.dispatch({
-	            eventName: 'copy-widget',
-	            newItem: null
+	    _copyWidget: function _copyWidget(widget) {
+	        var url = '/bitrix/tools/weather_service/copy_widget.php';
+
+	        var newName = 'Copy of ' + widget.widget.name;
+
+	        $.ajax({
+	            type: "POST",
+	            url: url,
+	            dataType: 'json',
+	            data: {
+	                name: newName,
+	                information: widget.options.information,
+	                providers_list: widget.options.providers_list
+	            },
+	            success: function (data) {
+	                AppDispatcher.dispatch({
+	                    eventName: 'copy-widget',
+	                    newItem: data
+	                });
+	            }.bind(this)
 	        });
 	    },
 
+	    _handleCopyWidget: function _handleCopyWidget() {
+	        var storage = window.GlobalStorage;
+	        var id = this.state.id;
+	        var widget = storage.widgetsList[id];
+
+	        this._copyWidget(widget);
+	    },
+
 	    render: function render() {
-	        var storage = window.Tabs;
+	        var storage = window.GlobalStorage;
 	        var id = this.state.id;
 
 	        var activeClass = storage.activeTabId === id ? 'active' : '';
 
-	        var widget = storage.tabsList[id];
+	        var widget = storage.widgetsList[id].widget;
+	        var widgetOptions = widget.options;
 
 	        var element = _react2.default.createElement(
 	            'div',
 	            { className: activeClass },
 	            _react2.default.createElement(
 	                'a',
-	                { href: '#' + widget.name,
+	                { href: '#' + widget.widget_id,
 	                    onClick: this._handleClick,
 	                    className: 'tab-element' },
-	                widget.widget_title
+	                widget.name
 	            )
 	        );
 
@@ -37325,10 +37307,10 @@
 	                { className: activeClass + ' default-widget' },
 	                _react2.default.createElement(
 	                    'a',
-	                    { href: '#' + widget.name,
+	                    { href: '#' + widget.widget_id,
 	                        onClick: this._handleClick,
 	                        className: 'tab-element' },
-	                    widget.widget_title
+	                    widget.name
 	                ),
 	                _react2.default.createElement(
 	                    'span',

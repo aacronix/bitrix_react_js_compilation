@@ -25,7 +25,7 @@ var ProviderItem = React.createClass({
         return {
             widgetId: this.props.widgetId,
             name: this.props.name,
-            selectedOption: window.Tabs.activeTabId,
+            activeTabId: window.GlobalStorage.activeTabId,
             id: this.props.providerId,
             valid: true,
             validationStarted: false
@@ -41,9 +41,9 @@ var ProviderItem = React.createClass({
 /*
 * валидация ключа, если ключ до этого уже проверялся и он был валиден, то он не отправляется на сервер для проверки
 */
-    validateKey: function () {
-        var storage = window.Tabs.tabsList;
-        var providers = storage[this.state.widgetId].providers_list;
+    _validateKey: function () {
+        var storage = window.GlobalStorage;
+        var providers = storage.widgetsList[this.state.widgetId].options.providers_list;
         var url = ENTRY_POINT + '/bitrix/tools/weather_service/weather_api.php';
 
         var bePrevApiKey = prevBeKey(providers[this.state.id].name, providers[this.state.id].api_key, 'api');
@@ -82,16 +82,16 @@ var ProviderItem = React.createClass({
     },
 
     _handleApiInputBlur: function () {
-        this.validateKey();
+        this._validateKey();
     },
 
     _handleAppInputBlur: function () {
-        this.validateKey();
+        this._validateKey();
     },
 
     _handleApiKeyChange: function (event) {
-        var storage = window.Tabs.tabsList;
-        var providers = storage[this.state.selectedOption].providers_list;
+        var storage = window.GlobalStorage;
+        var providers = storage.widgetsList[this.state.activeTabId].options.providers_list;
 
         AppDispatcher.dispatch({
             eventName: 'change-api-key-input',
@@ -100,8 +100,10 @@ var ProviderItem = React.createClass({
     },
 
     _handleAppKeyChange: function (event) {
-        var storage = window.Tabs.tabsList;
-        var providers = storage[this.state.selectedOption].providers_list;
+        var storage = window.GlobalStorage;
+        var providers = storage.widgetsList[this.state.activeTabId].options.providers_list;
+
+        console.log(providers);
 
         AppDispatcher.dispatch({
             eventName: 'change-app-key-input',
@@ -110,8 +112,8 @@ var ProviderItem = React.createClass({
     },
 
     render: function () {
-        var storage = window.Tabs.tabsList;
-        var providers = storage[this.state.widgetId].providers_list;
+        var storage = window.GlobalStorage;
+        var providers = storage.widgetsList[this.state.widgetId].options.providers_list;
 
         var id = this.state.id;
 
@@ -125,10 +127,10 @@ var ProviderItem = React.createClass({
             className = (this.state.valid ? "valid" : "invalid");
         }
         
-        if (prevBeKey(providers[id].name, providers[id].api_key, 'api') && prevBeKey(providers[id].name, providers[id].app_key, 'app')){
+        if (prevBeKey(providers[id].name, providers[id].api_key, 'api') && prevBeKey(providers[id].name, providers[id].app_key, 'app')) {
             className = "valid";
         }
-
+        
         // строка API ключа
         if (providerInfo.api) {
             ApiLine = <div className="line clearfix">
@@ -161,7 +163,7 @@ var ProviderItem = React.createClass({
                     <input name={'weather_provider_' + this.state.widgetId}
                            type="radio"
                            value={providers[id].name}
-                           checked={storage[this.state.widgetId].providers_list[this.state.id].activity}
+                           checked={providers[id].activity}
                            onChange={this.handleOptionChange}/>
                     <a className="provider-name" href={providerInfo.link} target="_blank">{providerInfo.name}</a>
                 </div>

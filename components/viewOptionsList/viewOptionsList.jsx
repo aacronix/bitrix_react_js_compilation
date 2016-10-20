@@ -26,91 +26,91 @@ var ViewOptionsList = React.createClass({
         }
     },
 
-    handleUpdateIntervalChange: function (event) {
+    _handleUpdateIntervalChange: function (event) {
         AppDispatcher.dispatch({
             eventName: 'change-update-interval',
             newItem: [this.state.provider, event.target.value]
         });
     },
 
-    handleMeasurementSystemChange: function (event) {
+    _handleMeasurementSystemChange: function (event) {
         AppDispatcher.dispatch({
             eventName: 'change-measurement-system',
             newItem: [this.state.provider, event.target.value]
         });
     },
 
-    handleChangeBgColor: function (color) {
+    _handleChangeBgColor: function (color) {
         AppDispatcher.dispatch({
             eventName: 'change-bg-color',
             newItem: [this.state.provider, "rgba(" + color.rgb.r + ", " + color.rgb.g + ", " + color.rgb.b + ", " + color.rgb.a + ")"]
         });
     },
 
-    handleChangeMajorTextColor: function (color) {
+    _handleChangeMajorTextColor: function (color) {
         AppDispatcher.dispatch({
             eventName: 'change-major-text-color',
             newItem: [this.state.provider, color.hex]
         });
     },
 
-    handleChangeExtraTextColor: function (color) {
+    _handleChangeExtraTextColor: function (color) {
         AppDispatcher.dispatch({
             eventName: 'change-extra-text-color',
             newItem: [this.state.provider, color.hex]
         });
     },
 
-    handleChangeBgColorPickerActivity: function () {
+    _handleChangeBgColorPickerActivity: function () {
         this.setState({showColorBgPicker: !this.state.showColorBgPicker});
     },
 
-    handleChangeMajorTextColorPickerActivity: function () {
+    _handleChangeMajorTextColorPickerActivity: function () {
         this.setState({showColorMajorTextPicker: !this.state.showColorMajorTextPicker});
     },
 
-    handleChangeExtraTextColorPickerActivity: function () {
+    _handleChangeExtraTextColorPickerActivity: function () {
         this.setState({showColorExtraTextPicker: !this.state.showColorExtraTextPicker});
     },
 
-    handleTitleChange: function (event) {
+    _handleTitleChange: function (event) {
         AppDispatcher.dispatch({
             eventName: 'change-widget-title',
             newItem: [this.state.provider, event.target.value]
         });
     },
 
-    handleChangeShowProviderInfo: function () {
-        var storage = window.Tabs.tabsList;
+    _handleChangeShowProviderInfo: function () {
+        var widgetsList = window.GlobalStorage.widgetsList;
 
         AppDispatcher.dispatch({
             eventName: 'change-show-provider-info',
-            newItem: [this.state.provider, !storage[this.state.provider].show_provider_info]
+            newItem: [this.state.provider, !widgetsList[this.state.provider].options.show_provider_info]
         });
     },
 
-    handleNameChange: function (event) {
+    _handleWidgetNameChange: function (event) {
         AppDispatcher.dispatch({
             eventName: 'change-widget-name',
             newItem: [this.state.provider, event.target.value]
         });
     },
 
-    handleDeleteWidgetButtonClick: function () {
+    _handleDeleteWidgetButtonClick: function () {
         AppDispatcher.dispatch({
             eventName: 'delete-widget',
             newItem: [this.state.provider, null]
         });
-        
+
         this.forceUpdate();
     },
 
     render: function () {
-        var storage = window.Tabs.tabsList;
+        var storage = window.GlobalStorage.widgetsList;
 
-        var _this = this;
-        var props = this.props;
-        var activeProvider = this.state.provider;
+        var activeWidget = this.state.provider;
+        var information = storage[activeWidget].options.information;
+
 
         const styles = reactCSS({
             'default': {
@@ -118,19 +118,19 @@ var ViewOptionsList = React.createClass({
                     width: '36px',
                     height: '14px',
                     borderRadius: '2px',
-                    background: storage[activeProvider].background_color
+                    background: information.background_color
                 },
                 majorTextColor: {
                     width: '36px',
                     height: '14px',
                     borderRadius: '2px',
-                    background: storage[activeProvider].major_text_color
+                    background: information.major_text_color
                 },
                 extraTextColor: {
                     width: '36px',
                     height: '14px',
                     borderRadius: '2px',
-                    background: storage[activeProvider].extra_text_color
+                    background: information.extra_text_color
                 },
                 swatch: {
                     padding: '5px',
@@ -155,10 +155,10 @@ var ViewOptionsList = React.createClass({
         });
 
         var deletePermission = <div className="line clearfix">
-            <input type="button" name="delete_widget" value="Удалить виджет" onClick={this.handleDeleteWidgetButtonClick}/>
+            <input type="button" name="delete_widget" value="Удалить виджет" onClick={this._handleDeleteWidgetButtonClick}/>
         </div>;
 
-        if (storage[activeProvider].super){
+        if (storage[activeWidget].widget.super){
             deletePermission = '';
         }
 
@@ -167,11 +167,11 @@ var ViewOptionsList = React.createClass({
                 <p className="title">Настройка отображения</p>
                 <div className="line clearfix">
                     <p className="label">Заголовок виджета</p>
-                    <input type="text" name="widget_title" value={storage[activeProvider].widget_title} onChange={this.handleTitleChange}/>
+                    <input type="text" name="widget_title" value={information.widget_title} onChange={this._handleTitleChange}/>
                 </div>
                 <div className="line clearfix">
                     <p className="label">Интервал обновления</p>
-                    <select onChange={this.handleUpdateIntervalChange} value={storage[activeProvider].update_interval}>
+                    <select onChange={this._handleUpdateIntervalChange} value={information.update_interval}>
                         <option value='30'>30 минут</option>
                         <option value='60'>1 час</option>
                         <option value='120'>2 часа</option>
@@ -180,52 +180,52 @@ var ViewOptionsList = React.createClass({
                 </div>
                 <div className="line clearfix">
                     <p className="label">Система измерений</p>
-                    <select onChange={this.handleMeasurementSystemChange}
-                            value={storage[activeProvider].measurement_system}>
+                    <select onChange={this._handleMeasurementSystemChange}
+                            value={information.measurement_system}>
                         <option value="metrical">Метрическая</option>
                         <option value="britain">Британская</option>
                     </select>
                 </div>
                 <div className="line clearfix">
                     <p className="label">Цвет заднего фона</p>
-                    <div style={ styles.swatch } onClick={ this.handleChangeBgColorPickerActivity }>
+                    <div style={ styles.swatch } onClick={ this._handleChangeBgColorPickerActivity }>
                         <div style={ styles.bgColor }/>
                     </div>
                     { this.state.showColorBgPicker ? <div style={ styles.popover }>
-                        <div style={ styles.cover } onClick={ this.handleChangeBgColorPickerActivity }/>
-                        <SketchPicker color={ storage[activeProvider].background_color }
-                                      onChange={ this.handleChangeBgColor }/>
+                        <div style={ styles.cover } onClick={ this._handleChangeBgColorPickerActivity }/>
+                        <SketchPicker color={ information.background_color }
+                                      onChange={ this._handleChangeBgColor }/>
                     </div> : null }
                 </div>
                 <div className="line clearfix">
                     <p className="label">Цвет основного текста</p>
-                    <div style={ styles.swatch } onClick={ this.handleChangeMajorTextColorPickerActivity }>
+                    <div style={ styles.swatch } onClick={ this._handleChangeMajorTextColorPickerActivity }>
                         <div style={ styles.majorTextColor }/>
                     </div>
                     { this.state.showColorMajorTextPicker ? <div style={ styles.popover }>
-                        <div style={ styles.cover } onClick={ this.handleChangeMajorTextColorPickerActivity }/>
-                        <SketchPicker disableAlpha={true} color={ storage[activeProvider].major_text_color }
-                                      onChange={ this.handleChangeMajorTextColor }/>
+                        <div style={ styles.cover } onClick={ this._handleChangeMajorTextColorPickerActivity }/>
+                        <SketchPicker disableAlpha={true} color={ information.major_text_color }
+                                      onChange={ this._handleChangeMajorTextColor }/>
                     </div> : null }
                 </div>
                 <div className="line clearfix">
                     <p className="label">Цвет дополнительного текста</p>
-                    <div style={ styles.swatch } onClick={ this.handleChangeExtraTextColorPickerActivity }>
+                    <div style={ styles.swatch } onClick={ this._handleChangeExtraTextColorPickerActivity }>
                         <div style={ styles.extraTextColor }/>
                     </div>
                     { this.state.showColorExtraTextPicker ? <div style={ styles.popover }>
-                        <div style={ styles.cover } onClick={ this.handleChangeExtraTextColorPickerActivity }/>
-                        <SketchPicker disableAlpha={true} color={ storage[activeProvider].extra_text_color }
-                                      onChange={ this.handleChangeExtraTextColor }/>
+                        <div style={ styles.cover } onClick={ this._handleChangeExtraTextColorPickerActivity }/>
+                        <SketchPicker disableAlpha={true} color={ information.extra_text_color }
+                                      onChange={ this._handleChangeExtraTextColor }/>
                     </div> : null }
                 </div>
                 <div className="line clearfix">
                     <p className="label">Показывать провайдера на виджете?</p>
-                    <input type="checkbox" name="show_provider_info" checked={storage[activeProvider].show_provider_info} onChange={this.handleChangeShowProviderInfo}/>
+                    <input type="checkbox" name="show_provider_info" checked={information.show_provider_info} onChange={this._handleChangeShowProviderInfo}/>
                 </div>
                 <div className="line clearfix">
                     <p className="label">Название виджета</p>
-                    <input type="text" name="widget_name" value={storage[activeProvider].widget_name} onChange={this.handleNameChange}/>
+                    <input type="text" name="widget_name" value={storage[activeWidget].widget.name} onChange={this._handleWidgetNameChange}/>
                 </div>
                 {deletePermission}
             </div>

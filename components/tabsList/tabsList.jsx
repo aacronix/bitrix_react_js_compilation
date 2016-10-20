@@ -4,7 +4,7 @@ import Tab from '../tab/tab.jsx';
 
 var TabsList = React.createClass({
     componentDidMount: function () {
-        window.Tabs.bind('change', this.changeState);
+        window.GlobalStorage.bind('change', this.changeState);
     },
 
     changeState: function () {
@@ -15,12 +15,12 @@ var TabsList = React.createClass({
         return (
             <div className="tabs-wrapper">
                 <div className="tab-list">
-                    {window.Tabs.tabsList.map((element, i) => (
+                    {window.GlobalStorage.widgetsList.map((element, i) => (
                         <Tab id={i} key={'tab_' + i}/>
                     ))}
                 </div>
                 <div className="content-list">
-                    {window.Tabs.tabsList.map((element, i) => (
+                    {window.GlobalStorage.widgetsList.map((element, i) => (
                         <TabContent id={i} key={'tab_content_' + i}/>
                     ))}
                 </div>
