@@ -37,24 +37,39 @@ var FooterButtonDock = React.createClass({
                 console.log('success');
                 AppDispatcher.dispatch({
                     eventName: 'widgets-updated-success',
-                    newItem: data
+                    newItem: null
                 });
+                this.setState({activity: true});
             }.bind(this),
             fail: function () {
                 console.log('failed');
                 AppDispatcher.dispatch({
                     eventName: 'widgets-updated-failed',
-                    newItem: data
+                    newItem: null
                 });
+                this.setState({activity: true});
             }.bind(this)
         });
     },
 
     _handleClick: function () {
-        console.log('send form');
+        var storage = window.GlobalStorage;
+        var widgets = storage.widgetsList;
 
-        this.setState({activity: false});
-        this._sendWidgetsToServer();
+        var previouslyHash = storage.dataHash;
+        var currentHash = JSON.stringify(widgets).hashCode();
+        
+        console.log(previouslyHash);
+        console.log(currentHash);
+
+        if (previouslyHash != currentHash) {
+            console.log('send form');
+
+            this.setState({activity: false});
+            this._sendWidgetsToServer();
+        } else {
+            console.log('data don\'t changed');
+        }
     },
 
     render: function () {
@@ -65,7 +80,7 @@ var FooterButtonDock = React.createClass({
 
         return (
             <div className={className}>
-                <button onClick={this._handleClick}>Send</button>
+                <button onClick={this._handleClick} disabled={!this.state.activity}>Send</button>
             </div>
         );
     }

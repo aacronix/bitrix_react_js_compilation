@@ -147,6 +147,20 @@
 	    }
 	};
 
+	String.prototype.hashCode = function () {
+	    var hash = 0,
+	        i,
+	        chr,
+	        len;
+	    if (this.length === 0) return hash;
+	    for (i = 0, len = this.length; i < len; i++) {
+	        chr = this.charCodeAt(i);
+	        hash = (hash << 5) - hash + chr;
+	        hash |= 0; // Convert to 32bit integer
+	    }
+	    return hash;
+	};
+
 	window.GlobalStorage = {
 	    widgetsList: [{
 	        widget: {
@@ -256,7 +270,8 @@
 	        }
 	    }],
 	    activeTabId: 0,
-	    savedWS: false
+	    savedWS: false,
+	    dataHash: ''
 	};
 
 	MicroEvent.mixin(GlobalStorage);
@@ -307,6 +322,7 @@
 	                break;
 	            case 'copy-widget':
 	                widgetStore.widgetsList.push(payload.newItem);
+	                widgetStore.dataHash = JSON.stringify(widgetStore.widgetsList).hashCode();
 	                widgetStore.savedWS = true;
 	                break;
 	            case 'delete-widget':
@@ -316,6 +332,8 @@
 	                break;
 	            case 'options-information-loaded':
 	                widgetStore.widgetsList = payload.newItem;
+	                widgetStore.dataHash = JSON.stringify(widgetStore.widgetsList).hashCode();
+	                console.log(widgetStore.dataHash);
 	                break;
 	            case 'change-api-key-input':
 	                widgetStore.widgetsList[payload.newItem[0]].options.providers_list[payload.newItem[1].id].api_key = payload.newItem[1].value;
@@ -325,6 +343,7 @@
 	                break;
 	            case 'widgets-updated-success':
 	                widgetStore.trigger('widgets-updated-success');
+	                widgetStore.dataHash = JSON.stringify(widgetStore.widgetsList).hashCode();
 	                break;
 	            case 'widgets-updated-failed':
 	                widgetStore.trigger('widgets-updated-failed');
@@ -37408,24 +37427,39 @@
 	                console.log('success');
 	                AppDispatcher.dispatch({
 	                    eventName: 'widgets-updated-success',
-	                    newItem: data
+	                    newItem: null
 	                });
+	                this.setState({ activity: true });
 	            }.bind(this),
 	            fail: function () {
 	                console.log('failed');
 	                AppDispatcher.dispatch({
 	                    eventName: 'widgets-updated-failed',
-	                    newItem: data
+	                    newItem: null
 	                });
+	                this.setState({ activity: true });
 	            }.bind(this)
 	        });
 	    },
 
 	    _handleClick: function _handleClick() {
-	        console.log('send form');
+	        var storage = window.GlobalStorage;
+	        var widgets = storage.widgetsList;
 
-	        this.setState({ activity: false });
-	        this._sendWidgetsToServer();
+	        var previouslyHash = storage.dataHash;
+	        var currentHash = JSON.stringify(widgets).hashCode();
+
+	        console.log(previouslyHash);
+	        console.log(currentHash);
+
+	        if (previouslyHash != currentHash) {
+	            console.log('send form');
+
+	            this.setState({ activity: false });
+	            this._sendWidgetsToServer();
+	        } else {
+	            console.log('data don\'t changed');
+	        }
 	    },
 
 	    render: function render() {
@@ -37439,7 +37473,7 @@
 	            { className: className },
 	            _react2.default.createElement(
 	                'button',
-	                { onClick: this._handleClick },
+	                { onClick: this._handleClick, disabled: !this.state.activity },
 	                'Send'
 	            )
 	        );

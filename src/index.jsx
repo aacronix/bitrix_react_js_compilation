@@ -82,6 +82,17 @@ window.providersInfo = {
     }
 };
 
+String.prototype.hashCode = function() {
+    var hash = 0, i, chr, len;
+    if (this.length === 0) return hash;
+    for (i = 0, len = this.length; i < len; i++) {
+        chr   = this.charCodeAt(i);
+        hash  = ((hash << 5) - hash) + chr;
+        hash |= 0; // Convert to 32bit integer
+    }
+    return hash;
+};
+
 window.GlobalStorage = {
     widgetsList: [{
         widget: {
@@ -206,7 +217,8 @@ window.GlobalStorage = {
             }
         }],
     activeTabId: 0,
-    savedWS: false
+    savedWS: false,
+    dataHash: ''
 };
 
 MicroEvent.mixin(GlobalStorage);
@@ -257,6 +269,7 @@ window.AppDispatcher = {
                 break;
             case 'copy-widget':
                 widgetStore.widgetsList.push(payload.newItem);
+                widgetStore.dataHash = JSON.stringify(widgetStore.widgetsList).hashCode();
                 widgetStore.savedWS = true;
                 break;
             case 'delete-widget':
@@ -266,6 +279,8 @@ window.AppDispatcher = {
                 break;
             case 'options-information-loaded':
                 widgetStore.widgetsList = payload.newItem;
+                widgetStore.dataHash = JSON.stringify(widgetStore.widgetsList).hashCode();
+                console.log(widgetStore.dataHash);
                 break;
             case 'change-api-key-input':
                 widgetStore.widgetsList[payload.newItem[0]].options.providers_list[payload.newItem[1].id].api_key = payload.newItem[1].value;
@@ -275,6 +290,7 @@ window.AppDispatcher = {
                 break;
             case 'widgets-updated-success':
                 widgetStore.trigger('widgets-updated-success');
+                widgetStore.dataHash = JSON.stringify(widgetStore.widgetsList).hashCode();
                 break;
             case 'widgets-updated-failed':
                 widgetStore.trigger('widgets-updated-failed');
