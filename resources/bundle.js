@@ -62,11 +62,15 @@
 
 	var _tabsList2 = _interopRequireDefault(_tabsList);
 
+	var _footerButtonDock = __webpack_require__(424);
+
+	var _footerButtonDock2 = _interopRequireDefault(_footerButtonDock);
+
 	var _reactColor = __webpack_require__(198);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var deepcopy = __webpack_require__(424);
+	var deepcopy = __webpack_require__(425);
 
 	var WS_TAG = "bitrix_weather_module";
 
@@ -319,6 +323,12 @@
 	            case 'change-app-key-input':
 	                widgetStore.widgetsList[payload.newItem[0]].options.providers_list[payload.newItem[1].id].app_key = payload.newItem[1].value;
 	                break;
+	            case 'widgets-updated-success':
+	                widgetStore.trigger('widgets-updated-success');
+	                break;
+	            case 'widgets-updated-failed':
+	                widgetStore.trigger('widgets-updated-failed');
+	                break;
 	            default:
 	                widgetStore.savedWS = false;
 	        }
@@ -364,7 +374,8 @@
 	            'div',
 	            { className: 'bitrix-frendly' },
 	            _react2.default.createElement(_yandexMap2.default, null),
-	            _react2.default.createElement(_tabsList2.default, null)
+	            _react2.default.createElement(_tabsList2.default, null),
+	            _react2.default.createElement(_footerButtonDock2.default, null)
 	        );
 	    }
 	});
@@ -37352,20 +37363,109 @@
 /* 424 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(425);
+	'use strict';
 
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var FooterButtonDock = _react2.default.createClass({
+	    displayName: 'FooterButtonDock',
+
+	    getInitialState: function getInitialState() {
+	        return {
+	            activity: true
+	        };
+	    },
+
+	    componentDidMount: function componentDidMount() {
+	        window.GlobalStorage.bind('widgets-updated-success', this.changeStateSuccess);
+	        window.GlobalStorage.bind('widgets-updated-failed', this.changeStateFailed);
+	    },
+
+	    changeStateSuccess: function changeStateSuccess() {
+	        this.setState({ activity: true });
+	    },
+
+	    changeStateFailed: function changeStateFailed() {
+	        this.setState({ activity: true });
+	    },
+
+	    _sendWidgetsToServer: function _sendWidgetsToServer() {
+	        var storage = window.GlobalStorage.widgetsList;
+	        var url = '/bitrix/tools/weather_service/update_widgets.php';
+
+	        $.ajax({
+	            type: "POST",
+	            url: url,
+	            data: {
+	                widgets: storage
+	            },
+	            dataType: 'json',
+	            success: function () {
+	                console.log('success');
+	                AppDispatcher.dispatch({
+	                    eventName: 'widgets-updated-success',
+	                    newItem: data
+	                });
+	            }.bind(this),
+	            fail: function () {
+	                console.log('failed');
+	                AppDispatcher.dispatch({
+	                    eventName: 'widgets-updated-failed',
+	                    newItem: data
+	                });
+	            }.bind(this)
+	        });
+	    },
+
+	    _handleClick: function _handleClick() {
+	        console.log('send form');
+
+	        this.setState({ activity: false });
+	        this._sendWidgetsToServer();
+	    },
+
+	    render: function render() {
+	        var className = 'inactive';
+	        if (this.state.activity) {
+	            className = 'active';
+	        }
+
+	        return _react2.default.createElement(
+	            'div',
+	            { className: className },
+	            _react2.default.createElement(
+	                'button',
+	                { onClick: this._handleClick },
+	                'Send'
+	            )
+	        );
+	    }
+	});
+
+	module.exports = FooterButtonDock;
 
 /***/ },
 /* 425 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = __webpack_require__(426);
+
+
+/***/ },
+/* 426 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	exports.__esModule = true;
 
-	var _copy = __webpack_require__(426);
+	var _copy = __webpack_require__(427);
 
-	var _polyfill = __webpack_require__(431);
+	var _polyfill = __webpack_require__(432);
 
 	function defaultCustomizer(target) {
 	  return void 0;
@@ -37453,7 +37553,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 426 */
+/* 427 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(Buffer) {'use strict';
@@ -37461,7 +37561,7 @@
 	exports.__esModule = true;
 	exports.copyValue = exports.copyCollection = exports.copy = void 0;
 
-	var _polyfill = __webpack_require__(431);
+	var _polyfill = __webpack_require__(432);
 
 	var toString = Object.prototype.toString;
 
@@ -37599,10 +37699,10 @@
 	exports.copy = copy;
 	exports.copyCollection = copyCollection;
 	exports.copyValue = copyValue;
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(427).Buffer))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(428).Buffer))
 
 /***/ },
-/* 427 */
+/* 428 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(Buffer, global) {/*!
@@ -37615,9 +37715,9 @@
 
 	'use strict'
 
-	var base64 = __webpack_require__(428)
-	var ieee754 = __webpack_require__(429)
-	var isArray = __webpack_require__(430)
+	var base64 = __webpack_require__(429)
+	var ieee754 = __webpack_require__(430)
+	var isArray = __webpack_require__(431)
 
 	exports.Buffer = Buffer
 	exports.SlowBuffer = SlowBuffer
@@ -39395,10 +39495,10 @@
 	  return val !== val // eslint-disable-line no-self-compare
 	}
 
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(427).Buffer, (function() { return this; }())))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(428).Buffer, (function() { return this; }())))
 
 /***/ },
-/* 428 */
+/* 429 */
 /***/ function(module, exports) {
 
 	'use strict'
@@ -39518,7 +39618,7 @@
 
 
 /***/ },
-/* 429 */
+/* 430 */
 /***/ function(module, exports) {
 
 	exports.read = function (buffer, offset, isLE, mLen, nBytes) {
@@ -39608,7 +39708,7 @@
 
 
 /***/ },
-/* 430 */
+/* 431 */
 /***/ function(module, exports) {
 
 	var toString = {}.toString;
@@ -39619,7 +39719,7 @@
 
 
 /***/ },
-/* 431 */
+/* 432 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(Buffer) {'use strict';
@@ -39696,7 +39796,7 @@
 	exports.getSymbols = getSymbols;
 	exports.indexOf = indexOf;
 	exports.isBuffer = isBuffer;
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(427).Buffer))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(428).Buffer))
 
 /***/ }
 /******/ ]);

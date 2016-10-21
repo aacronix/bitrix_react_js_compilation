@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import YandexMap from '../components/yandexMap/yandexMap.jsx';
 import TabsList from '../components/tabsList/tabsList.jsx';
+import FooterButtonDock from '../components/footerButtonDock/footerButtonDock.jsx';
 import {MaterialPicker} from 'react-color';
 
 var deepcopy = require("deepcopy");
@@ -272,6 +273,12 @@ window.AppDispatcher = {
             case 'change-app-key-input':
                 widgetStore.widgetsList[payload.newItem[0]].options.providers_list[payload.newItem[1].id].app_key = payload.newItem[1].value;
                 break;
+            case 'widgets-updated-success':
+                widgetStore.trigger('widgets-updated-success');
+                break;
+            case 'widgets-updated-failed':
+                widgetStore.trigger('widgets-updated-failed');
+                break;
             default:
                 widgetStore.savedWS = false;
         }
@@ -315,6 +322,7 @@ var App = React.createClass({
             <div className="bitrix-frendly">
                 <YandexMap/>
                 <TabsList/>
+                <FooterButtonDock />
             </div>
         )
     }
