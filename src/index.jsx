@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import NotificationSystem from 'react-notification-system';
 import YandexMap from '../components/yandexMap/yandexMap.jsx';
 import TabsList from '../components/tabsList/tabsList.jsx';
 import FooterButtonDock from '../components/footerButtonDock/footerButtonDock.jsx';
@@ -82,16 +83,28 @@ window.providersInfo = {
     }
 };
 
-String.prototype.hashCode = function() {
+window.notificationSystem = null;
+
+String.prototype.hashCode = function () {
     var hash = 0, i, chr, len;
     if (this.length === 0) return hash;
     for (i = 0, len = this.length; i < len; i++) {
-        chr   = this.charCodeAt(i);
-        hash  = ((hash << 5) - hash) + chr;
+        chr = this.charCodeAt(i);
+        hash = ((hash << 5) - hash) + chr;
         hash |= 0; // Convert to 32bit integer
     }
     return hash;
 };
+
+function notifiationSystem(title, message, level) {
+    window.notificationSystem.addNotification({
+        title: title,
+        message: message,
+        level: level,
+        position: 'tr',
+        autoDismiss: 8
+    });
+}
 
 window.GlobalStorage = {
     widgetsList: [{
@@ -218,7 +231,9 @@ window.GlobalStorage = {
         }],
     activeTabId: 0,
     savedWS: false,
-    dataHash: ''
+    dataHash: '',
+    globalValid: true,
+    dataInAction: false
 };
 
 MicroEvent.mixin(GlobalStorage);
@@ -291,9 +306,32 @@ window.AppDispatcher = {
             case 'widgets-updated-success':
                 widgetStore.trigger('widgets-updated-success');
                 widgetStore.dataHash = JSON.stringify(widgetStore.widgetsList).hashCode();
+                widgetStore.trigger('notify-system');
+                notifiationSystem('Форма отправлена', 'Форма успешно сохранена', 'success');
+                break;
+            case 'data-not-changed':
+                notifiationSystem('Форма не отправлена', 'Форма не отправлена, т.к. на ней не были внесены изменения', 'info');
+                break;
+            case 'form-has-errors':
+                notifiationSystem('Форма не отправлена', 'Форма не отправлена, т.к. как содержит ошибки', 'warning');
                 break;
             case 'widgets-updated-failed':
+                notifiationSystem('Форма не отправлена', 'Форма не отправлена, проблемы с сервером', 'warning');
                 widgetStore.trigger('widgets-updated-failed');
+                break;
+            case 'data-validation':
+                console.log('data-validation');
+                widgetStore.globalValid = true;
+                widgetStore.trigger('validation-require');
+                break;
+            case 'change-global-validation':
+                widgetStore.globalValid = payload.newItem;
+                break;
+            case 'set-data-action':
+                widgetStore.dataInAction = payload.newItem;
+                console.log('data sending in action ' + widgetStore.dataInAction);
+                break;
+            case 'notifiy-form-sending':
                 break;
             default:
                 widgetStore.savedWS = false;
@@ -331,6 +369,7 @@ var App = React.createClass({
     componentDidMount: function () {
         window.GlobalStorage.bind('change', this.changeState);
         this.loadParametresFromServer();
+        window.notificationSystem = this.refs.notificationSystem;
     },
 
     render: function () {
@@ -339,6 +378,7 @@ var App = React.createClass({
                 <YandexMap/>
                 <TabsList/>
                 <FooterButtonDock />
+                <NotificationSystem ref="notificationSystem" />
             </div>
         )
     }

@@ -10,15 +10,15 @@ var FooterButtonDock = React.createClass({
     },
 
     componentDidMount: function () {
-        window.GlobalStorage.bind('widgets-updated-success', this.changeStateSuccess);
-        window.GlobalStorage.bind('widgets-updated-failed', this.changeStateFailed);
+        window.GlobalStorage.bind('widgets-updated-success', this._changeStateSuccess);
+        window.GlobalStorage.bind('widgets-updated-failed', this._changeStateFailed);
     },
 
-    changeStateSuccess: function () {
+    _changeStateSuccess: function () {
         this.setState({activity: true});
     },
 
-    changeStateFailed: function () {
+    _changeStateFailed: function () {
         this.setState({activity: true});
     },
 
@@ -39,7 +39,6 @@ var FooterButtonDock = React.createClass({
                     eventName: 'widgets-updated-success',
                     newItem: null
                 });
-                this.setState({activity: true});
             }.bind(this),
             fail: function () {
                 console.log('failed');
@@ -47,7 +46,6 @@ var FooterButtonDock = React.createClass({
                     eventName: 'widgets-updated-failed',
                     newItem: null
                 });
-                this.setState({activity: true});
             }.bind(this)
         });
     },
@@ -58,29 +56,42 @@ var FooterButtonDock = React.createClass({
 
         var previouslyHash = storage.dataHash;
         var currentHash = JSON.stringify(widgets).hashCode();
-        
-        console.log(previouslyHash);
-        console.log(currentHash);
 
         if (previouslyHash != currentHash) {
-            console.log('send form');
 
-            this.setState({activity: false});
-            this._sendWidgetsToServer();
+            AppDispatcher.dispatch({
+                eventName: 'data-validation',
+                newItem: null
+            });
+
+            if (storage.globalValid) {
+                this.setState({activity: false});
+                this._sendWidgetsToServer();
+            } else {
+                AppDispatcher.dispatch({
+                    eventName: 'form-has-errors',
+                    newItem: null
+                });
+            }
         } else {
-            console.log('data don\'t changed');
+            AppDispatcher.dispatch({
+                eventName: 'data-not-changed',
+                newItem: null
+            });
         }
     },
 
     render: function () {
+        var storage = window.GlobalStorage;
+
         var className = 'inactive';
-        if (this.state.activity) {
+        if (!storage.dataInAction) {
             className = 'active';
         }
 
         return (
             <div className={className}>
-                <button onClick={this._handleClick} disabled={!this.state.activity}>Send</button>
+                <button onClick={this._handleClick} disabled={storage.dataInAction}>Send</button>
             </div>
         );
     }
