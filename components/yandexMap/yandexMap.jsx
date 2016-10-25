@@ -30,7 +30,7 @@ var YandexMap = React.createClass({
             </MarkerLayout>
         </Marker>;
 
-        return <div className="yandex-map">
+        return <div className="yandex-map geo-map">
             <Map onClick={this._handleMapClick}
                  onAPIAvailable={function () { console.log('API loaded'); }}
                  width={'100%'}

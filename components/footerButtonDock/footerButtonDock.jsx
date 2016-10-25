@@ -90,7 +90,7 @@ var FooterButtonDock = React.createClass({
         }
 
         return (
-            <div className={className}>
+            <div className={'footer-button-dock ' + className}>
                 <button onClick={this._handleClick} disabled={storage.dataInAction}>Send</button>
             </div>
         );

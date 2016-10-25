@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import NotificationSystem from 'react-notification-system';
 import YandexMap from '../components/yandexMap/yandexMap.jsx';
+import GoogleMapComponent from '../components/googleMapComponent/googleMapComponent.jsx';
 import TabsList from '../components/tabsList/tabsList.jsx';
 import FooterButtonDock from '../components/footerButtonDock/footerButtonDock.jsx';
 import {MaterialPicker} from 'react-color';
@@ -13,9 +14,14 @@ const WS_TAG = "bitrix_weather_module";
 console.clear();
 console.log(window.pageLang);
 
-window.PointsList = {
-    objectPosition: [],
-    mapCenter: []
+window.appInformation = {
+    ru: {
+        map: 'yandex'
+    },
+    en: {
+        map: 'google',
+        key: 'AIzaSyCopIU2L_Js_9dKgFaZxmpwtjW6sv-Zudw'
+    }
 };
 
 window.providersInfo = {
@@ -375,6 +381,7 @@ var App = React.createClass({
     render: function () {
         return (
             <div className="bitrix-frendly">
+                <GoogleMapComponent/>
                 <YandexMap/>
                 <TabsList/>
                 <FooterButtonDock />
