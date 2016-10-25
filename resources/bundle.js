@@ -70,7 +70,7 @@
 
 	var _tabsList2 = _interopRequireDefault(_tabsList);
 
-	var _footerButtonDock = __webpack_require__(454);
+	var _footerButtonDock = __webpack_require__(458);
 
 	var _footerButtonDock2 = _interopRequireDefault(_footerButtonDock);
 
@@ -78,7 +78,7 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var deepcopy = __webpack_require__(455);
+	var deepcopy = __webpack_require__(459);
 
 	var WS_TAG = "bitrix_weather_module";
 
@@ -443,7 +443,6 @@
 	        return _react2.default.createElement(
 	            'div',
 	            { className: 'bitrix-frendly' },
-	            _react2.default.createElement(_googleMapComponent2.default, null),
 	            _react2.default.createElement(_yandexMap2.default, null),
 	            _react2.default.createElement(_tabsList2.default, null),
 	            _react2.default.createElement(_footerButtonDock2.default, null),
@@ -451,6 +450,8 @@
 	        );
 	    }
 	});
+
+	// <GoogleMapComponent/>
 
 	_reactDom2.default.render(_react2.default.createElement(App, null), document.getElementById('weather-container'));
 
@@ -27248,7 +27249,7 @@
 
 	var _tabContent2 = _interopRequireDefault(_tabContent);
 
-	var _tab = __webpack_require__(453);
+	var _tab = __webpack_require__(457);
 
 	var _tab2 = _interopRequireDefault(_tab);
 
@@ -27697,6 +27698,22 @@
 
 	var _reactcss2 = _interopRequireDefault(_reactcss);
 
+	var _inputField = __webpack_require__(453);
+
+	var _inputField2 = _interopRequireDefault(_inputField);
+
+	var _checkBoxField = __webpack_require__(454);
+
+	var _checkBoxField2 = _interopRequireDefault(_checkBoxField);
+
+	var _dropDownUpdateTimeTime = __webpack_require__(455);
+
+	var _dropDownUpdateTimeTime2 = _interopRequireDefault(_dropDownUpdateTimeTime);
+
+	var _dropDownMeasurementSystemField = __webpack_require__(456);
+
+	var _dropDownMeasurementSystemField2 = _interopRequireDefault(_dropDownMeasurementSystemField);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var ViewOptionsList = _react2.default.createClass({
@@ -27709,29 +27726,6 @@
 	            showColorMajorTextPicker: false,
 	            showColorExtraTextPicker: false
 	        };
-	    },
-	    initialSelect: {
-	        ru: {
-	            20: "20 минут",
-	            30: "30 минут",
-	            60: "1 час",
-	            120: "2 часа",
-	            240: "6 часов"
-	        }
-	    },
-
-	    _handleUpdateIntervalChange: function _handleUpdateIntervalChange(event) {
-	        AppDispatcher.dispatch({
-	            eventName: 'change-update-interval',
-	            newItem: [this.state.provider, event.target.value]
-	        });
-	    },
-
-	    _handleMeasurementSystemChange: function _handleMeasurementSystemChange(event) {
-	        AppDispatcher.dispatch({
-	            eventName: 'change-measurement-system',
-	            newItem: [this.state.provider, event.target.value]
-	        });
 	    },
 
 	    _handleChangeBgColor: function _handleChangeBgColor(color) {
@@ -27770,22 +27764,6 @@
 	    _handleTitleChange: function _handleTitleChange(event) {
 	        AppDispatcher.dispatch({
 	            eventName: 'change-widget-title',
-	            newItem: [this.state.provider, event.target.value]
-	        });
-	    },
-
-	    _handleChangeShowProviderInfo: function _handleChangeShowProviderInfo() {
-	        var widgetsList = window.GlobalStorage.widgetsList;
-
-	        AppDispatcher.dispatch({
-	            eventName: 'change-show-provider-info',
-	            newItem: [this.state.provider, !widgetsList[this.state.provider].options.show_provider_info]
-	        });
-	    },
-
-	    _handleWidgetNameChange: function _handleWidgetNameChange(event) {
-	        AppDispatcher.dispatch({
-	            eventName: 'change-widget-name',
 	            newItem: [this.state.provider, event.target.value]
 	        });
 	    },
@@ -27894,63 +27872,8 @@
 	                ),
 	                _react2.default.createElement('input', { type: 'text', name: 'widget_title', value: information.widget_title, onChange: this._handleTitleChange })
 	            ),
-	            _react2.default.createElement(
-	                'div',
-	                { className: 'line clearfix' },
-	                _react2.default.createElement(
-	                    'p',
-	                    { className: 'label' },
-	                    '\u0418\u043D\u0442\u0435\u0440\u0432\u0430\u043B \u043E\u0431\u043D\u043E\u0432\u043B\u0435\u043D\u0438\u044F'
-	                ),
-	                _react2.default.createElement(
-	                    'select',
-	                    { onChange: this._handleUpdateIntervalChange, value: information.update_interval },
-	                    _react2.default.createElement(
-	                        'option',
-	                        { value: '30' },
-	                        '30 \u043C\u0438\u043D\u0443\u0442'
-	                    ),
-	                    _react2.default.createElement(
-	                        'option',
-	                        { value: '60' },
-	                        '1 \u0447\u0430\u0441'
-	                    ),
-	                    _react2.default.createElement(
-	                        'option',
-	                        { value: '120' },
-	                        '2 \u0447\u0430\u0441\u0430'
-	                    ),
-	                    _react2.default.createElement(
-	                        'option',
-	                        { value: '360' },
-	                        '6 \u0447\u0430\u0441\u043E\u0432'
-	                    )
-	                )
-	            ),
-	            _react2.default.createElement(
-	                'div',
-	                { className: 'line clearfix' },
-	                _react2.default.createElement(
-	                    'p',
-	                    { className: 'label' },
-	                    '\u0421\u0438\u0441\u0442\u0435\u043C\u0430 \u0438\u0437\u043C\u0435\u0440\u0435\u043D\u0438\u0439'
-	                ),
-	                _react2.default.createElement(
-	                    'select',
-	                    { onChange: this._handleMeasurementSystemChange,
-	                        value: information.measurement_system },
-	                    _react2.default.createElement(
-	                        'option',
-	                        { value: 'metrical' },
-	                        '\u041C\u0435\u0442\u0440\u0438\u0447\u0435\u0441\u043A\u0430\u044F'
-	                    ),
-	                    _react2.default.createElement(
-	                        'option',
-	                        { value: 'britain' },
-	                        '\u0411\u0440\u0438\u0442\u0430\u043D\u0441\u043A\u0430\u044F'
-	                    )
-	                )
-	            ),
+	            _react2.default.createElement(_dropDownUpdateTimeTime2.default, { provider: activeWidget, name: '\u0418\u043D\u0442\u0435\u0440\u0432\u0430\u043B \u043E\u0431\u043D\u043E\u0432\u043B\u0435\u043D\u0438\u044F' }),
+	            _react2.default.createElement(_dropDownMeasurementSystemField2.default, { provider: activeWidget, name: '\u0421\u0438\u0441\u0442\u0435\u043C\u0430 \u0438\u0437\u043C\u0435\u0440\u0435\u043D\u0438\u0439' }),
 	            _react2.default.createElement(
 	                'div',
 	                { className: 'line clearfix' },
@@ -28014,26 +27937,8 @@
 	                        onChange: this._handleChangeExtraTextColor })
 	                ) : null
 	            ),
-	            _react2.default.createElement(
-	                'div',
-	                { className: 'line clearfix' },
-	                _react2.default.createElement(
-	                    'p',
-	                    { className: 'label' },
-	                    '\u041F\u043E\u043A\u0430\u0437\u044B\u0432\u0430\u0442\u044C \u043F\u0440\u043E\u0432\u0430\u0439\u0434\u0435\u0440\u0430 \u043D\u0430 \u0432\u0438\u0434\u0436\u0435\u0442\u0435?'
-	                ),
-	                _react2.default.createElement('input', { type: 'checkbox', name: 'show_provider_info', checked: information.show_provider_info, onChange: this._handleChangeShowProviderInfo })
-	            ),
-	            _react2.default.createElement(
-	                'div',
-	                { className: 'line clearfix' },
-	                _react2.default.createElement(
-	                    'p',
-	                    { className: 'label' },
-	                    '\u041D\u0430\u0437\u0432\u0430\u043D\u0438\u0435 \u0432\u0438\u0434\u0436\u0435\u0442\u0430'
-	                ),
-	                _react2.default.createElement('input', { type: 'text', name: 'widget_name', value: storage[activeWidget].widget.name, onChange: this._handleWidgetNameChange })
-	            ),
+	            _react2.default.createElement(_checkBoxField2.default, { provider: activeWidget, name: '\u041F\u043E\u043A\u0430\u0437\u044B\u0432\u0430\u0442\u044C \u043F\u0440\u043E\u0432\u0430\u0439\u0434\u0435\u0440\u0430 \u043D\u0430 \u0432\u0438\u0434\u0436\u0435\u0442\u0435?' }),
+	            _react2.default.createElement(_inputField2.default, { provider: activeWidget, name: '\u041D\u0430\u0437\u0432\u0430\u043D\u0438\u0435 \u0432\u0438\u0434\u0436\u0435\u0442\u0430' }),
 	            deletePermission
 	        );
 	    }
@@ -41348,6 +41253,253 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+	var InputField = _react2.default.createClass({
+	    displayName: 'InputField',
+
+	    getInitialState: function getInitialState() {
+	        return {
+	            provider: this.props.provider,
+	            name: this.props.name
+	        };
+	    },
+
+	    _handleWidgetNameChange: function _handleWidgetNameChange(event) {
+	        AppDispatcher.dispatch({
+	            eventName: 'change-widget-name',
+	            newItem: [this.state.provider, event.target.value]
+	        });
+	    },
+
+	    render: function render() {
+	        var storage = window.GlobalStorage.widgetsList;
+	        var activeWidget = this.state.provider;
+
+	        return _react2.default.createElement(
+	            'div',
+	            { className: 'line clearfix' },
+	            _react2.default.createElement(
+	                'p',
+	                { className: 'label' },
+	                this.props.name
+	            ),
+	            _react2.default.createElement('input', { type: 'text', name: 'widget_name', value: storage[activeWidget].widget.name, onChange: this._handleWidgetNameChange })
+	        );
+	    }
+	});
+
+	module.exports = InputField;
+
+/***/ },
+/* 454 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var CheckBoxField = _react2.default.createClass({
+	    displayName: 'CheckBoxField',
+
+	    getInitialState: function getInitialState() {
+	        return {
+	            provider: this.props.provider,
+	            name: this.props.name
+	        };
+	    },
+
+	    _handleChangeShowProviderInfo: function _handleChangeShowProviderInfo() {
+	        var widgetsList = window.GlobalStorage.widgetsList;
+
+	        AppDispatcher.dispatch({
+	            eventName: 'change-show-provider-info',
+	            newItem: [this.state.provider, !widgetsList[this.state.provider].options.information.show_provider_info]
+	        });
+	    },
+
+	    render: function render() {
+	        var storage = window.GlobalStorage.widgetsList;
+
+	        var activeWidget = this.state.provider;
+	        var information = storage[activeWidget].options.information;
+
+	        return _react2.default.createElement(
+	            'div',
+	            { className: 'line clearfix' },
+	            _react2.default.createElement(
+	                'p',
+	                { className: 'label' },
+	                this.props.name
+	            ),
+	            _react2.default.createElement('input', { type: 'checkbox', name: 'show_provider_info', checked: information.show_provider_info, onChange: this._handleChangeShowProviderInfo })
+	        );
+	    }
+	});
+
+	module.exports = CheckBoxField;
+
+/***/ },
+/* 455 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var DropDownUpdateTimeField = _react2.default.createClass({
+	    displayName: 'DropDownUpdateTimeField',
+
+	    getInitialState: function getInitialState() {
+	        return {
+	            provider: this.props.provider,
+	            name: this.props.name
+	        };
+	    },
+
+	    initialSelect: {
+	        ru: {
+	            20: "20 минут",
+	            30: "30 минут",
+	            60: "1 час",
+	            120: "2 часа",
+	            240: "6 часов"
+	        }
+	    },
+
+	    _handleUpdateIntervalChange: function _handleUpdateIntervalChange(event) {
+	        AppDispatcher.dispatch({
+	            eventName: 'change-update-interval',
+	            newItem: [this.state.provider, event.target.value]
+	        });
+	    },
+
+	    render: function render() {
+	        var storage = window.GlobalStorage.widgetsList;
+
+	        var activeWidget = this.state.provider;
+	        var information = storage[activeWidget].options.information;
+
+	        return _react2.default.createElement(
+	            'div',
+	            { className: 'line clearfix' },
+	            _react2.default.createElement(
+	                'p',
+	                { className: 'label' },
+	                this.props.name
+	            ),
+	            _react2.default.createElement(
+	                'select',
+	                { onChange: this._handleUpdateIntervalChange, value: information.update_interval },
+	                _react2.default.createElement(
+	                    'option',
+	                    { value: '30' },
+	                    '30 \u043C\u0438\u043D\u0443\u0442'
+	                ),
+	                _react2.default.createElement(
+	                    'option',
+	                    { value: '60' },
+	                    '1 \u0447\u0430\u0441'
+	                ),
+	                _react2.default.createElement(
+	                    'option',
+	                    { value: '120' },
+	                    '2 \u0447\u0430\u0441\u0430'
+	                ),
+	                _react2.default.createElement(
+	                    'option',
+	                    { value: '360' },
+	                    '6 \u0447\u0430\u0441\u043E\u0432'
+	                )
+	            )
+	        );
+	    }
+	});
+
+	module.exports = DropDownUpdateTimeField;
+
+/***/ },
+/* 456 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var DropDownMeasurementSystemField = _react2.default.createClass({
+	    displayName: 'DropDownMeasurementSystemField',
+
+	    getInitialState: function getInitialState() {
+	        return {
+	            provider: this.props.provider,
+	            name: this.props.name
+	        };
+	    },
+
+	    _handleMeasurementSystemChange: function _handleMeasurementSystemChange(event) {
+	        AppDispatcher.dispatch({
+	            eventName: 'change-measurement-system',
+	            newItem: [this.state.provider, event.target.value]
+	        });
+	    },
+
+	    render: function render() {
+	        var storage = window.GlobalStorage.widgetsList;
+
+	        var activeWidget = this.state.provider;
+	        var information = storage[activeWidget].options.information;
+
+	        return _react2.default.createElement(
+	            'div',
+	            { className: 'line clearfix' },
+	            _react2.default.createElement(
+	                'p',
+	                { className: 'label' },
+	                this.state.name
+	            ),
+	            _react2.default.createElement(
+	                'select',
+	                { onChange: this._handleMeasurementSystemChange,
+	                    value: information.measurement_system },
+	                _react2.default.createElement(
+	                    'option',
+	                    { value: 'metrical' },
+	                    '\u041C\u0435\u0442\u0440\u0438\u0447\u0435\u0441\u043A\u0430\u044F'
+	                ),
+	                _react2.default.createElement(
+	                    'option',
+	                    { value: 'britain' },
+	                    '\u0411\u0440\u0438\u0442\u0430\u043D\u0441\u043A\u0430\u044F'
+	                )
+	            )
+	        );
+	    }
+	});
+
+	module.exports = DropDownMeasurementSystemField;
+
+/***/ },
+/* 457 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 	var Tab = _react2.default.createClass({
 	    displayName: 'Tab',
 
@@ -41452,7 +41604,7 @@
 	module.exports = Tab;
 
 /***/ },
-/* 454 */
+/* 458 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -41567,23 +41719,23 @@
 	module.exports = FooterButtonDock;
 
 /***/ },
-/* 455 */
+/* 459 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(456);
+	module.exports = __webpack_require__(460);
 
 
 /***/ },
-/* 456 */
+/* 460 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	exports.__esModule = true;
 
-	var _copy = __webpack_require__(457);
+	var _copy = __webpack_require__(461);
 
-	var _polyfill = __webpack_require__(462);
+	var _polyfill = __webpack_require__(466);
 
 	function defaultCustomizer(target) {
 	  return void 0;
@@ -41671,7 +41823,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 457 */
+/* 461 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(Buffer) {'use strict';
@@ -41679,7 +41831,7 @@
 	exports.__esModule = true;
 	exports.copyValue = exports.copyCollection = exports.copy = void 0;
 
-	var _polyfill = __webpack_require__(462);
+	var _polyfill = __webpack_require__(466);
 
 	var toString = Object.prototype.toString;
 
@@ -41817,10 +41969,10 @@
 	exports.copy = copy;
 	exports.copyCollection = copyCollection;
 	exports.copyValue = copyValue;
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(458).Buffer))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(462).Buffer))
 
 /***/ },
-/* 458 */
+/* 462 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(Buffer, global) {/*!
@@ -41833,9 +41985,9 @@
 
 	'use strict'
 
-	var base64 = __webpack_require__(459)
-	var ieee754 = __webpack_require__(460)
-	var isArray = __webpack_require__(461)
+	var base64 = __webpack_require__(463)
+	var ieee754 = __webpack_require__(464)
+	var isArray = __webpack_require__(465)
 
 	exports.Buffer = Buffer
 	exports.SlowBuffer = SlowBuffer
@@ -43613,10 +43765,10 @@
 	  return val !== val // eslint-disable-line no-self-compare
 	}
 
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(458).Buffer, (function() { return this; }())))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(462).Buffer, (function() { return this; }())))
 
 /***/ },
-/* 459 */
+/* 463 */
 /***/ function(module, exports) {
 
 	'use strict'
@@ -43736,7 +43888,7 @@
 
 
 /***/ },
-/* 460 */
+/* 464 */
 /***/ function(module, exports) {
 
 	exports.read = function (buffer, offset, isLE, mLen, nBytes) {
@@ -43826,7 +43978,7 @@
 
 
 /***/ },
-/* 461 */
+/* 465 */
 /***/ function(module, exports) {
 
 	var toString = {}.toString;
@@ -43837,7 +43989,7 @@
 
 
 /***/ },
-/* 462 */
+/* 466 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(Buffer) {'use strict';
@@ -43914,7 +44066,7 @@
 	exports.getSymbols = getSymbols;
 	exports.indexOf = indexOf;
 	exports.isBuffer = isBuffer;
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(458).Buffer))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(462).Buffer))
 
 /***/ }
 /******/ ]);

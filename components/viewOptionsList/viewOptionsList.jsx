@@ -2,7 +2,11 @@
 
 import React from 'react';
 import {SketchPicker} from 'react-color';
-import reactCSS from 'reactcss'
+import reactCSS from 'reactcss';
+import InputField from '../inputField/inputField.jsx';
+import CheckBoxField from '../checkBoxField/checkBoxField.jsx';
+import DropDownUpdateTimeField from '../dropDownUpdateTimeField/dropDownUpdateTimeTime.jsx';
+import DropDownMeasurementSystemField from '../dropDownMeasurementSystemField/dropDownMeasurementSystemField.jsx';
 
 var ViewOptionsList = React.createClass({
     getInitialState: function () {
@@ -12,29 +16,6 @@ var ViewOptionsList = React.createClass({
             showColorMajorTextPicker: false,
             showColorExtraTextPicker: false
         };
-    },
-    initialSelect: {
-        ru: {
-            20: "20 минут",
-            30: "30 минут",
-            60: "1 час",
-            120: "2 часа",
-            240: "6 часов"
-        }
-    },
-
-    _handleUpdateIntervalChange: function (event) {
-        AppDispatcher.dispatch({
-            eventName: 'change-update-interval',
-            newItem: [this.state.provider, event.target.value]
-        });
-    },
-
-    _handleMeasurementSystemChange: function (event) {
-        AppDispatcher.dispatch({
-            eventName: 'change-measurement-system',
-            newItem: [this.state.provider, event.target.value]
-        });
     },
 
     _handleChangeBgColor: function (color) {
@@ -73,22 +54,6 @@ var ViewOptionsList = React.createClass({
     _handleTitleChange: function (event) {
         AppDispatcher.dispatch({
             eventName: 'change-widget-title',
-            newItem: [this.state.provider, event.target.value]
-        });
-    },
-
-    _handleChangeShowProviderInfo: function () {
-        var widgetsList = window.GlobalStorage.widgetsList;
-
-        AppDispatcher.dispatch({
-            eventName: 'change-show-provider-info',
-            newItem: [this.state.provider, !widgetsList[this.state.provider].options.show_provider_info]
-        });
-    },
-
-    _handleWidgetNameChange: function (event) {
-        AppDispatcher.dispatch({
-            eventName: 'change-widget-name',
             newItem: [this.state.provider, event.target.value]
         });
     },
@@ -185,23 +150,8 @@ var ViewOptionsList = React.createClass({
                     <p className="label">Заголовок виджета</p>
                     <input type="text" name="widget_title" value={information.widget_title} onChange={this._handleTitleChange}/>
                 </div>
-                <div className="line clearfix">
-                    <p className="label">Интервал обновления</p>
-                    <select onChange={this._handleUpdateIntervalChange} value={information.update_interval}>
-                        <option value='30'>30 минут</option>
-                        <option value='60'>1 час</option>
-                        <option value='120'>2 часа</option>
-                        <option value='360'>6 часов</option>
-                    </select>
-                </div>
-                <div className="line clearfix">
-                    <p className="label">Система измерений</p>
-                    <select onChange={this._handleMeasurementSystemChange}
-                            value={information.measurement_system}>
-                        <option value="metrical">Метрическая</option>
-                        <option value="britain">Британская</option>
-                    </select>
-                </div>
+                <DropDownUpdateTimeField provider={activeWidget} name='Интервал обновления'/>
+                <DropDownMeasurementSystemField provider={activeWidget} name='Система измерений'/>
                 <div className="line clearfix">
                     <p className="label">Цвет заднего фона</p>
                     <div style={ styles.swatch } onClick={ this._handleChangeBgColorPickerActivity }>
@@ -235,14 +185,8 @@ var ViewOptionsList = React.createClass({
                                       onChange={ this._handleChangeExtraTextColor }/>
                     </div> : null }
                 </div>
-                <div className="line clearfix">
-                    <p className="label">Показывать провайдера на виджете?</p>
-                    <input type="checkbox" name="show_provider_info" checked={information.show_provider_info} onChange={this._handleChangeShowProviderInfo}/>
-                </div>
-                <div className="line clearfix">
-                    <p className="label">Название виджета</p>
-                    <input type="text" name="widget_name" value={storage[activeWidget].widget.name} onChange={this._handleWidgetNameChange}/>
-                </div>
+                <CheckBoxField provider={activeWidget} name='Показывать провайдера на виджете?'/>
+                <InputField provider={activeWidget} name='Название виджета'/>
                 {deletePermission}
             </div>
         );

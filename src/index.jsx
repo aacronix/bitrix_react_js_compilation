@@ -381,7 +381,6 @@ var App = React.createClass({
     render: function () {
         return (
             <div className="bitrix-frendly">
-                <GoogleMapComponent/>
                 <YandexMap/>
                 <TabsList/>
                 <FooterButtonDock />
@@ -390,5 +389,7 @@ var App = React.createClass({
         )
     }
 });
+
+// <GoogleMapComponent/>
 
 ReactDOM.render(<App/>, document.getElementById('weather-container'));
