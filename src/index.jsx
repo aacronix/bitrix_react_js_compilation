@@ -116,9 +116,9 @@ window.GlobalStorage = {
     widgetsList: [{
         widget: {
             widget_id: 'w_0',
-            active: true,
+            active: 1,
             name: 'Default',
-            super: true
+            super: 1
         },
         options: {
             information: {
@@ -131,45 +131,45 @@ window.GlobalStorage = {
                 major_text_color: "#ffffff",
                 extra_text_color: "#ffffff",
                 update_interval: 120,
-                show_provider_info: false,
-                measurement_system: "metrical",
+                show_provider_info: 0,
+                measurement_system: "metrical"
             },
             providers_list: [
                 {
                     name: "wunderground",
                     api_key: "",
                     app_key: "",
-                    activity: false
+                    activity: 0
                 },
                 {
                     name: "forecastio",
                     api_key: "",
                     app_key: "",
-                    activity: false
+                    activity: 0
                 },
                 {
                     name: "weathertrigger",
                     api_key: "",
                     app_key: "",
-                    activity: false
+                    activity: 0
                 },
                 {
                     name: "apixu",
                     api_key: "",
                     app_key: "",
-                    activity: false
+                    activity: 0
                 },
                 {
                     name: "openweather",
                     api_key: "",
                     app_key: "",
-                    activity: false
+                    activity: 0
                 },
                 {
                     name: "yahooweather",
                     api_key: "",
                     app_key: "",
-                    activity: true
+                    activity: 1
                 }
             ]
         }
@@ -177,9 +177,9 @@ window.GlobalStorage = {
         {
             widget: {
                 widget_id: 'w_1',
-                active: true,
+                active: 1,
                 name: 'Default 1',
-                super: false
+                super: 0
             },
             options: {
                 information: {
@@ -192,7 +192,7 @@ window.GlobalStorage = {
                     major_text_color: "#ffffff",
                     extra_text_color: "#ffffff",
                     update_interval: 120,
-                    show_provider_info: false,
+                    show_provider_info: 0,
                     measurement_system: "metrical",
                 },
                 providers_list: [
@@ -200,37 +200,37 @@ window.GlobalStorage = {
                         name: "wunderground",
                         api_key: "",
                         app_key: "",
-                        activity: false
+                        activity: 0
                     },
                     {
                         name: "forecastio",
                         api_key: "",
                         app_key: "",
-                        activity: false
+                        activity: 0
                     },
                     {
                         name: "weathertrigger",
                         api_key: "",
                         app_key: "",
-                        activity: false
+                        activity: 0
                     },
                     {
                         name: "apixu",
                         api_key: "",
                         app_key: "",
-                        activity: false
+                        activity: 0
                     },
                     {
                         name: "openweather",
                         api_key: "",
                         app_key: "",
-                        activity: false
+                        activity: 0
                     },
                     {
                         name: "yahooweather",
                         api_key: "",
                         app_key: "",
-                        activity: true
+                        activity: 1
                     }
                 ]
             }
@@ -263,6 +263,7 @@ window.AppDispatcher = {
                     widgetStore.widgetsList[payload.newItem[0]].options.providers_list[i].activity = false;
                 }
                 widgetStore.widgetsList[payload.newItem[0]].options.providers_list[payload.newItem[1]].activity = true;
+                widgetStore.widgetsList[payload.newItem[0]].options.information.weather_provider = widgetStore.widgetsList[payload.newItem[0]].options.providers_list[payload.newItem[1]].name;
                 break;
             case 'change-update-interval':
                 widgetStore.widgetsList[payload.newItem[0]].options.information.update_interval = payload.newItem[1];

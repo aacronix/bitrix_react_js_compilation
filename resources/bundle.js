@@ -190,9 +190,9 @@
 	    widgetsList: [{
 	        widget: {
 	            widget_id: 'w_0',
-	            active: true,
+	            active: 1,
 	            name: 'Default',
-	            super: true
+	            super: 1
 	        },
 	        options: {
 	            information: {
@@ -205,47 +205,47 @@
 	                major_text_color: "#ffffff",
 	                extra_text_color: "#ffffff",
 	                update_interval: 120,
-	                show_provider_info: false,
+	                show_provider_info: 0,
 	                measurement_system: "metrical"
 	            },
 	            providers_list: [{
 	                name: "wunderground",
 	                api_key: "",
 	                app_key: "",
-	                activity: false
+	                activity: 0
 	            }, {
 	                name: "forecastio",
 	                api_key: "",
 	                app_key: "",
-	                activity: false
+	                activity: 0
 	            }, {
 	                name: "weathertrigger",
 	                api_key: "",
 	                app_key: "",
-	                activity: false
+	                activity: 0
 	            }, {
 	                name: "apixu",
 	                api_key: "",
 	                app_key: "",
-	                activity: false
+	                activity: 0
 	            }, {
 	                name: "openweather",
 	                api_key: "",
 	                app_key: "",
-	                activity: false
+	                activity: 0
 	            }, {
 	                name: "yahooweather",
 	                api_key: "",
 	                app_key: "",
-	                activity: true
+	                activity: 1
 	            }]
 	        }
 	    }, {
 	        widget: {
 	            widget_id: 'w_1',
-	            active: true,
+	            active: 1,
 	            name: 'Default 1',
-	            super: false
+	            super: 0
 	        },
 	        options: {
 	            information: {
@@ -258,39 +258,39 @@
 	                major_text_color: "#ffffff",
 	                extra_text_color: "#ffffff",
 	                update_interval: 120,
-	                show_provider_info: false,
+	                show_provider_info: 0,
 	                measurement_system: "metrical"
 	            },
 	            providers_list: [{
 	                name: "wunderground",
 	                api_key: "",
 	                app_key: "",
-	                activity: false
+	                activity: 0
 	            }, {
 	                name: "forecastio",
 	                api_key: "",
 	                app_key: "",
-	                activity: false
+	                activity: 0
 	            }, {
 	                name: "weathertrigger",
 	                api_key: "",
 	                app_key: "",
-	                activity: false
+	                activity: 0
 	            }, {
 	                name: "apixu",
 	                api_key: "",
 	                app_key: "",
-	                activity: false
+	                activity: 0
 	            }, {
 	                name: "openweather",
 	                api_key: "",
 	                app_key: "",
-	                activity: false
+	                activity: 0
 	            }, {
 	                name: "yahooweather",
 	                api_key: "",
 	                app_key: "",
-	                activity: true
+	                activity: 1
 	            }]
 	        }
 	    }],
@@ -322,6 +322,7 @@
 	                    widgetStore.widgetsList[payload.newItem[0]].options.providers_list[i].activity = false;
 	                }
 	                widgetStore.widgetsList[payload.newItem[0]].options.providers_list[payload.newItem[1]].activity = true;
+	                widgetStore.widgetsList[payload.newItem[0]].options.information.weather_provider = widgetStore.widgetsList[payload.newItem[0]].options.providers_list[payload.newItem[1]].name;
 	                break;
 	            case 'change-update-interval':
 	                widgetStore.widgetsList[payload.newItem[0]].options.information.update_interval = payload.newItem[1];
@@ -27458,10 +27459,6 @@
 	        var providers = storage.widgetsList[this.state.widgetId].options.providers_list;
 	        var id = this.state.id;
 
-	        console.log(providers[id].api_key.length);
-	        console.log(providers[id].activity);
-	        console.log(this.state.valid);
-
 	        if (providers[id].activity && providers[id].api_key.length == 0 && window.providersInfo.ru[this.state.name].api || // если поле активно и должно иметь значение но значения нет
 	        !this.state.valid && providers[id].activity || // если поле невалидно и активно
 	        !this.state.valid) {
@@ -27583,8 +27580,6 @@
 	        var storage = window.GlobalStorage;
 	        var providers = storage.widgetsList[this.state.activeTabId].options.providers_list;
 
-	        console.log(providers);
-
 	        AppDispatcher.dispatch({
 	            eventName: 'change-app-key-input',
 	            newItem: [this.state.widgetId, {
@@ -27657,6 +27652,12 @@
 	            );
 	        }
 
+	        var check = false;
+
+	        if (providers[id].activity.toString() == 'true') {
+	            check = true;
+	        }
+
 	        return _react2.default.createElement(
 	            'div',
 	            { className: 'provider' },
@@ -27666,7 +27667,7 @@
 	                _react2.default.createElement('input', { name: 'weather_provider_' + this.state.widgetId,
 	                    type: 'radio',
 	                    value: providers[id].name,
-	                    checked: providers[id].activity,
+	                    checked: check,
 	                    onChange: this._handleOptionChange }),
 	                _react2.default.createElement(
 	                    'a',
@@ -41326,6 +41327,12 @@
 	        var activeWidget = this.state.provider;
 	        var information = storage[activeWidget].options.information;
 
+	        var check = false;
+
+	        if (information.show_provider_info.toString() == 'true') {
+	            check = true;
+	        }
+
 	        return _react2.default.createElement(
 	            'div',
 	            { className: 'line clearfix' },
@@ -41334,7 +41341,7 @@
 	                { className: 'label' },
 	                this.props.name
 	            ),
-	            _react2.default.createElement('input', { type: 'checkbox', name: 'show_provider_info', checked: information.show_provider_info, onChange: this._handleChangeShowProviderInfo })
+	            _react2.default.createElement('input', { type: 'checkbox', name: 'show_provider_info', checked: check, onChange: this._handleChangeShowProviderInfo })
 	        );
 	    }
 	});

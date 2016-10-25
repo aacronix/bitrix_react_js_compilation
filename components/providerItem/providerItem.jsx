@@ -44,10 +44,6 @@ var ProviderItem = React.createClass({
         var providers = storage.widgetsList[this.state.widgetId].options.providers_list;
         var id = this.state.id;
 
-        console.log(providers[id].api_key.length);
-        console.log(providers[id].activity);
-        console.log(this.state.valid);
-
         if ((providers[id].activity && providers[id].api_key.length == 0 && window.providersInfo.ru[this.state.name].api) || // если поле активно и должно иметь значение но значения нет
             (!this.state.valid && providers[id].activity) ||  // если поле невалидно и активно
             (!this.state.valid )) { // если поле невалидно
@@ -167,8 +163,6 @@ var ProviderItem = React.createClass({
         var storage = window.GlobalStorage;
         var providers = storage.widgetsList[this.state.activeTabId].options.providers_list;
 
-        console.log(providers);
-
         AppDispatcher.dispatch({
             eventName: 'change-app-key-input',
             newItem: [this.state.widgetId, {
@@ -229,13 +223,19 @@ var ProviderItem = React.createClass({
             </div>
         }
 
+        var check = false;
+
+        if (providers[id].activity.toString() == 'true'){
+            check = true;
+        }
+        
         return (
             <div className="provider">
                 <div className="line clearfix">
                     <input name={'weather_provider_' + this.state.widgetId}
                            type="radio"
                            value={providers[id].name}
-                           checked={providers[id].activity}
+                           checked={check}
                            onChange={this._handleOptionChange}/>
                     <a className="provider-name" href={providerInfo.link} target="_blank">{providerInfo.name}</a>
                 </div>

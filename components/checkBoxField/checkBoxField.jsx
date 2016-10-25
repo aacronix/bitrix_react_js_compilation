@@ -25,10 +25,16 @@ var CheckBoxField = React.createClass({
         var activeWidget = this.state.provider;
         var information = storage[activeWidget].options.information;
 
+        var check = false;
+
+        if (information.show_provider_info.toString() == 'true'){
+            check = true;
+        }
+
         return (
             <div className="line clearfix">
                 <p className="label">{this.props.name}</p>
-                <input type="checkbox" name="show_provider_info" checked={information.show_provider_info} onChange={this._handleChangeShowProviderInfo}/>
+                <input type="checkbox" name="show_provider_info" checked={check} onChange={this._handleChangeShowProviderInfo}/>
             </div>
         );
     }
