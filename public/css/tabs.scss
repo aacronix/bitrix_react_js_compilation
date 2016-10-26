@@ -42,10 +42,12 @@ $default-font-family: "Helvetica Neue Light", "HelveticaNeue-Light", "Helvetica 
 
         &.active {
           background: transparent;
+          border-bottom: none !important;
         }
 
         &.inactive {
           color: transparent;
+          border-bottom: none !important;
         }
 
         &:hover {

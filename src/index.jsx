@@ -313,7 +313,7 @@ window.AppDispatcher = {
                 break;
             case 'widgets-updated-success':
                 widgetStore.trigger('widgets-updated-success');
-                // widgetStore.dataHash = JSON.stringify(widgetStore.widgetsList).hashCode();
+                widgetStore.dataHash = JSON.stringify(widgetStore.widgetsList).hashCode();
                 widgetStore.trigger('notify-system');
                 notifiationSystem('Форма отправлена', 'Форма успешно сохранена', 'success');
                 break;

@@ -28,7 +28,8 @@
       font-size: 22px;
       vertical-align: middle; }
       .tabs-wrapper .tab-list .default-widget .copy-widget.active {
-        background: transparent; }
+        background: transparent;
+        border-bottom: none !important; }
       .tabs-wrapper .tab-list .default-widget .copy-widget.inactive {
         color: transparent; }
       .tabs-wrapper .tab-list .default-widget .copy-widget:hover {
