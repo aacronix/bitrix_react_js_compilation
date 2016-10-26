@@ -1,0 +1,124 @@
+[
+  {
+    "widget": {
+      "widget_id": "w_0",
+      "active": 1,
+      "name": "Default",
+      "super": 1
+    },
+    "options": {
+      "information": {
+        "name": "w_0",
+        "latitude": 0,
+        "longitude": 0,
+        "weather_provider": "yahooweather",
+        "widget_title": "default",
+        "background_color": "rgba(255, 0, 0, 1)",
+        "major_text_color": "#ffffff",
+        "extra_text_color": "#ffffff",
+        "update_interval": 120,
+        "show_provider_info": 0,
+        "measurement_system": "metrical"
+      },
+      "providers_list": [
+        {
+          "name": "wunderground",
+          "api_key": "",
+          "app_key": "",
+          "activity": 0
+        },
+        {
+          "name": "forecastio",
+          "api_key": "",
+          "app_key": "",
+          "activity": 0
+        },
+        {
+          "name": "weathertrigger",
+          "api_key": "",
+          "app_key": "",
+          "activity": 0
+        },
+        {
+          "name": "apixu",
+          "api_key": "",
+          "app_key": "",
+          "activity": 0
+        },
+        {
+          "name": "openweather",
+          "api_key": "",
+          "app_key": "",
+          "activity": 0
+        },
+        {
+          "name": "yahooweather",
+          "api_key": "",
+          "app_key": "",
+          "activity": 1
+        }
+      ]
+    }
+  },
+  {
+    "widget": {
+      "widget_id": "w_1",
+      "active": 1,
+      "name": "Default 1",
+      "super": 0
+    },
+    "options": {
+      "information": {
+        "name": "w_1",
+        "latitude": 0,
+        "longitude": 0,
+        "weather_provider": "yahooweather",
+        "widget_title": "default 2",
+        "background_color": "rgba(0, 0, 0, 1)",
+        "major_text_color": "#ffffff",
+        "extra_text_color": "#ffffff",
+        "update_interval": 120,
+        "show_provider_info": 0,
+        "measurement_system": "metrical"
+      },
+      "providers_list": [
+        {
+          "name": "wunderground",
+          "api_key": "",
+          "app_key": "",
+          "activity": 0
+        },
+        {
+          "name": "forecastio",
+          "api_key": "",
+          "app_key": "",
+          "activity": 0
+        },
+        {
+          "name": "weathertrigger",
+          "api_key": "",
+          "app_key": "",
+          "activity": 0
+        },
+        {
+          "name": "apixu",
+          "api_key": "",
+          "app_key": "",
+          "activity": 0
+        },
+        {
+          "name": "openweather",
+          "api_key": "",
+          "app_key": "",
+          "activity": 0
+        },
+        {
+          "name": "yahooweather",
+          "api_key": "",
+          "app_key": "",
+          "activity": 1
+        }
+      ]
+    }
+  }
+]

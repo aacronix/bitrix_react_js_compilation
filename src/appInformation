@@ -1,0 +1,9 @@
+{
+  "ru": {
+    "map": "yandex"
+  },
+  "en": {
+    "map": "google",
+    "key": "AIzaSyCopIU2L_Js_9dKgFaZxmpwtjW6sv-Zudw"
+  }
+}

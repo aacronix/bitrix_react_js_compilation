@@ -1,11 +1,10 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import NotificationSystem from 'react-notification-system';
-import YandexMap from '../components/yandexMap/yandexMap.jsx';
-import GoogleMapComponent from '../components/googleMapComponent/googleMapComponent.jsx';
-import TabsList from '../components/tabsList/tabsList.jsx';
-import FooterButtonDock from '../components/footerButtonDock/footerButtonDock.jsx';
-import {MaterialPicker} from 'react-color';
+import React from "react";
+import ReactDOM from "react-dom";
+import NotificationSystem from "react-notification-system";
+import YandexMap from "../components/yandexMap/yandexMap.jsx";
+import TabsList from "../components/tabsList/tabsList.jsx";
+import FooterButtonDock from "../components/footerButtonDock/footerButtonDock.jsx";
+import {MaterialPicker} from "react-color";
 
 var deepcopy = require("deepcopy");
 
@@ -14,80 +13,9 @@ const WS_TAG = "bitrix_weather_module";
 console.clear();
 console.log(window.pageLang);
 
-window.appInformation = {
-    ru: {
-        map: 'yandex'
-    },
-    en: {
-        map: 'google',
-        key: 'AIzaSyCopIU2L_Js_9dKgFaZxmpwtjW6sv-Zudw'
-    }
-};
+window.appInformation = {};
 
-window.providersInfo = {
-    ru: {
-        "openweather": {
-            name: "Open Weather",
-            link: "https://openweathermap.org/",
-            api: true,
-            app: false,
-            rightKeys: {
-                api: [],
-                app: []
-            }
-        },
-        "apixu": {
-            name: "Apixu",
-            link: "http://www.apixu.com/",
-            api: true,
-            app: false,
-            rightKeys: {
-                api: [],
-                app: []
-            }
-        },
-        "weathertrigger": {
-            name: "Weather Trigger",
-            link: "http://www.weatherunlocked.com/",
-            api: true,
-            app: true,
-            rightKeys: {
-                api: [],
-                app: []
-            }
-        },
-        "forecastio": {
-            name: "Darksky Net",
-            link: "https://www.wunderground.com/weather/api",
-            api: true,
-            app: false,
-            rightKeys: {
-                api: [],
-                app: []
-            }
-        },
-        "wunderground": {
-            name: "Wunderground",
-            link: "https://darksky.net/dev/",
-            api: true,
-            app: false,
-            rightKeys: {
-                api: [],
-                app: []
-            }
-        },
-        "yahooweather": {
-            name: "Yahoo Weather",
-            link: "https://developer.yahoo.com/weather/",
-            api: false,
-            app: false,
-            rightKeys: {
-                api: [],
-                app: []
-            }
-        }
-    }
-};
+window.providersInfo = {};
 
 window.notificationSystem = null;
 
@@ -113,128 +41,7 @@ function notifiationSystem(title, message, level) {
 }
 
 window.GlobalStorage = {
-    widgetsList: [{
-        widget: {
-            widget_id: 'w_0',
-            active: 1,
-            name: 'Default',
-            super: 1
-        },
-        options: {
-            information: {
-                name: "w_0",
-                latitude: 0,
-                longitude: 0,
-                weather_provider: "yahooweather",
-                widget_title: "default",
-                background_color: "rgba(255, 0, 0, 1)",
-                major_text_color: "#ffffff",
-                extra_text_color: "#ffffff",
-                update_interval: 120,
-                show_provider_info: 0,
-                measurement_system: "metrical"
-            },
-            providers_list: [
-                {
-                    name: "wunderground",
-                    api_key: "",
-                    app_key: "",
-                    activity: 0
-                },
-                {
-                    name: "forecastio",
-                    api_key: "",
-                    app_key: "",
-                    activity: 0
-                },
-                {
-                    name: "weathertrigger",
-                    api_key: "",
-                    app_key: "",
-                    activity: 0
-                },
-                {
-                    name: "apixu",
-                    api_key: "",
-                    app_key: "",
-                    activity: 0
-                },
-                {
-                    name: "openweather",
-                    api_key: "",
-                    app_key: "",
-                    activity: 0
-                },
-                {
-                    name: "yahooweather",
-                    api_key: "",
-                    app_key: "",
-                    activity: 1
-                }
-            ]
-        }
-    },
-        {
-            widget: {
-                widget_id: 'w_1',
-                active: 1,
-                name: 'Default 1',
-                super: 0
-            },
-            options: {
-                information: {
-                    name: "w_1",
-                    latitude: 0,
-                    longitude: 0,
-                    weather_provider: "yahooweather",
-                    widget_title: "default 2",
-                    background_color: "rgba(0, 0, 0, 1)",
-                    major_text_color: "#ffffff",
-                    extra_text_color: "#ffffff",
-                    update_interval: 120,
-                    show_provider_info: 0,
-                    measurement_system: "metrical",
-                },
-                providers_list: [
-                    {
-                        name: "wunderground",
-                        api_key: "",
-                        app_key: "",
-                        activity: 0
-                    },
-                    {
-                        name: "forecastio",
-                        api_key: "",
-                        app_key: "",
-                        activity: 0
-                    },
-                    {
-                        name: "weathertrigger",
-                        api_key: "",
-                        app_key: "",
-                        activity: 0
-                    },
-                    {
-                        name: "apixu",
-                        api_key: "",
-                        app_key: "",
-                        activity: 0
-                    },
-                    {
-                        name: "openweather",
-                        api_key: "",
-                        app_key: "",
-                        activity: 0
-                    },
-                    {
-                        name: "yahooweather",
-                        api_key: "",
-                        app_key: "",
-                        activity: 1
-                    }
-                ]
-            }
-        }],
+    widgetsList: [],
     activeTabId: 0,
     savedWS: false,
     dataHash: '',
@@ -346,6 +153,12 @@ window.AppDispatcher = {
                 break;
             case 'notifiy-form-sending':
                 break;
+            case 'providers-information-loaded':
+                window.providersInfo = payload.newItem;
+                break;
+            case 'app-information-loaded':
+                window.appInformation = payload.newItem;
+                break;
             default:
                 widgetStore.savedWS = false;
         }
@@ -358,7 +171,13 @@ window.AppDispatcher = {
 };
 
 var App = React.createClass({
-    loadParametresFromServer: function () {
+    getInitialState: function () {
+        return {
+            componentLoadedData: false
+        }
+    },
+
+    _loadParametersFromServer: function () {
         var url = '/bitrix/tools/weather_service/get_all_option_list.php';
 
         $.ajax({
@@ -367,11 +186,34 @@ var App = React.createClass({
             dataType: 'json',
             success: function (data) {
                 console.log(data);
+
                 AppDispatcher.dispatch({
                     eventName: 'options-information-loaded',
                     newItem: data
                 });
+
+                this.setState({
+                    componentLoadedData: true
+                });
             }.bind(this)
+        });
+    },
+
+    _loadProviderInfo: function () {
+        $.getJSON("/react/src/providersInfo.json", function (json) {
+            AppDispatcher.dispatch({
+                eventName: 'providers-information-loaded',
+                newItem: json
+            });
+        });
+    },
+
+    _loadAppInfo: function () {
+        $.getJSON("/react/src/appInformation.json", function (json) {
+            AppDispatcher.dispatch({
+                eventName: 'app-information-loaded',
+                newItem: json
+            });
         });
     },
 
@@ -381,18 +223,26 @@ var App = React.createClass({
 
     componentDidMount: function () {
         window.GlobalStorage.bind('change', this.changeState);
-        this.loadParametresFromServer();
         window.notificationSystem = this.refs.notificationSystem;
+        this._loadAppInfo();
+        this._loadProviderInfo();
+        this._loadParametersFromServer();
     },
 
     render: function () {
-        return (
+        var renderContent =
             <div className="bitrix-frendly">
                 <YandexMap/>
                 <TabsList/>
                 <FooterButtonDock />
-                <NotificationSystem ref="notificationSystem" />
-            </div>
+                <NotificationSystem ref="notificationSystem"/>
+            </div>;
+
+        if (!this.state.componentLoadedData) {
+            renderContent = null;
+        }
+        return (
+            renderContent
         )
     }
 });
