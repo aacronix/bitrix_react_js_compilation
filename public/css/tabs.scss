@@ -40,7 +40,15 @@ $default-font-family: "Helvetica Neue Light", "HelveticaNeue-Light", "Helvetica 
         font-size: 22px;
         vertical-align: middle;
 
-        &:hover{
+        &.active {
+          background: transparent;
+        }
+
+        &.inactive {
+          color: transparent;
+        }
+
+        &:hover {
           background: #c8c9c8;
         }
       }
@@ -49,29 +57,71 @@ $default-font-family: "Helvetica Neue Light", "HelveticaNeue-Light", "Helvetica 
   .tab-content {
     display: none;
 
-    &.active{
+    &.active {
       display: block;
     }
 
-    .provider {
-      & {
-        width: 98%;
-        margin: 0 auto;
+    .providers {
+      .collapse-control {
+        background: url('../images/collapse.png') no-repeat center;
+        width: 32px;
+        height: 32px;
+        display: block;
+        float: right;
+        cursor: pointer;
+
+        &.active{
+          -moz-transform: rotate(180deg); /* Для Firefox */
+          -ms-transform: rotate(180deg); /* Для IE */
+          -webkit-transform: rotate(180deg); /* Для Safari, Chrome, iOS */
+          -o-transform: rotate(180deg); /* Для Opera */
+          transform: rotate(180deg);
+          transition: .5s;
+        }
+
+        &.inactive{
+          -moz-transform: rotate(0deg); /* Для Firefox */
+          -ms-transform: rotate(0deg); /* Для IE */
+          -webkit-transform: rotate(0deg); /* Для Safari, Chrome, iOS */
+          -o-transform: rotate(0deg); /* Для Opera */
+          transform: rotate(0deg);
+          transition: .5s;
+        }
       }
 
-      &:not(:last-child) {
-        border-bottom: 1px solid #cccccc;
-        padding-bottom: 10px;
-      }
+      .provider {
+        & {
+          width: 98%;
+          margin: 0 auto;
+        }
 
-      &:not(:first-child) {
-        padding-top: 10px;
+        &:not(:last-child) {
+          border-bottom: 1px solid #cccccc;
+          padding-bottom: 10px;
+        }
+
+        &:not(:first-child) {
+          padding-top: 10px;
+        }
+      }
+    }
+
+    .view-options {
+      .line {
+        float: left;
+        clear: both;
+        width: 600px;
+
+        .label {
+          min-width: 50%;
+        }
       }
     }
     .line {
+
       .label {
         font-family: $default-font-family;
-        min-width: 30%;
+        min-width: 15%;
         color: $text-color;
         text-align: left;
         font-size: 16px;
@@ -84,11 +134,11 @@ $default-font-family: "Helvetica Neue Light", "HelveticaNeue-Light", "Helvetica 
         width: 300px;
       }
 
-      .valid{
+      .valid {
         box-shadow: 0 0 8px rgba(0, 255, 50, 0.5)
       }
 
-      .invalid{
+      .invalid {
         box-shadow: 0 0 9px rgba(255, 25, 25, 0.5)
       }
     }

@@ -16,7 +16,8 @@
     "babel-preset-es2015": "^6.13.2",
     "babel-preset-react": "^6.11.1",
     "webpack": "^1.13.1",
-    "serve": "^1.4.0"
+    "serve": "^1.4.0",
+    "react-collapse": "latest"
   },
   "dependencies": {
     "axios": "^0.14.0",

@@ -61,8 +61,12 @@ var Tab = React.createClass({
         var activeClass = (storage.activeTabId === id ? 'active' : '');
 
         var widget = storage.widgetsList[id].widget;
-        var widgetOptions = widget.options;
 
+        var className = 'inactive';
+        if (!storage.dataInAction) {
+            className = 'active';
+        }
+        
         var element =
             <div className={activeClass}>
                 <a href={'#' + widget.widget_id}
@@ -77,7 +81,7 @@ var Tab = React.createClass({
                        onClick={this._handleClick}
                        className="tab-element">{widget.name}</a>
                 <span onClick={this._handleCopyWidget}
-                      className="copy-widget">+</span>
+                      className={'copy-widget ' + className}>+</span>
                 </div>
         }
 

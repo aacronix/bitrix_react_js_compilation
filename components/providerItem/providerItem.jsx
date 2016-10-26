@@ -45,8 +45,8 @@ var ProviderItem = React.createClass({
         var id = this.state.id;
 
         if ((providers[id].activity && providers[id].api_key.length == 0 && window.providersInfo.ru[this.state.name].api) || // если поле активно и должно иметь значение но значения нет
-            (!this.state.valid && providers[id].activity) ||  // если поле невалидно и активно
-            (!this.state.valid )) { // если поле невалидно
+            (!providers[id].valid && providers[id].activity) ||  // если поле невалидно и активно
+            (!providers[id].valid )) { // если поле невалидно
             AppDispatcher.dispatch({
                 eventName: 'change-global-validation',
                 newItem: false
@@ -58,8 +58,8 @@ var ProviderItem = React.createClass({
         }
 
         if ((providers[id].activity && providers[id].app_key.length == 0 && window.providersInfo.ru[this.state.name].app) || // если поле активно и должно иметь значение но значения нет
-            (!this.state.valid && providers[id].activity) || // если поле невалидно и активно
-            (!this.state.valid)) { // если поле невалидно)
+            (!providers[id].valid && providers[id].activity) || // если поле невалидно и активно
+            (!providers[id].valid)) { // если поле невалидно)
             AppDispatcher.dispatch({
                 eventName: 'change-global-validation',
                 newItem: false
@@ -82,6 +82,7 @@ var ProviderItem = React.createClass({
      * валидация ключа, если ключ до этого уже проверялся и он был валиден, то он не отправляется на сервер для проверки
      */
     _validateKey: function () {
+        var _this = this;
         var storage = window.GlobalStorage;
         var providers = storage.widgetsList[this.state.widgetId].options.providers_list;
         var url = ENTRY_POINT + '/bitrix/tools/weather_service/weather_api.php';
@@ -114,15 +115,27 @@ var ProviderItem = React.createClass({
                 },
                 success: function (data) {
                     if (data.code == 1) {
-                        this.setState({valid: true}); // TODO: переделать на события
+                        AppDispatcher.dispatch({
+                            eventName: 'change-valid-state',
+                            newItem: [true, _this.state.id, _this.state.widgetId]
+                        });
+                        // TODO: переделать на события
                         window.providersInfo.ru[providers[this.state.id].name].rightKeys.api.push(providers[this.state.id].api_key);
                         window.providersInfo.ru[providers[this.state.id].name].rightKeys.app.push(providers[this.state.id].app_key);
                     } else {
-                        this.setState({valid: false});
+                        AppDispatcher.dispatch({
+                            eventName: 'change-valid-state',
+                            newItem: [false, _this.state.id, _this.state.widgetId]
+                        });
                     }
 
                     if (data.code == 2) {
-                        this.setState({apiHasLength: false, appHasLength: false, valid: true});
+                        this.setState({apiHasLength: false, appHasLength: false});
+
+                        AppDispatcher.dispatch({
+                            eventName: 'change-valid-state',
+                            newItem: [true, _this.state.id, _this.state.widgetId]
+                        });
                     } else {
                         this.setState({apiHasLength: true, appHasLength: true});
                     }
@@ -132,7 +145,10 @@ var ProviderItem = React.createClass({
             });
         } else {
             console.log('key be prev');
-            this.setState({valid: true});
+            AppDispatcher.dispatch({
+                eventName: 'change-valid-state',
+                newItem: [true, _this.state.id, _this.state.widgetId]
+            });
             this.setState({validationStarted: true});
         }
     },
@@ -186,7 +202,7 @@ var ProviderItem = React.createClass({
         var className;
 
         if (this.state.validationStarted) {
-            className = (this.state.valid ? "valid" : "invalid");
+            className = (providers[id].valid ? "valid" : "invalid");
         }
 
         if (prevBeKey(providers[id].name, providers[id].api_key, 'api') && prevBeKey(providers[id].name, providers[id].app_key, 'app')) {

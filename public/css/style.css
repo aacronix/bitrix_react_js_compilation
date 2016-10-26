@@ -1,3 +1,4 @@
+@charset "UTF-8";
 .tabs-wrapper {
   margin: 25px;
   background: #fff;
@@ -26,23 +27,62 @@
       padding: 3px 12px;
       font-size: 22px;
       vertical-align: middle; }
+      .tabs-wrapper .tab-list .default-widget .copy-widget.active {
+        background: transparent; }
+      .tabs-wrapper .tab-list .default-widget .copy-widget.inactive {
+        color: transparent; }
       .tabs-wrapper .tab-list .default-widget .copy-widget:hover {
         background: #c8c9c8; }
   .tabs-wrapper .tab-content {
     display: none; }
     .tabs-wrapper .tab-content.active {
       display: block; }
-    .tabs-wrapper .tab-content .provider {
+    .tabs-wrapper .tab-content .providers .collapse-control {
+      background: url("../images/collapse.png") no-repeat center;
+      width: 32px;
+      height: 32px;
+      display: block;
+      float: right;
+      cursor: pointer; }
+      .tabs-wrapper .tab-content .providers .collapse-control.active {
+        -moz-transform: rotate(180deg);
+        /* ╨Ф╨╗╤П Firefox */
+        -ms-transform: rotate(180deg);
+        /* ╨Ф╨╗╤П IE */
+        -webkit-transform: rotate(180deg);
+        /* ╨Ф╨╗╤П Safari, Chrome, iOS */
+        -o-transform: rotate(180deg);
+        /* ╨Ф╨╗╤П Opera */
+        transform: rotate(180deg);
+        transition: .5s; }
+      .tabs-wrapper .tab-content .providers .collapse-control.inactive {
+        -moz-transform: rotate(0deg);
+        /* ╨Ф╨╗╤П Firefox */
+        -ms-transform: rotate(0deg);
+        /* ╨Ф╨╗╤П IE */
+        -webkit-transform: rotate(0deg);
+        /* ╨Ф╨╗╤П Safari, Chrome, iOS */
+        -o-transform: rotate(0deg);
+        /* ╨Ф╨╗╤П Opera */
+        transform: rotate(0deg);
+        transition: .5s; }
+    .tabs-wrapper .tab-content .providers .provider {
       width: 98%;
       margin: 0 auto; }
-    .tabs-wrapper .tab-content .provider:not(:last-child) {
+    .tabs-wrapper .tab-content .providers .provider:not(:last-child) {
       border-bottom: 1px solid #cccccc;
       padding-bottom: 10px; }
-    .tabs-wrapper .tab-content .provider:not(:first-child) {
+    .tabs-wrapper .tab-content .providers .provider:not(:first-child) {
       padding-top: 10px; }
+    .tabs-wrapper .tab-content .view-options .line {
+      float: left;
+      clear: both;
+      width: 600px; }
+      .tabs-wrapper .tab-content .view-options .line .label {
+        min-width: 50%; }
     .tabs-wrapper .tab-content .line .label {
       font-family: "Helvetica Neue Light", "HelveticaNeue-Light", "Helvetica Neue", Calibri, Helvetica, Arial, sans-serif;
-      min-width: 30%;
+      min-width: 15%;
       color: #333;
       text-align: left;
       font-size: 16px;

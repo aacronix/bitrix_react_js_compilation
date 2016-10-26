@@ -239,7 +239,8 @@ window.GlobalStorage = {
     savedWS: false,
     dataHash: '',
     globalValid: true,
-    dataInAction: false
+    dataInAction: false,
+    globalCollapse: true
 };
 
 MicroEvent.mixin(GlobalStorage);
@@ -291,7 +292,7 @@ window.AppDispatcher = {
                 break;
             case 'copy-widget':
                 widgetStore.widgetsList.push(payload.newItem);
-                widgetStore.dataHash = JSON.stringify(widgetStore.widgetsList).hashCode();
+                // widgetStore.dataHash = JSON.stringify(widgetStore.widgetsList).hashCode();
                 widgetStore.savedWS = true;
                 break;
             case 'delete-widget':
@@ -312,7 +313,7 @@ window.AppDispatcher = {
                 break;
             case 'widgets-updated-success':
                 widgetStore.trigger('widgets-updated-success');
-                widgetStore.dataHash = JSON.stringify(widgetStore.widgetsList).hashCode();
+                // widgetStore.dataHash = JSON.stringify(widgetStore.widgetsList).hashCode();
                 widgetStore.trigger('notify-system');
                 notifiationSystem('Форма отправлена', 'Форма успешно сохранена', 'success');
                 break;
@@ -334,9 +335,14 @@ window.AppDispatcher = {
             case 'change-global-validation':
                 widgetStore.globalValid = payload.newItem;
                 break;
+            case 'change-valid-state':
+                widgetStore.widgetsList[payload.newItem[2]].options.providers_list[payload.newItem[1]].valid = payload.newItem[0];
+                break;
             case 'set-data-action':
                 widgetStore.dataInAction = payload.newItem;
-                console.log('data sending in action ' + widgetStore.dataInAction);
+                break;
+            case 'change-collapse':
+                widgetStore.globalCollapse = !widgetStore.globalCollapse;
                 break;
             case 'notifiy-form-sending':
                 break;
