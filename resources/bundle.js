@@ -70,11 +70,13 @@
 
 	var _footerButtonDock2 = _interopRequireDefault(_footerButtonDock);
 
-	var _reactColor = __webpack_require__(224);
+	var _previewManager = __webpack_require__(454);
+
+	var _previewManager2 = _interopRequireDefault(_previewManager);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var deepcopy = __webpack_require__(454);
+	var deepcopy = __webpack_require__(457);
 
 	var WS_TAG = "bitrix_weather_module";
 
@@ -84,8 +86,6 @@
 	window.appInformation = {};
 
 	window.providersInfo = {};
-
-	window.notificationSystem = null;
 
 	String.prototype.hashCode = function () {
 	    var hash = 0,
@@ -101,7 +101,7 @@
 	    return hash;
 	};
 
-	function notifiationSystem(title, message, level) {
+	function notificationTrigger(title, message, level) {
 	    window.notificationSystem.addNotification({
 	        title: title,
 	        message: message,
@@ -193,16 +193,16 @@
 	                widgetStore.trigger('widgets-updated-success');
 	                widgetStore.dataHash = JSON.stringify(widgetStore.widgetsList).hashCode();
 	                widgetStore.trigger('notify-system');
-	                notifiationSystem('Форма отправлена', 'Форма успешно сохранена', 'success');
+	                notificationTrigger('Форма отправлена', 'Форма успешно сохранена', 'success');
 	                break;
 	            case 'data-not-changed':
-	                notifiationSystem('Форма не отправлена', 'Форма не отправлена, т.к. на ней не были внесены изменения', 'info');
+	                notificationTrigger('Форма не отправлена', 'Форма не отправлена, т.к. на ней не были внесены изменения', 'info');
 	                break;
 	            case 'form-has-errors':
-	                notifiationSystem('Форма не отправлена', 'Форма не отправлена, т.к. как содержит ошибки', 'warning');
+	                notificationTrigger('Форма не отправлена', 'Форма не отправлена, т.к. как содержит ошибки', 'warning');
 	                break;
 	            case 'widgets-updated-failed':
-	                notifiationSystem('Форма не отправлена', 'Форма не отправлена, проблемы с сервером', 'warning');
+	                notificationTrigger('Форма не отправлена', 'Форма не отправлена, проблемы с сервером', 'warning');
 	                widgetStore.trigger('widgets-updated-failed');
 	                break;
 	            case 'data-validation':
@@ -305,17 +305,24 @@
 	    render: function render() {
 	        var renderContent = _react2.default.createElement(
 	            "div",
-	            { className: "bitrix-frendly" },
+	            null,
 	            _react2.default.createElement(_yandexMap2.default, null),
 	            _react2.default.createElement(_tabsList2.default, null),
 	            _react2.default.createElement(_footerButtonDock2.default, null),
-	            _react2.default.createElement(_reactNotificationSystem2.default, { ref: "notificationSystem" })
+	            _react2.default.createElement(_previewManager2.default, { templateName: "astronaut" }),
+	            _react2.default.createElement(_previewManager2.default, { templateName: "circle" }),
+	            _react2.default.createElement(_previewManager2.default, { templateName: "elementary" })
 	        );
 
 	        if (!this.state.componentLoadedData) {
 	            renderContent = null;
 	        }
-	        return renderContent;
+	        return _react2.default.createElement(
+	            "div",
+	            { className: "bitrix-frendly" },
+	            _react2.default.createElement(_reactNotificationSystem2.default, { ref: "notificationSystem" }),
+	            renderContent
+	        );
 	    }
 	});
 
@@ -26617,7 +26624,7 @@
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var ViewOptionsList = _react2.default.createClass({
-	    displayName: 'ViewOptionsList',
+	    displayName: "ViewOptionsList",
 
 	    getInitialState: function getInitialState() {
 	        return {
@@ -26731,22 +26738,29 @@
 	                },
 	                popover: {
 	                    position: 'absolute',
-	                    zIndex: '2'
+	                    zIndex: '200',
+	                    top: 0,
+	                    right: 0
 	                },
 	                cover: {
 	                    position: 'fixed',
 	                    top: '0px',
 	                    right: '0px',
 	                    bottom: '0px',
-	                    left: '0px'
+	                    left: '0px',
+	                    zIndex: '100'
+	                },
+	                picker: {
+	                    zIndex: '1000'
 	                }
 	            }
 	        });
 
 	        var deletePermission = _react2.default.createElement(
-	            'div',
-	            { className: 'line clearfix' },
-	            _react2.default.createElement('input', { type: 'button', name: 'delete_widget', value: '\u0423\u0434\u0430\u043B\u0438\u0442\u044C \u0432\u0438\u0434\u0436\u0435\u0442', onClick: this._handleDeleteWidgetButtonClick })
+	            "div",
+	            { className: "line clearfix" },
+	            _react2.default.createElement("input", { type: "button", name: "delete_widget", value: "\u0423\u0434\u0430\u043B\u0438\u0442\u044C \u0432\u0438\u0434\u0436\u0435\u0442",
+	                onClick: this._handleDeleteWidgetButtonClick })
 	        );
 
 	        // TODO: какая-то хэ с БД, а именно с bool
@@ -26755,94 +26769,103 @@
 	        }
 
 	        return _react2.default.createElement(
-	            'div',
-	            { className: 'view-options b-option' },
+	            "div",
+	            { className: "view-options b-option" },
 	            _react2.default.createElement(
-	                'p',
-	                { className: 'title' },
-	                '\u041D\u0430\u0441\u0442\u0440\u043E\u0439\u043A\u0430 \u043E\u0442\u043E\u0431\u0440\u0430\u0436\u0435\u043D\u0438\u044F'
+	                "p",
+	                { className: "title" },
+	                "\u041D\u0430\u0441\u0442\u0440\u043E\u0439\u043A\u0430 \u043E\u0442\u043E\u0431\u0440\u0430\u0436\u0435\u043D\u0438\u044F"
 	            ),
 	            _react2.default.createElement(
-	                'div',
-	                { className: 'line clearfix' },
+	                "div",
+	                { className: "line clearfix" },
 	                _react2.default.createElement(
-	                    'p',
-	                    { className: 'label' },
-	                    '\u0417\u0430\u0433\u043E\u043B\u043E\u0432\u043E\u043A \u0432\u0438\u0434\u0436\u0435\u0442\u0430'
+	                    "p",
+	                    { className: "label" },
+	                    "\u0417\u0430\u0433\u043E\u043B\u043E\u0432\u043E\u043A \u0432\u0438\u0434\u0436\u0435\u0442\u0430"
 	                ),
-	                _react2.default.createElement('input', { type: 'text', name: 'widget_title', value: information.widget_title, onChange: this._handleTitleChange })
+	                _react2.default.createElement("input", { type: "text", name: "widget_title", value: information.widget_title,
+	                    onChange: this._handleTitleChange })
 	            ),
-	            _react2.default.createElement(_dropDownUpdateTimeTime2.default, { provider: activeWidget, name: '\u0418\u043D\u0442\u0435\u0440\u0432\u0430\u043B \u043E\u0431\u043D\u043E\u0432\u043B\u0435\u043D\u0438\u044F' }),
-	            _react2.default.createElement(_dropDownMeasurementSystemField2.default, { provider: activeWidget, name: '\u0421\u0438\u0441\u0442\u0435\u043C\u0430 \u0438\u0437\u043C\u0435\u0440\u0435\u043D\u0438\u0439' }),
+	            _react2.default.createElement(_dropDownUpdateTimeTime2.default, { provider: activeWidget, name: "\u0418\u043D\u0442\u0435\u0440\u0432\u0430\u043B \u043E\u0431\u043D\u043E\u0432\u043B\u0435\u043D\u0438\u044F" }),
+	            _react2.default.createElement(_dropDownMeasurementSystemField2.default, { provider: activeWidget, name: "\u0421\u0438\u0441\u0442\u0435\u043C\u0430 \u0438\u0437\u043C\u0435\u0440\u0435\u043D\u0438\u0439" }),
 	            _react2.default.createElement(
-	                'div',
-	                { className: 'line clearfix' },
+	                "div",
+	                { className: "line clearfix" },
 	                _react2.default.createElement(
-	                    'p',
-	                    { className: 'label' },
-	                    '\u0426\u0432\u0435\u0442 \u0437\u0430\u0434\u043D\u0435\u0433\u043E \u0444\u043E\u043D\u0430'
+	                    "p",
+	                    { className: "label" },
+	                    "\u0426\u0432\u0435\u0442 \u0437\u0430\u0434\u043D\u0435\u0433\u043E \u0444\u043E\u043D\u0430"
 	                ),
 	                _react2.default.createElement(
-	                    'div',
+	                    "div",
 	                    { style: styles.swatch, onClick: this._handleChangeBgColorPickerActivity },
-	                    _react2.default.createElement('div', { style: styles.bgColor })
+	                    _react2.default.createElement("div", { style: styles.bgColor })
 	                ),
 	                this.state.showColorBgPicker ? _react2.default.createElement(
-	                    'div',
+	                    "div",
 	                    { style: styles.popover },
-	                    _react2.default.createElement('div', { style: styles.cover, onClick: this._handleChangeBgColorPickerActivity }),
+	                    _react2.default.createElement("div", { style: styles.cover, onClick: this._handleChangeBgColorPickerActivity }),
 	                    _react2.default.createElement(_reactColor.SketchPicker, { color: information.background_color,
-	                        onChange: this._handleChangeBgColor })
+	                        onChange: this._handleChangeBgColor,
+	                        presetColors: colorPreset,
+	                        style: styles.picker })
 	                ) : null
 	            ),
 	            _react2.default.createElement(
-	                'div',
-	                { className: 'line clearfix' },
+	                "div",
+	                { className: "line clearfix" },
 	                _react2.default.createElement(
-	                    'p',
-	                    { className: 'label' },
-	                    '\u0426\u0432\u0435\u0442 \u043E\u0441\u043D\u043E\u0432\u043D\u043E\u0433\u043E \u0442\u0435\u043A\u0441\u0442\u0430'
+	                    "p",
+	                    { className: "label" },
+	                    "\u0426\u0432\u0435\u0442 \u043E\u0441\u043D\u043E\u0432\u043D\u043E\u0433\u043E \u0442\u0435\u043A\u0441\u0442\u0430"
 	                ),
 	                _react2.default.createElement(
-	                    'div',
+	                    "div",
 	                    { style: styles.swatch, onClick: this._handleChangeMajorTextColorPickerActivity },
-	                    _react2.default.createElement('div', { style: styles.majorTextColor })
+	                    _react2.default.createElement("div", { style: styles.majorTextColor })
 	                ),
 	                this.state.showColorMajorTextPicker ? _react2.default.createElement(
-	                    'div',
+	                    "div",
 	                    { style: styles.popover },
-	                    _react2.default.createElement('div', { style: styles.cover, onClick: this._handleChangeMajorTextColorPickerActivity }),
+	                    _react2.default.createElement("div", { style: styles.cover, onClick: this._handleChangeMajorTextColorPickerActivity }),
 	                    _react2.default.createElement(_reactColor.SketchPicker, { disableAlpha: true, color: information.major_text_color,
-	                        onChange: this._handleChangeMajorTextColor })
+	                        onChange: this._handleChangeMajorTextColor,
+	                        presetColors: colorPreset,
+	                        style: styles.picker })
 	                ) : null
 	            ),
 	            _react2.default.createElement(
-	                'div',
-	                { className: 'line clearfix' },
+	                "div",
+	                { className: "line clearfix" },
 	                _react2.default.createElement(
-	                    'p',
-	                    { className: 'label' },
-	                    '\u0426\u0432\u0435\u0442 \u0434\u043E\u043F\u043E\u043B\u043D\u0438\u0442\u0435\u043B\u044C\u043D\u043E\u0433\u043E \u0442\u0435\u043A\u0441\u0442\u0430'
+	                    "p",
+	                    { className: "label" },
+	                    "\u0426\u0432\u0435\u0442 \u0434\u043E\u043F\u043E\u043B\u043D\u0438\u0442\u0435\u043B\u044C\u043D\u043E\u0433\u043E \u0442\u0435\u043A\u0441\u0442\u0430"
 	                ),
 	                _react2.default.createElement(
-	                    'div',
+	                    "div",
 	                    { style: styles.swatch, onClick: this._handleChangeExtraTextColorPickerActivity },
-	                    _react2.default.createElement('div', { style: styles.extraTextColor })
+	                    _react2.default.createElement("div", { style: styles.extraTextColor })
 	                ),
 	                this.state.showColorExtraTextPicker ? _react2.default.createElement(
-	                    'div',
+	                    "div",
 	                    { style: styles.popover },
-	                    _react2.default.createElement('div', { style: styles.cover, onClick: this._handleChangeExtraTextColorPickerActivity }),
+	                    _react2.default.createElement("div", { style: styles.cover, onClick: this._handleChangeExtraTextColorPickerActivity }),
 	                    _react2.default.createElement(_reactColor.SketchPicker, { disableAlpha: true, color: information.extra_text_color,
-	                        onChange: this._handleChangeExtraTextColor })
+	                        onChange: this._handleChangeExtraTextColor,
+	                        presetColors: colorPreset,
+	                        style: styles.picker })
 	                ) : null
 	            ),
-	            _react2.default.createElement(_checkBoxField2.default, { provider: activeWidget, name: '\u041F\u043E\u043A\u0430\u0437\u044B\u0432\u0430\u0442\u044C \u043F\u0440\u043E\u0432\u0430\u0439\u0434\u0435\u0440\u0430 \u043D\u0430 \u0432\u0438\u0434\u0436\u0435\u0442\u0435?' }),
-	            _react2.default.createElement(_inputField2.default, { provider: activeWidget, name: '\u041D\u0430\u0437\u0432\u0430\u043D\u0438\u0435 \u0432\u0438\u0434\u0436\u0435\u0442\u0430' }),
+	            _react2.default.createElement(_checkBoxField2.default, { provider: activeWidget, name: "\u041F\u043E\u043A\u0430\u0437\u044B\u0432\u0430\u0442\u044C \u043F\u0440\u043E\u0432\u0430\u0439\u0434\u0435\u0440\u0430 \u043D\u0430 \u0432\u0438\u0434\u0436\u0435\u0442\u0435?" }),
+	            _react2.default.createElement(_inputField2.default, { provider: activeWidget, name: "\u041D\u0430\u0437\u0432\u0430\u043D\u0438\u0435 \u0432\u0438\u0434\u0436\u0435\u0442\u0430" }),
 	            deletePermission
 	        );
 	    }
 	});
+
+	var colorPreset = ['#1abc9c', '#2ecc71', '#3498db', '#9b59b6', '#34495e', '#16a085', '#27ae60', '#2980b9', '#8e44ad', '#2c3e50', '#f1c40f', '#e67e22', '#e74c3c', '#ecf0f1', '#95a5a6', '#f39c12', '#d35400', '#c0392b', '#bdc3c7', '#7f8c8d'];
 
 	module.exports = ViewOptionsList;
 
@@ -40602,8 +40625,73 @@
 /* 454 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(455);
+	'use strict';
 
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactMustache = __webpack_require__(455);
+
+	var _reactMustache2 = _interopRequireDefault(_reactMustache);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var PreviewManager = _react2.default.createClass({
+	    displayName: "PreviewManager",
+
+	    getInitialState: function getInitialState() {
+	        return {
+	            template: '',
+	            templateName: this.props.templateName
+	        };
+	    },
+
+	    _loadTemplateFromServer: function _loadTemplateFromServer() {
+	        var url = '/bitrix/tools/weather_service/get_page_template.php';
+
+	        $.ajax({
+	            type: "GET",
+	            url: url,
+	            data: {
+	                template_name: this.state.templateName
+	            },
+	            dataType: 'json',
+	            success: function (data) {
+	                console.log(data);
+	                this.setState({
+	                    template: data.content
+	                });
+	            }.bind(this)
+	        });
+	    },
+
+	    componentDidMount: function componentDidMount() {
+	        this._loadTemplateFromServer();
+	    },
+
+	    render: function render() {
+	        var storage = window.GlobalStorage;
+	        var activeTabId = storage.activeTabId;
+
+	        return _react2.default.createElement(_reactMustache2.default, { template: this.state.template, data: { widgetId: storage.widgetsList[activeTabId].widget.widget_id,
+	                backgroundColor: storage.widgetsList[activeTabId].options.information.background_color,
+	                majorTextColor: storage.widgetsList[activeTabId].options.information.major_text_color,
+	                extraTextColor: storage.widgetsList[activeTabId].options.information.extra_text_color,
+	                windDirectionMessage: 'северный',
+	                time: 'Четверг, 27 Октября',
+	                widgetTitle: storage.widgetsList[activeTabId].options.information.widget_title,
+	                temp: -33,
+	                tempUnit: 'C',
+	                icon: 'wi-rain',
+	                hasProviderInfo: storage.widgetsList[activeTabId].options.information.show_provider_info,
+	                from: 'options',
+	                providerName: storage.widgetsList[activeTabId].options.information.weather_provider
+	            } });
+	    }
+	});
+
+	module.exports = PreviewManager;
 
 /***/ },
 /* 455 */
@@ -40611,11 +40699,721 @@
 
 	'use strict';
 
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
+
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+	var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var Mustache = __webpack_require__(456);
+
+	var ReactMustache = (function (_React$Component) {
+	  _inherits(ReactMustache, _React$Component);
+
+	  function ReactMustache() {
+	    _classCallCheck(this, ReactMustache);
+
+	    _get(Object.getPrototypeOf(ReactMustache.prototype), 'constructor', this).apply(this, arguments);
+	  }
+
+	  _createClass(ReactMustache, [{
+	    key: 'compileTemplate',
+	    value: function compileTemplate(template, data) {
+	      // lazy template compiling
+	      return Mustache.render(template, data);
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      var _props = this.props;
+	      var template = _props.template;
+	      var data = _props.data;
+	      var Component = _props.Component;
+
+	      if (!template) return false;
+
+	      var __html = this.compileTemplate(template, data);
+
+	      return _react2['default'].createElement(Component, { dangerouslySetInnerHTML: { __html: __html } });
+	    }
+	  }]);
+
+	  return ReactMustache;
+	})(_react2['default'].Component);
+
+	exports['default'] = ReactMustache;
+
+	ReactMustache.defaultProps = {
+	  data: {},
+	  Component: 'div'
+	};
+	module.exports = exports['default'];
+
+/***/ },
+/* 456 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
+	 * mustache.js - Logic-less {{mustache}} templates with JavaScript
+	 * http://github.com/janl/mustache.js
+	 */
+
+	/*global define: false Mustache: true*/
+
+	(function defineMustache (global, factory) {
+	  if (typeof exports === 'object' && exports && typeof exports.nodeName !== 'string') {
+	    factory(exports); // CommonJS
+	  } else if (true) {
+	    !(__WEBPACK_AMD_DEFINE_ARRAY__ = [exports], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory), __WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ? (__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)); // AMD
+	  } else {
+	    global.Mustache = {};
+	    factory(global.Mustache); // script, wsh, asp
+	  }
+	}(this, function mustacheFactory (mustache) {
+
+	  var objectToString = Object.prototype.toString;
+	  var isArray = Array.isArray || function isArrayPolyfill (object) {
+	    return objectToString.call(object) === '[object Array]';
+	  };
+
+	  function isFunction (object) {
+	    return typeof object === 'function';
+	  }
+
+	  /**
+	   * More correct typeof string handling array
+	   * which normally returns typeof 'object'
+	   */
+	  function typeStr (obj) {
+	    return isArray(obj) ? 'array' : typeof obj;
+	  }
+
+	  function escapeRegExp (string) {
+	    return string.replace(/[\-\[\]{}()*+?.,\\\^$|#\s]/g, '\\$&');
+	  }
+
+	  /**
+	   * Null safe way of checking whether or not an object,
+	   * including its prototype, has a given property
+	   */
+	  function hasProperty (obj, propName) {
+	    return obj != null && typeof obj === 'object' && (propName in obj);
+	  }
+
+	  // Workaround for https://issues.apache.org/jira/browse/COUCHDB-577
+	  // See https://github.com/janl/mustache.js/issues/189
+	  var regExpTest = RegExp.prototype.test;
+	  function testRegExp (re, string) {
+	    return regExpTest.call(re, string);
+	  }
+
+	  var nonSpaceRe = /\S/;
+	  function isWhitespace (string) {
+	    return !testRegExp(nonSpaceRe, string);
+	  }
+
+	  var entityMap = {
+	    '&': '&amp;',
+	    '<': '&lt;',
+	    '>': '&gt;',
+	    '"': '&quot;',
+	    "'": '&#39;',
+	    '/': '&#x2F;',
+	    '`': '&#x60;',
+	    '=': '&#x3D;'
+	  };
+
+	  function escapeHtml (string) {
+	    return String(string).replace(/[&<>"'`=\/]/g, function fromEntityMap (s) {
+	      return entityMap[s];
+	    });
+	  }
+
+	  var whiteRe = /\s*/;
+	  var spaceRe = /\s+/;
+	  var equalsRe = /\s*=/;
+	  var curlyRe = /\s*\}/;
+	  var tagRe = /#|\^|\/|>|\{|&|=|!/;
+
+	  /**
+	   * Breaks up the given `template` string into a tree of tokens. If the `tags`
+	   * argument is given here it must be an array with two string values: the
+	   * opening and closing tags used in the template (e.g. [ "<%", "%>" ]). Of
+	   * course, the default is to use mustaches (i.e. mustache.tags).
+	   *
+	   * A token is an array with at least 4 elements. The first element is the
+	   * mustache symbol that was used inside the tag, e.g. "#" or "&". If the tag
+	   * did not contain a symbol (i.e. {{myValue}}) this element is "name". For
+	   * all text that appears outside a symbol this element is "text".
+	   *
+	   * The second element of a token is its "value". For mustache tags this is
+	   * whatever else was inside the tag besides the opening symbol. For text tokens
+	   * this is the text itself.
+	   *
+	   * The third and fourth elements of the token are the start and end indices,
+	   * respectively, of the token in the original template.
+	   *
+	   * Tokens that are the root node of a subtree contain two more elements: 1) an
+	   * array of tokens in the subtree and 2) the index in the original template at
+	   * which the closing tag for that section begins.
+	   */
+	  function parseTemplate (template, tags) {
+	    if (!template)
+	      return [];
+
+	    var sections = [];     // Stack to hold section tokens
+	    var tokens = [];       // Buffer to hold the tokens
+	    var spaces = [];       // Indices of whitespace tokens on the current line
+	    var hasTag = false;    // Is there a {{tag}} on the current line?
+	    var nonSpace = false;  // Is there a non-space char on the current line?
+
+	    // Strips all whitespace tokens array for the current line
+	    // if there was a {{#tag}} on it and otherwise only space.
+	    function stripSpace () {
+	      if (hasTag && !nonSpace) {
+	        while (spaces.length)
+	          delete tokens[spaces.pop()];
+	      } else {
+	        spaces = [];
+	      }
+
+	      hasTag = false;
+	      nonSpace = false;
+	    }
+
+	    var openingTagRe, closingTagRe, closingCurlyRe;
+	    function compileTags (tagsToCompile) {
+	      if (typeof tagsToCompile === 'string')
+	        tagsToCompile = tagsToCompile.split(spaceRe, 2);
+
+	      if (!isArray(tagsToCompile) || tagsToCompile.length !== 2)
+	        throw new Error('Invalid tags: ' + tagsToCompile);
+
+	      openingTagRe = new RegExp(escapeRegExp(tagsToCompile[0]) + '\\s*');
+	      closingTagRe = new RegExp('\\s*' + escapeRegExp(tagsToCompile[1]));
+	      closingCurlyRe = new RegExp('\\s*' + escapeRegExp('}' + tagsToCompile[1]));
+	    }
+
+	    compileTags(tags || mustache.tags);
+
+	    var scanner = new Scanner(template);
+
+	    var start, type, value, chr, token, openSection;
+	    while (!scanner.eos()) {
+	      start = scanner.pos;
+
+	      // Match any text between tags.
+	      value = scanner.scanUntil(openingTagRe);
+
+	      if (value) {
+	        for (var i = 0, valueLength = value.length; i < valueLength; ++i) {
+	          chr = value.charAt(i);
+
+	          if (isWhitespace(chr)) {
+	            spaces.push(tokens.length);
+	          } else {
+	            nonSpace = true;
+	          }
+
+	          tokens.push([ 'text', chr, start, start + 1 ]);
+	          start += 1;
+
+	          // Check for whitespace on the current line.
+	          if (chr === '\n')
+	            stripSpace();
+	        }
+	      }
+
+	      // Match the opening tag.
+	      if (!scanner.scan(openingTagRe))
+	        break;
+
+	      hasTag = true;
+
+	      // Get the tag type.
+	      type = scanner.scan(tagRe) || 'name';
+	      scanner.scan(whiteRe);
+
+	      // Get the tag value.
+	      if (type === '=') {
+	        value = scanner.scanUntil(equalsRe);
+	        scanner.scan(equalsRe);
+	        scanner.scanUntil(closingTagRe);
+	      } else if (type === '{') {
+	        value = scanner.scanUntil(closingCurlyRe);
+	        scanner.scan(curlyRe);
+	        scanner.scanUntil(closingTagRe);
+	        type = '&';
+	      } else {
+	        value = scanner.scanUntil(closingTagRe);
+	      }
+
+	      // Match the closing tag.
+	      if (!scanner.scan(closingTagRe))
+	        throw new Error('Unclosed tag at ' + scanner.pos);
+
+	      token = [ type, value, start, scanner.pos ];
+	      tokens.push(token);
+
+	      if (type === '#' || type === '^') {
+	        sections.push(token);
+	      } else if (type === '/') {
+	        // Check section nesting.
+	        openSection = sections.pop();
+
+	        if (!openSection)
+	          throw new Error('Unopened section "' + value + '" at ' + start);
+
+	        if (openSection[1] !== value)
+	          throw new Error('Unclosed section "' + openSection[1] + '" at ' + start);
+	      } else if (type === 'name' || type === '{' || type === '&') {
+	        nonSpace = true;
+	      } else if (type === '=') {
+	        // Set the tags for the next time around.
+	        compileTags(value);
+	      }
+	    }
+
+	    // Make sure there are no open sections when we're done.
+	    openSection = sections.pop();
+
+	    if (openSection)
+	      throw new Error('Unclosed section "' + openSection[1] + '" at ' + scanner.pos);
+
+	    return nestTokens(squashTokens(tokens));
+	  }
+
+	  /**
+	   * Combines the values of consecutive text tokens in the given `tokens` array
+	   * to a single token.
+	   */
+	  function squashTokens (tokens) {
+	    var squashedTokens = [];
+
+	    var token, lastToken;
+	    for (var i = 0, numTokens = tokens.length; i < numTokens; ++i) {
+	      token = tokens[i];
+
+	      if (token) {
+	        if (token[0] === 'text' && lastToken && lastToken[0] === 'text') {
+	          lastToken[1] += token[1];
+	          lastToken[3] = token[3];
+	        } else {
+	          squashedTokens.push(token);
+	          lastToken = token;
+	        }
+	      }
+	    }
+
+	    return squashedTokens;
+	  }
+
+	  /**
+	   * Forms the given array of `tokens` into a nested tree structure where
+	   * tokens that represent a section have two additional items: 1) an array of
+	   * all tokens that appear in that section and 2) the index in the original
+	   * template that represents the end of that section.
+	   */
+	  function nestTokens (tokens) {
+	    var nestedTokens = [];
+	    var collector = nestedTokens;
+	    var sections = [];
+
+	    var token, section;
+	    for (var i = 0, numTokens = tokens.length; i < numTokens; ++i) {
+	      token = tokens[i];
+
+	      switch (token[0]) {
+	        case '#':
+	        case '^':
+	          collector.push(token);
+	          sections.push(token);
+	          collector = token[4] = [];
+	          break;
+	        case '/':
+	          section = sections.pop();
+	          section[5] = token[2];
+	          collector = sections.length > 0 ? sections[sections.length - 1][4] : nestedTokens;
+	          break;
+	        default:
+	          collector.push(token);
+	      }
+	    }
+
+	    return nestedTokens;
+	  }
+
+	  /**
+	   * A simple string scanner that is used by the template parser to find
+	   * tokens in template strings.
+	   */
+	  function Scanner (string) {
+	    this.string = string;
+	    this.tail = string;
+	    this.pos = 0;
+	  }
+
+	  /**
+	   * Returns `true` if the tail is empty (end of string).
+	   */
+	  Scanner.prototype.eos = function eos () {
+	    return this.tail === '';
+	  };
+
+	  /**
+	   * Tries to match the given regular expression at the current position.
+	   * Returns the matched text if it can match, the empty string otherwise.
+	   */
+	  Scanner.prototype.scan = function scan (re) {
+	    var match = this.tail.match(re);
+
+	    if (!match || match.index !== 0)
+	      return '';
+
+	    var string = match[0];
+
+	    this.tail = this.tail.substring(string.length);
+	    this.pos += string.length;
+
+	    return string;
+	  };
+
+	  /**
+	   * Skips all text until the given regular expression can be matched. Returns
+	   * the skipped string, which is the entire tail if no match can be made.
+	   */
+	  Scanner.prototype.scanUntil = function scanUntil (re) {
+	    var index = this.tail.search(re), match;
+
+	    switch (index) {
+	      case -1:
+	        match = this.tail;
+	        this.tail = '';
+	        break;
+	      case 0:
+	        match = '';
+	        break;
+	      default:
+	        match = this.tail.substring(0, index);
+	        this.tail = this.tail.substring(index);
+	    }
+
+	    this.pos += match.length;
+
+	    return match;
+	  };
+
+	  /**
+	   * Represents a rendering context by wrapping a view object and
+	   * maintaining a reference to the parent context.
+	   */
+	  function Context (view, parentContext) {
+	    this.view = view;
+	    this.cache = { '.': this.view };
+	    this.parent = parentContext;
+	  }
+
+	  /**
+	   * Creates a new context using the given view with this context
+	   * as the parent.
+	   */
+	  Context.prototype.push = function push (view) {
+	    return new Context(view, this);
+	  };
+
+	  /**
+	   * Returns the value of the given name in this context, traversing
+	   * up the context hierarchy if the value is absent in this context's view.
+	   */
+	  Context.prototype.lookup = function lookup (name) {
+	    var cache = this.cache;
+
+	    var value;
+	    if (cache.hasOwnProperty(name)) {
+	      value = cache[name];
+	    } else {
+	      var context = this, names, index, lookupHit = false;
+
+	      while (context) {
+	        if (name.indexOf('.') > 0) {
+	          value = context.view;
+	          names = name.split('.');
+	          index = 0;
+
+	          /**
+	           * Using the dot notion path in `name`, we descend through the
+	           * nested objects.
+	           *
+	           * To be certain that the lookup has been successful, we have to
+	           * check if the last object in the path actually has the property
+	           * we are looking for. We store the result in `lookupHit`.
+	           *
+	           * This is specially necessary for when the value has been set to
+	           * `undefined` and we want to avoid looking up parent contexts.
+	           **/
+	          while (value != null && index < names.length) {
+	            if (index === names.length - 1)
+	              lookupHit = hasProperty(value, names[index]);
+
+	            value = value[names[index++]];
+	          }
+	        } else {
+	          value = context.view[name];
+	          lookupHit = hasProperty(context.view, name);
+	        }
+
+	        if (lookupHit)
+	          break;
+
+	        context = context.parent;
+	      }
+
+	      cache[name] = value;
+	    }
+
+	    if (isFunction(value))
+	      value = value.call(this.view);
+
+	    return value;
+	  };
+
+	  /**
+	   * A Writer knows how to take a stream of tokens and render them to a
+	   * string, given a context. It also maintains a cache of templates to
+	   * avoid the need to parse the same template twice.
+	   */
+	  function Writer () {
+	    this.cache = {};
+	  }
+
+	  /**
+	   * Clears all cached templates in this writer.
+	   */
+	  Writer.prototype.clearCache = function clearCache () {
+	    this.cache = {};
+	  };
+
+	  /**
+	   * Parses and caches the given `template` and returns the array of tokens
+	   * that is generated from the parse.
+	   */
+	  Writer.prototype.parse = function parse (template, tags) {
+	    var cache = this.cache;
+	    var tokens = cache[template];
+
+	    if (tokens == null)
+	      tokens = cache[template] = parseTemplate(template, tags);
+
+	    return tokens;
+	  };
+
+	  /**
+	   * High-level method that is used to render the given `template` with
+	   * the given `view`.
+	   *
+	   * The optional `partials` argument may be an object that contains the
+	   * names and templates of partials that are used in the template. It may
+	   * also be a function that is used to load partial templates on the fly
+	   * that takes a single argument: the name of the partial.
+	   */
+	  Writer.prototype.render = function render (template, view, partials) {
+	    var tokens = this.parse(template);
+	    var context = (view instanceof Context) ? view : new Context(view);
+	    return this.renderTokens(tokens, context, partials, template);
+	  };
+
+	  /**
+	   * Low-level method that renders the given array of `tokens` using
+	   * the given `context` and `partials`.
+	   *
+	   * Note: The `originalTemplate` is only ever used to extract the portion
+	   * of the original template that was contained in a higher-order section.
+	   * If the template doesn't use higher-order sections, this argument may
+	   * be omitted.
+	   */
+	  Writer.prototype.renderTokens = function renderTokens (tokens, context, partials, originalTemplate) {
+	    var buffer = '';
+
+	    var token, symbol, value;
+	    for (var i = 0, numTokens = tokens.length; i < numTokens; ++i) {
+	      value = undefined;
+	      token = tokens[i];
+	      symbol = token[0];
+
+	      if (symbol === '#') value = this.renderSection(token, context, partials, originalTemplate);
+	      else if (symbol === '^') value = this.renderInverted(token, context, partials, originalTemplate);
+	      else if (symbol === '>') value = this.renderPartial(token, context, partials, originalTemplate);
+	      else if (symbol === '&') value = this.unescapedValue(token, context);
+	      else if (symbol === 'name') value = this.escapedValue(token, context);
+	      else if (symbol === 'text') value = this.rawValue(token);
+
+	      if (value !== undefined)
+	        buffer += value;
+	    }
+
+	    return buffer;
+	  };
+
+	  Writer.prototype.renderSection = function renderSection (token, context, partials, originalTemplate) {
+	    var self = this;
+	    var buffer = '';
+	    var value = context.lookup(token[1]);
+
+	    // This function is used to render an arbitrary template
+	    // in the current context by higher-order sections.
+	    function subRender (template) {
+	      return self.render(template, context, partials);
+	    }
+
+	    if (!value) return;
+
+	    if (isArray(value)) {
+	      for (var j = 0, valueLength = value.length; j < valueLength; ++j) {
+	        buffer += this.renderTokens(token[4], context.push(value[j]), partials, originalTemplate);
+	      }
+	    } else if (typeof value === 'object' || typeof value === 'string' || typeof value === 'number') {
+	      buffer += this.renderTokens(token[4], context.push(value), partials, originalTemplate);
+	    } else if (isFunction(value)) {
+	      if (typeof originalTemplate !== 'string')
+	        throw new Error('Cannot use higher-order sections without the original template');
+
+	      // Extract the portion of the original template that the section contains.
+	      value = value.call(context.view, originalTemplate.slice(token[3], token[5]), subRender);
+
+	      if (value != null)
+	        buffer += value;
+	    } else {
+	      buffer += this.renderTokens(token[4], context, partials, originalTemplate);
+	    }
+	    return buffer;
+	  };
+
+	  Writer.prototype.renderInverted = function renderInverted (token, context, partials, originalTemplate) {
+	    var value = context.lookup(token[1]);
+
+	    // Use JavaScript's definition of falsy. Include empty arrays.
+	    // See https://github.com/janl/mustache.js/issues/186
+	    if (!value || (isArray(value) && value.length === 0))
+	      return this.renderTokens(token[4], context, partials, originalTemplate);
+	  };
+
+	  Writer.prototype.renderPartial = function renderPartial (token, context, partials) {
+	    if (!partials) return;
+
+	    var value = isFunction(partials) ? partials(token[1]) : partials[token[1]];
+	    if (value != null)
+	      return this.renderTokens(this.parse(value), context, partials, value);
+	  };
+
+	  Writer.prototype.unescapedValue = function unescapedValue (token, context) {
+	    var value = context.lookup(token[1]);
+	    if (value != null)
+	      return value;
+	  };
+
+	  Writer.prototype.escapedValue = function escapedValue (token, context) {
+	    var value = context.lookup(token[1]);
+	    if (value != null)
+	      return mustache.escape(value);
+	  };
+
+	  Writer.prototype.rawValue = function rawValue (token) {
+	    return token[1];
+	  };
+
+	  mustache.name = 'mustache.js';
+	  mustache.version = '2.2.1';
+	  mustache.tags = [ '{{', '}}' ];
+
+	  // All high-level mustache.* functions use this writer.
+	  var defaultWriter = new Writer();
+
+	  /**
+	   * Clears all cached templates in the default writer.
+	   */
+	  mustache.clearCache = function clearCache () {
+	    return defaultWriter.clearCache();
+	  };
+
+	  /**
+	   * Parses and caches the given template in the default writer and returns the
+	   * array of tokens it contains. Doing this ahead of time avoids the need to
+	   * parse templates on the fly as they are rendered.
+	   */
+	  mustache.parse = function parse (template, tags) {
+	    return defaultWriter.parse(template, tags);
+	  };
+
+	  /**
+	   * Renders the `template` with the given `view` and `partials` using the
+	   * default writer.
+	   */
+	  mustache.render = function render (template, view, partials) {
+	    if (typeof template !== 'string') {
+	      throw new TypeError('Invalid template! Template should be a "string" ' +
+	                          'but "' + typeStr(template) + '" was given as the first ' +
+	                          'argument for mustache#render(template, view, partials)');
+	    }
+
+	    return defaultWriter.render(template, view, partials);
+	  };
+
+	  // This is here for backwards compatibility with 0.4.x.,
+	  /*eslint-disable */ // eslint wants camel cased function name
+	  mustache.to_html = function to_html (template, view, partials, send) {
+	    /*eslint-enable*/
+
+	    var result = mustache.render(template, view, partials);
+
+	    if (isFunction(send)) {
+	      send(result);
+	    } else {
+	      return result;
+	    }
+	  };
+
+	  // Export the escaping function so that the user may override it.
+	  // See https://github.com/janl/mustache.js/issues/244
+	  mustache.escape = escapeHtml;
+
+	  // Export these mainly for testing, but also for advanced usage.
+	  mustache.Scanner = Scanner;
+	  mustache.Context = Context;
+	  mustache.Writer = Writer;
+
+	}));
+
+
+/***/ },
+/* 457 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = __webpack_require__(458);
+
+
+/***/ },
+/* 458 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
 	exports.__esModule = true;
 
-	var _copy = __webpack_require__(456);
+	var _copy = __webpack_require__(459);
 
-	var _polyfill = __webpack_require__(461);
+	var _polyfill = __webpack_require__(464);
 
 	function defaultCustomizer(target) {
 	  return void 0;
@@ -40703,7 +41501,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 456 */
+/* 459 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(Buffer) {'use strict';
@@ -40711,7 +41509,7 @@
 	exports.__esModule = true;
 	exports.copyValue = exports.copyCollection = exports.copy = void 0;
 
-	var _polyfill = __webpack_require__(461);
+	var _polyfill = __webpack_require__(464);
 
 	var toString = Object.prototype.toString;
 
@@ -40849,10 +41647,10 @@
 	exports.copy = copy;
 	exports.copyCollection = copyCollection;
 	exports.copyValue = copyValue;
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(457).Buffer))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(460).Buffer))
 
 /***/ },
-/* 457 */
+/* 460 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(Buffer, global) {/*!
@@ -40865,9 +41663,9 @@
 
 	'use strict'
 
-	var base64 = __webpack_require__(458)
-	var ieee754 = __webpack_require__(459)
-	var isArray = __webpack_require__(460)
+	var base64 = __webpack_require__(461)
+	var ieee754 = __webpack_require__(462)
+	var isArray = __webpack_require__(463)
 
 	exports.Buffer = Buffer
 	exports.SlowBuffer = SlowBuffer
@@ -42645,10 +43443,10 @@
 	  return val !== val // eslint-disable-line no-self-compare
 	}
 
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(457).Buffer, (function() { return this; }())))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(460).Buffer, (function() { return this; }())))
 
 /***/ },
-/* 458 */
+/* 461 */
 /***/ function(module, exports) {
 
 	'use strict'
@@ -42768,7 +43566,7 @@
 
 
 /***/ },
-/* 459 */
+/* 462 */
 /***/ function(module, exports) {
 
 	exports.read = function (buffer, offset, isLE, mLen, nBytes) {
@@ -42858,7 +43656,7 @@
 
 
 /***/ },
-/* 460 */
+/* 463 */
 /***/ function(module, exports) {
 
 	var toString = {}.toString;
@@ -42869,7 +43667,7 @@
 
 
 /***/ },
-/* 461 */
+/* 464 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(Buffer) {'use strict';
@@ -42946,7 +43744,7 @@
 	exports.getSymbols = getSymbols;
 	exports.indexOf = indexOf;
 	exports.isBuffer = isBuffer;
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(457).Buffer))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(460).Buffer))
 
 /***/ }
 /******/ ]);

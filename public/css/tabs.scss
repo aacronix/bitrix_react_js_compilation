@@ -72,7 +72,7 @@ $default-font-family: "Helvetica Neue Light", "HelveticaNeue-Light", "Helvetica 
         float: right;
         cursor: pointer;
 
-        &.active{
+        &.active {
           -moz-transform: rotate(180deg); /* Для Firefox */
           -ms-transform: rotate(180deg); /* Для IE */
           -webkit-transform: rotate(180deg); /* Для Safari, Chrome, iOS */
@@ -81,7 +81,7 @@ $default-font-family: "Helvetica Neue Light", "HelveticaNeue-Light", "Helvetica 
           transition: .5s;
         }
 
-        &.inactive{
+        &.inactive {
           -moz-transform: rotate(0deg); /* Для Firefox */
           -ms-transform: rotate(0deg); /* Для IE */
           -webkit-transform: rotate(0deg); /* Для Safari, Chrome, iOS */
@@ -120,6 +120,7 @@ $default-font-family: "Helvetica Neue Light", "HelveticaNeue-Light", "Helvetica 
       }
     }
     .line {
+      position: relative;
 
       .label {
         font-family: $default-font-family;
@@ -130,6 +131,13 @@ $default-font-family: "Helvetica Neue Light", "HelveticaNeue-Light", "Helvetica 
         display: block;
         float: left;
         padding: 2px 0;
+      }
+
+      .sketch-picker {
+        position: absolute;
+        top: 0;
+        right: 0;
+        z-index: 1000;
       }
 
       input[type=text] {

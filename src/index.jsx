@@ -4,7 +4,7 @@ import NotificationSystem from "react-notification-system";
 import YandexMap from "../components/yandexMap/yandexMap.jsx";
 import TabsList from "../components/tabsList/tabsList.jsx";
 import FooterButtonDock from "../components/footerButtonDock/footerButtonDock.jsx";
-import {MaterialPicker} from "react-color";
+import PreviewManager from "../components/previewManager/previewManager.jsx";
 
 var deepcopy = require("deepcopy");
 
@@ -17,8 +17,6 @@ window.appInformation = {};
 
 window.providersInfo = {};
 
-window.notificationSystem = null;
-
 String.prototype.hashCode = function () {
     var hash = 0, i, chr, len;
     if (this.length === 0) return hash;
@@ -30,7 +28,7 @@ String.prototype.hashCode = function () {
     return hash;
 };
 
-function notifiationSystem(title, message, level) {
+function notificationTrigger(title, message, level) {
     window.notificationSystem.addNotification({
         title: title,
         message: message,
@@ -122,16 +120,16 @@ window.AppDispatcher = {
                 widgetStore.trigger('widgets-updated-success');
                 widgetStore.dataHash = JSON.stringify(widgetStore.widgetsList).hashCode();
                 widgetStore.trigger('notify-system');
-                notifiationSystem('Форма отправлена', 'Форма успешно сохранена', 'success');
+                notificationTrigger('Форма отправлена', 'Форма успешно сохранена', 'success');
                 break;
             case 'data-not-changed':
-                notifiationSystem('Форма не отправлена', 'Форма не отправлена, т.к. на ней не были внесены изменения', 'info');
+                notificationTrigger('Форма не отправлена', 'Форма не отправлена, т.к. на ней не были внесены изменения', 'info');
                 break;
             case 'form-has-errors':
-                notifiationSystem('Форма не отправлена', 'Форма не отправлена, т.к. как содержит ошибки', 'warning');
+                notificationTrigger('Форма не отправлена', 'Форма не отправлена, т.к. как содержит ошибки', 'warning');
                 break;
             case 'widgets-updated-failed':
-                notifiationSystem('Форма не отправлена', 'Форма не отправлена, проблемы с сервером', 'warning');
+                notificationTrigger('Форма не отправлена', 'Форма не отправлена, проблемы с сервером', 'warning');
                 widgetStore.trigger('widgets-updated-failed');
                 break;
             case 'data-validation':
@@ -231,18 +229,23 @@ var App = React.createClass({
 
     render: function () {
         var renderContent =
-            <div className="bitrix-frendly">
+            <div>
                 <YandexMap/>
                 <TabsList/>
                 <FooterButtonDock />
-                <NotificationSystem ref="notificationSystem"/>
+                <PreviewManager templateName='astronaut'/>
+                <PreviewManager templateName='circle'/>
+                <PreviewManager templateName='elementary'/>
             </div>;
 
         if (!this.state.componentLoadedData) {
-            renderContent = null;
+            renderContent = null
         }
         return (
-            renderContent
+            <div className='bitrix-frendly'>
+                <NotificationSystem ref='notificationSystem'/>
+                {renderContent}
+            </div>
         )
     }
 });

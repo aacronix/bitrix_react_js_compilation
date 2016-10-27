@@ -1,12 +1,12 @@
 'use strict';
 
-import React from 'react';
-import {SketchPicker} from 'react-color';
-import reactCSS from 'reactcss';
-import InputField from '../inputField/inputField.jsx';
-import CheckBoxField from '../checkBoxField/checkBoxField.jsx';
-import DropDownUpdateTimeField from '../dropDownUpdateTimeField/dropDownUpdateTimeTime.jsx';
-import DropDownMeasurementSystemField from '../dropDownMeasurementSystemField/dropDownMeasurementSystemField.jsx';
+import React from "react";
+import {SketchPicker} from "react-color";
+import reactCSS from "reactcss";
+import InputField from "../inputField/inputField.jsx";
+import CheckBoxField from "../checkBoxField/checkBoxField.jsx";
+import DropDownUpdateTimeField from "../dropDownUpdateTimeField/dropDownUpdateTimeTime.jsx";
+import DropDownMeasurementSystemField from "../dropDownMeasurementSystemField/dropDownMeasurementSystemField.jsx";
 
 var ViewOptionsList = React.createClass({
     getInitialState: function () {
@@ -122,24 +122,31 @@ var ViewOptionsList = React.createClass({
                 },
                 popover: {
                     position: 'absolute',
-                    zIndex: '2'
+                    zIndex: '200',
+                    top: 0,
+                    right: 0
                 },
                 cover: {
                     position: 'fixed',
                     top: '0px',
                     right: '0px',
                     bottom: '0px',
-                    left: '0px'
+                    left: '0px',
+                    zIndex: '100',
+                },
+                picker: {
+                    zIndex: '1000'
                 }
             }
         });
 
         var deletePermission = <div className="line clearfix">
-            <input type="button" name="delete_widget" value="Удалить виджет" onClick={this._handleDeleteWidgetButtonClick}/>
+            <input type="button" name="delete_widget" value="Удалить виджет"
+                   onClick={this._handleDeleteWidgetButtonClick}/>
         </div>;
 
         // TODO: какая-то хэ с БД, а именно с bool
-        if (storage[activeWidget].widget.super == "1"){
+        if (storage[activeWidget].widget.super == "1") {
             deletePermission = '';
         }
 
@@ -148,7 +155,8 @@ var ViewOptionsList = React.createClass({
                 <p className="title">Настройка отображения</p>
                 <div className="line clearfix">
                     <p className="label">Заголовок виджета</p>
-                    <input type="text" name="widget_title" value={information.widget_title} onChange={this._handleTitleChange}/>
+                    <input type="text" name="widget_title" value={information.widget_title}
+                           onChange={this._handleTitleChange}/>
                 </div>
                 <DropDownUpdateTimeField provider={activeWidget} name='Интервал обновления'/>
                 <DropDownMeasurementSystemField provider={activeWidget} name='Система измерений'/>
@@ -160,7 +168,9 @@ var ViewOptionsList = React.createClass({
                     { this.state.showColorBgPicker ? <div style={ styles.popover }>
                         <div style={ styles.cover } onClick={ this._handleChangeBgColorPickerActivity }/>
                         <SketchPicker color={ information.background_color }
-                                      onChange={ this._handleChangeBgColor }/>
+                                      onChange={ this._handleChangeBgColor }
+                                      presetColors={colorPreset}
+                                      style={ styles.picker }/>
                     </div> : null }
                 </div>
                 <div className="line clearfix">
@@ -171,7 +181,9 @@ var ViewOptionsList = React.createClass({
                     { this.state.showColorMajorTextPicker ? <div style={ styles.popover }>
                         <div style={ styles.cover } onClick={ this._handleChangeMajorTextColorPickerActivity }/>
                         <SketchPicker disableAlpha={true} color={ information.major_text_color }
-                                      onChange={ this._handleChangeMajorTextColor }/>
+                                      onChange={ this._handleChangeMajorTextColor }
+                                      presetColors={colorPreset}
+                                      style={ styles.picker }/>
                     </div> : null }
                 </div>
                 <div className="line clearfix">
@@ -182,7 +194,9 @@ var ViewOptionsList = React.createClass({
                     { this.state.showColorExtraTextPicker ? <div style={ styles.popover }>
                         <div style={ styles.cover } onClick={ this._handleChangeExtraTextColorPickerActivity }/>
                         <SketchPicker disableAlpha={true} color={ information.extra_text_color }
-                                      onChange={ this._handleChangeExtraTextColor }/>
+                                      onChange={ this._handleChangeExtraTextColor }
+                                      presetColors={colorPreset}
+                                      style={ styles.picker }/>
                     </div> : null }
                 </div>
                 <CheckBoxField provider={activeWidget} name='Показывать провайдера на виджете?'/>
@@ -192,5 +206,28 @@ var ViewOptionsList = React.createClass({
         );
     }
 });
+
+var colorPreset = [
+    '#1abc9c',
+    '#2ecc71',
+    '#3498db',
+    '#9b59b6',
+    '#34495e',
+    '#16a085',
+    '#27ae60',
+    '#2980b9',
+    '#8e44ad',
+    '#2c3e50',
+    '#f1c40f',
+    '#e67e22',
+    '#e74c3c',
+    '#ecf0f1',
+    '#95a5a6',
+    '#f39c12',
+    '#d35400',
+    '#c0392b',
+    '#bdc3c7',
+    '#7f8c8d'
+]
 
 module.exports = ViewOptionsList;
