@@ -4,7 +4,6 @@ import NotificationSystem from "react-notification-system";
 import YandexMap from "../components/yandexMap/yandexMap.jsx";
 import TabsList from "../components/tabsList/tabsList.jsx";
 import FooterButtonDock from "../components/footerButtonDock/footerButtonDock.jsx";
-import PreviewManager from "../components/previewManager/previewManager.jsx";
 
 var deepcopy = require("deepcopy");
 
@@ -233,9 +232,6 @@ var App = React.createClass({
                 <YandexMap/>
                 <TabsList/>
                 <FooterButtonDock />
-                <PreviewManager templateName='astronaut'/>
-                <PreviewManager templateName='circle'/>
-                <PreviewManager templateName='elementary'/>
             </div>;
 
         if (!this.state.componentLoadedData) {

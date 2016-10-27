@@ -7,6 +7,7 @@ import InputField from "../inputField/inputField.jsx";
 import CheckBoxField from "../checkBoxField/checkBoxField.jsx";
 import DropDownUpdateTimeField from "../dropDownUpdateTimeField/dropDownUpdateTimeTime.jsx";
 import DropDownMeasurementSystemField from "../dropDownMeasurementSystemField/dropDownMeasurementSystemField.jsx";
+import PreviewManager from "../previewManager/previewManager.jsx";
 
 var ViewOptionsList = React.createClass({
     getInitialState: function () {
@@ -90,6 +91,7 @@ var ViewOptionsList = React.createClass({
 
         var activeWidget = this.state.provider;
         var information = storage[activeWidget].options.information;
+        var widget = storage[activeWidget].widget;
 
 
         const styles = reactCSS({
@@ -202,6 +204,7 @@ var ViewOptionsList = React.createClass({
                 <CheckBoxField provider={activeWidget} name='Показывать провайдера на виджете?'/>
                 <InputField provider={activeWidget} name='Название виджета'/>
                 {deletePermission}
+                <PreviewManager templateName={widget.template_name}/>
             </div>
         );
     }

@@ -13,11 +13,11 @@ var TabContent = React.createClass({
     },
 
     componentDidMount: function () {
-        
+        window.GlobalStorage.bind('change', this.changeState);
     },
 
-    componentWillUnmount: function () {
-        // React.unmountComponentAtNode(document.getElementById(this.state.DomId));
+    changeState: function () {
+        this.forceUpdate();
     },
 
     render: function () {

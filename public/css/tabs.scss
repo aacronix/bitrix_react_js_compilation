@@ -109,6 +109,7 @@ $default-font-family: "Helvetica Neue Light", "HelveticaNeue-Light", "Helvetica 
     }
 
     .view-options {
+      position: relative;
       .line {
         float: left;
         clear: both;
@@ -117,6 +118,12 @@ $default-font-family: "Helvetica Neue Light", "HelveticaNeue-Light", "Helvetica 
         .label {
           min-width: 50%;
         }
+      }
+
+      .b-weather-preview{
+        position: absolute;
+        right: 20px;
+        top:50px;
       }
     }
     .line {

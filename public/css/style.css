@@ -76,12 +76,18 @@
       padding-bottom: 10px; }
     .tabs-wrapper .tab-content .providers .provider:not(:first-child) {
       padding-top: 10px; }
-    .tabs-wrapper .tab-content .view-options .line {
-      float: left;
-      clear: both;
-      width: 600px; }
-      .tabs-wrapper .tab-content .view-options .line .label {
-        min-width: 50%; }
+    .tabs-wrapper .tab-content .view-options {
+      position: relative; }
+      .tabs-wrapper .tab-content .view-options .line {
+        float: left;
+        clear: both;
+        width: 600px; }
+        .tabs-wrapper .tab-content .view-options .line .label {
+          min-width: 50%; }
+      .tabs-wrapper .tab-content .view-options .b-weather-preview {
+        position: absolute;
+        right: 20px;
+        top: 50px; }
     .tabs-wrapper .tab-content .line {
       position: relative; }
       .tabs-wrapper .tab-content .line .label {

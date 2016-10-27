@@ -12,6 +12,8 @@ var TabsList = React.createClass({
     },
 
     render: function () {
+        var storage = window.GlobalStorage;
+
         return (
             <div className="tabs-wrapper">
                 <div className="tab-list">

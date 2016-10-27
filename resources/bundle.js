@@ -66,13 +66,9 @@
 
 	var _tabsList2 = _interopRequireDefault(_tabsList);
 
-	var _footerButtonDock = __webpack_require__(453);
+	var _footerButtonDock = __webpack_require__(456);
 
 	var _footerButtonDock2 = _interopRequireDefault(_footerButtonDock);
-
-	var _previewManager = __webpack_require__(454);
-
-	var _previewManager2 = _interopRequireDefault(_previewManager);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -308,10 +304,7 @@
 	            null,
 	            _react2.default.createElement(_yandexMap2.default, null),
 	            _react2.default.createElement(_tabsList2.default, null),
-	            _react2.default.createElement(_footerButtonDock2.default, null),
-	            _react2.default.createElement(_previewManager2.default, { templateName: "astronaut" }),
-	            _react2.default.createElement(_previewManager2.default, { templateName: "circle" }),
-	            _react2.default.createElement(_previewManager2.default, { templateName: "elementary" })
+	            _react2.default.createElement(_footerButtonDock2.default, null)
 	        );
 
 	        if (!this.state.componentLoadedData) {
@@ -24132,7 +24125,7 @@
 
 	var _tabContent2 = _interopRequireDefault(_tabContent);
 
-	var _tab = __webpack_require__(452);
+	var _tab = __webpack_require__(455);
 
 	var _tab2 = _interopRequireDefault(_tab);
 
@@ -24150,6 +24143,8 @@
 	    },
 
 	    render: function render() {
+	        var storage = window.GlobalStorage;
+
 	        return _react2.default.createElement(
 	            'div',
 	            { className: 'tabs-wrapper' },
@@ -24203,10 +24198,12 @@
 	        };
 	    },
 
-	    componentDidMount: function componentDidMount() {},
+	    componentDidMount: function componentDidMount() {
+	        window.GlobalStorage.bind('change', this.changeState);
+	    },
 
-	    componentWillUnmount: function componentWillUnmount() {
-	        // React.unmountComponentAtNode(document.getElementById(this.state.DomId));
+	    changeState: function changeState() {
+	        this.forceUpdate();
 	    },
 
 	    render: function render() {
@@ -26621,6 +26618,10 @@
 
 	var _dropDownMeasurementSystemField2 = _interopRequireDefault(_dropDownMeasurementSystemField);
 
+	var _previewManager = __webpack_require__(452);
+
+	var _previewManager2 = _interopRequireDefault(_previewManager);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var ViewOptionsList = _react2.default.createClass({
@@ -26707,6 +26708,7 @@
 
 	        var activeWidget = this.state.provider;
 	        var information = storage[activeWidget].options.information;
+	        var widget = storage[activeWidget].widget;
 
 	        var styles = (0, _reactcss2.default)({
 	            'default': {
@@ -26860,7 +26862,8 @@
 	            ),
 	            _react2.default.createElement(_checkBoxField2.default, { provider: activeWidget, name: "\u041F\u043E\u043A\u0430\u0437\u044B\u0432\u0430\u0442\u044C \u043F\u0440\u043E\u0432\u0430\u0439\u0434\u0435\u0440\u0430 \u043D\u0430 \u0432\u0438\u0434\u0436\u0435\u0442\u0435?" }),
 	            _react2.default.createElement(_inputField2.default, { provider: activeWidget, name: "\u041D\u0430\u0437\u0432\u0430\u043D\u0438\u0435 \u0432\u0438\u0434\u0436\u0435\u0442\u0430" }),
-	            deletePermission
+	            deletePermission,
+	            _react2.default.createElement(_previewManager2.default, { templateName: widget.template_name })
 	        );
 	    }
 	});
@@ -40397,241 +40400,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	var Tab = _react2.default.createClass({
-	    displayName: 'Tab',
-
-	    getInitialState: function getInitialState() {
-	        return {
-	            id: this.props.id,
-	            DomId: 'tab_' + this.props.id
-	        };
-	    },
-
-	    componentDidMount: function componentDidMount() {
-	        window.GlobalStorage.bind('delete-widget', this.componentWillUnmount);
-	    },
-
-	    componentWillUnmount: function componentWillUnmount() {
-	        // React.unmountComponentAtNode(document.getElementById(this.state.DomId));
-	    },
-
-	    _handleClick: function _handleClick() {
-	        AppDispatcher.dispatch({
-	            eventName: 'tab-changing',
-	            newItem: this.state.id
-	        });
-	    },
-
-	    _copyWidget: function _copyWidget(widget) {
-	        var url = '/bitrix/tools/weather_service/copy_widget.php';
-
-	        var newName = 'Copy of ' + widget.widget.name;
-
-	        $.ajax({
-	            type: "POST",
-	            url: url,
-	            dataType: 'json',
-	            data: {
-	                name: newName,
-	                information: widget.options.information,
-	                providers_list: widget.options.providers_list
-	            },
-	            success: function (data) {
-	                AppDispatcher.dispatch({
-	                    eventName: 'copy-widget',
-	                    newItem: data
-	                });
-	            }.bind(this)
-	        });
-	    },
-
-	    _handleCopyWidget: function _handleCopyWidget() {
-	        var storage = window.GlobalStorage;
-	        var id = this.state.id;
-	        var widget = storage.widgetsList[id];
-
-	        this._copyWidget(widget);
-	    },
-
-	    render: function render() {
-	        var storage = window.GlobalStorage;
-	        var id = this.state.id;
-
-	        var activeClass = storage.activeTabId === id ? 'active' : '';
-
-	        var widget = storage.widgetsList[id].widget;
-
-	        var className = 'inactive';
-	        if (!storage.dataInAction) {
-	            className = 'active';
-	        }
-
-	        var element = _react2.default.createElement(
-	            'div',
-	            { className: activeClass },
-	            _react2.default.createElement(
-	                'a',
-	                { href: '#' + widget.widget_id,
-	                    onClick: this._handleClick,
-	                    className: 'tab-element' },
-	                widget.name
-	            )
-	        );
-
-	        if (id == 0) {
-	            element = _react2.default.createElement(
-	                'div',
-	                { className: activeClass + ' default-widget' },
-	                _react2.default.createElement(
-	                    'a',
-	                    { href: '#' + widget.widget_id,
-	                        onClick: this._handleClick,
-	                        className: 'tab-element' },
-	                    widget.name
-	                ),
-	                _react2.default.createElement(
-	                    'span',
-	                    { onClick: this._handleCopyWidget,
-	                        className: 'copy-widget ' + className },
-	                    '+'
-	                )
-	            );
-	        }
-
-	        return element;
-	    }
-	});
-
-	module.exports = Tab;
-
-/***/ },
-/* 453 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var _react = __webpack_require__(1);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	var FooterButtonDock = _react2.default.createClass({
-	    displayName: 'FooterButtonDock',
-
-	    getInitialState: function getInitialState() {
-	        return {
-	            activity: true
-	        };
-	    },
-
-	    componentDidMount: function componentDidMount() {
-	        window.GlobalStorage.bind('widgets-updated-success', this._changeStateSuccess);
-	        window.GlobalStorage.bind('widgets-updated-failed', this._changeStateFailed);
-	    },
-
-	    _changeStateSuccess: function _changeStateSuccess() {
-	        this.setState({ activity: true });
-	    },
-
-	    _changeStateFailed: function _changeStateFailed() {
-	        this.setState({ activity: true });
-	    },
-
-	    _sendWidgetsToServer: function _sendWidgetsToServer() {
-	        var storage = window.GlobalStorage.widgetsList;
-	        var url = '/bitrix/tools/weather_service/update_widgets.php';
-
-	        $.ajax({
-	            type: "POST",
-	            url: url,
-	            data: {
-	                widgets: storage
-	            },
-	            dataType: 'json',
-	            success: function () {
-	                console.log('success');
-	                AppDispatcher.dispatch({
-	                    eventName: 'widgets-updated-success',
-	                    newItem: null
-	                });
-	            }.bind(this),
-	            fail: function () {
-	                console.log('failed');
-	                AppDispatcher.dispatch({
-	                    eventName: 'widgets-updated-failed',
-	                    newItem: null
-	                });
-	            }.bind(this)
-	        });
-	    },
-
-	    _handleClick: function _handleClick() {
-	        var storage = window.GlobalStorage;
-	        var widgets = storage.widgetsList;
-
-	        var previouslyHash = storage.dataHash;
-	        var currentHash = JSON.stringify(widgets).hashCode();
-
-	        if (previouslyHash != currentHash) {
-
-	            AppDispatcher.dispatch({
-	                eventName: 'data-validation',
-	                newItem: null
-	            });
-
-	            if (storage.globalValid) {
-	                this.setState({ activity: false });
-	                this._sendWidgetsToServer();
-	            } else {
-	                AppDispatcher.dispatch({
-	                    eventName: 'form-has-errors',
-	                    newItem: null
-	                });
-	            }
-	        } else {
-	            AppDispatcher.dispatch({
-	                eventName: 'data-not-changed',
-	                newItem: null
-	            });
-	        }
-	    },
-
-	    render: function render() {
-	        var storage = window.GlobalStorage;
-
-	        var className = 'inactive';
-	        if (!storage.dataInAction) {
-	            className = 'active';
-	        }
-
-	        return _react2.default.createElement(
-	            'div',
-	            { className: 'footer-button-dock ' + className },
-	            _react2.default.createElement(
-	                'button',
-	                { onClick: this._handleClick, disabled: storage.dataInAction },
-	                'Send'
-	            )
-	        );
-	    }
-	});
-
-	module.exports = FooterButtonDock;
-
-/***/ },
-/* 454 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var _react = __webpack_require__(1);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _reactMustache = __webpack_require__(455);
+	var _reactMustache = __webpack_require__(453);
 
 	var _reactMustache2 = _interopRequireDefault(_reactMustache);
 
@@ -40645,6 +40414,15 @@
 	            template: '',
 	            templateName: this.props.templateName
 	        };
+	    },
+
+	    componentDidMount: function componentDidMount() {
+	        window.GlobalStorage.bind('change', this.changeState);
+	        this._loadTemplateFromServer();
+	    },
+
+	    changeState: function changeState() {
+	        this.forceUpdate();
 	    },
 
 	    _loadTemplateFromServer: function _loadTemplateFromServer() {
@@ -40666,35 +40444,38 @@
 	        });
 	    },
 
-	    componentDidMount: function componentDidMount() {
-	        this._loadTemplateFromServer();
-	    },
-
 	    render: function render() {
 	        var storage = window.GlobalStorage;
 	        var activeTabId = storage.activeTabId;
 
-	        return _react2.default.createElement(_reactMustache2.default, { template: this.state.template, data: { widgetId: storage.widgetsList[activeTabId].widget.widget_id,
-	                backgroundColor: storage.widgetsList[activeTabId].options.information.background_color,
-	                majorTextColor: storage.widgetsList[activeTabId].options.information.major_text_color,
-	                extraTextColor: storage.widgetsList[activeTabId].options.information.extra_text_color,
-	                windDirectionMessage: 'северный',
-	                time: 'Четверг, 27 Октября',
-	                widgetTitle: storage.widgetsList[activeTabId].options.information.widget_title,
-	                temp: -33,
-	                tempUnit: 'C',
-	                icon: 'wi-rain',
-	                hasProviderInfo: storage.widgetsList[activeTabId].options.information.show_provider_info,
-	                from: 'options',
-	                providerName: storage.widgetsList[activeTabId].options.information.weather_provider
-	            } });
+	        console.log('tname ' + this.state.templateName);
+	        console.log('atab ' + activeTabId);
+
+	        return _react2.default.createElement(
+	            "div",
+	            { className: "b-weather-preview" },
+	            _react2.default.createElement(_reactMustache2.default, { template: this.state.template, data: { widgetId: storage.widgetsList[activeTabId].widget.widget_id,
+	                    backgroundColor: storage.widgetsList[activeTabId].options.information.background_color,
+	                    majorTextColor: storage.widgetsList[activeTabId].options.information.major_text_color,
+	                    extraTextColor: storage.widgetsList[activeTabId].options.information.extra_text_color,
+	                    windDirectionMessage: 'северный',
+	                    time: 'Четверг, 27 Октября',
+	                    widgetTitle: storage.widgetsList[activeTabId].options.information.widget_title,
+	                    temp: -33,
+	                    tempUnit: 'C',
+	                    icon: 'wi-rain',
+	                    hasProviderInfo: storage.widgetsList[activeTabId].options.information.show_provider_info,
+	                    from: 'options',
+	                    providerName: storage.widgetsList[activeTabId].options.information.weather_provider
+	                } })
+	        );
 	    }
 	});
 
 	module.exports = PreviewManager;
 
 /***/ },
-/* 455 */
+/* 453 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -40717,7 +40498,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var Mustache = __webpack_require__(456);
+	var Mustache = __webpack_require__(454);
 
 	var ReactMustache = (function (_React$Component) {
 	  _inherits(ReactMustache, _React$Component);
@@ -40762,7 +40543,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 456 */
+/* 454 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -41395,6 +41176,240 @@
 
 	}));
 
+
+/***/ },
+/* 455 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var Tab = _react2.default.createClass({
+	    displayName: 'Tab',
+
+	    getInitialState: function getInitialState() {
+	        return {
+	            id: this.props.id,
+	            DomId: 'tab_' + this.props.id
+	        };
+	    },
+
+	    componentDidMount: function componentDidMount() {
+	        window.GlobalStorage.bind('delete-widget', this.componentWillUnmount);
+	    },
+
+	    componentWillUnmount: function componentWillUnmount() {
+	        // React.unmountComponentAtNode(document.getElementById(this.state.DomId));
+	    },
+
+	    _handleClick: function _handleClick() {
+	        AppDispatcher.dispatch({
+	            eventName: 'tab-changing',
+	            newItem: this.state.id
+	        });
+	    },
+
+	    _copyWidget: function _copyWidget(widget) {
+	        var url = '/bitrix/tools/weather_service/copy_widget.php';
+
+	        var newName = 'Copy of ' + widget.widget.name;
+
+	        $.ajax({
+	            type: "POST",
+	            url: url,
+	            dataType: 'json',
+	            data: {
+	                name: newName,
+	                information: widget.options.information,
+	                providers_list: widget.options.providers_list
+	            },
+	            success: function (data) {
+	                AppDispatcher.dispatch({
+	                    eventName: 'copy-widget',
+	                    newItem: data
+	                });
+	            }.bind(this)
+	        });
+	    },
+
+	    _handleCopyWidget: function _handleCopyWidget() {
+	        var storage = window.GlobalStorage;
+	        var id = this.state.id;
+	        var widget = storage.widgetsList[id];
+
+	        this._copyWidget(widget);
+	    },
+
+	    render: function render() {
+	        var storage = window.GlobalStorage;
+	        var id = this.state.id;
+
+	        var activeClass = storage.activeTabId === id ? 'active' : '';
+
+	        var widget = storage.widgetsList[id].widget;
+
+	        var className = 'inactive';
+	        if (!storage.dataInAction) {
+	            className = 'active';
+	        }
+
+	        var element = _react2.default.createElement(
+	            'div',
+	            { className: activeClass },
+	            _react2.default.createElement(
+	                'a',
+	                { href: '#' + widget.widget_id,
+	                    onClick: this._handleClick,
+	                    className: 'tab-element' },
+	                widget.name
+	            )
+	        );
+
+	        if (id == 0) {
+	            element = _react2.default.createElement(
+	                'div',
+	                { className: activeClass + ' default-widget' },
+	                _react2.default.createElement(
+	                    'a',
+	                    { href: '#' + widget.widget_id,
+	                        onClick: this._handleClick,
+	                        className: 'tab-element' },
+	                    widget.name
+	                ),
+	                _react2.default.createElement(
+	                    'span',
+	                    { onClick: this._handleCopyWidget,
+	                        className: 'copy-widget ' + className },
+	                    '+'
+	                )
+	            );
+	        }
+
+	        return element;
+	    }
+	});
+
+	module.exports = Tab;
+
+/***/ },
+/* 456 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var FooterButtonDock = _react2.default.createClass({
+	    displayName: 'FooterButtonDock',
+
+	    getInitialState: function getInitialState() {
+	        return {
+	            activity: true
+	        };
+	    },
+
+	    componentDidMount: function componentDidMount() {
+	        window.GlobalStorage.bind('widgets-updated-success', this._changeStateSuccess);
+	        window.GlobalStorage.bind('widgets-updated-failed', this._changeStateFailed);
+	    },
+
+	    _changeStateSuccess: function _changeStateSuccess() {
+	        this.setState({ activity: true });
+	    },
+
+	    _changeStateFailed: function _changeStateFailed() {
+	        this.setState({ activity: true });
+	    },
+
+	    _sendWidgetsToServer: function _sendWidgetsToServer() {
+	        var storage = window.GlobalStorage.widgetsList;
+	        var url = '/bitrix/tools/weather_service/update_widgets.php';
+
+	        $.ajax({
+	            type: "POST",
+	            url: url,
+	            data: {
+	                widgets: storage
+	            },
+	            dataType: 'json',
+	            success: function () {
+	                console.log('success');
+	                AppDispatcher.dispatch({
+	                    eventName: 'widgets-updated-success',
+	                    newItem: null
+	                });
+	            }.bind(this),
+	            fail: function () {
+	                console.log('failed');
+	                AppDispatcher.dispatch({
+	                    eventName: 'widgets-updated-failed',
+	                    newItem: null
+	                });
+	            }.bind(this)
+	        });
+	    },
+
+	    _handleClick: function _handleClick() {
+	        var storage = window.GlobalStorage;
+	        var widgets = storage.widgetsList;
+
+	        var previouslyHash = storage.dataHash;
+	        var currentHash = JSON.stringify(widgets).hashCode();
+
+	        if (previouslyHash != currentHash) {
+
+	            AppDispatcher.dispatch({
+	                eventName: 'data-validation',
+	                newItem: null
+	            });
+
+	            if (storage.globalValid) {
+	                this.setState({ activity: false });
+	                this._sendWidgetsToServer();
+	            } else {
+	                AppDispatcher.dispatch({
+	                    eventName: 'form-has-errors',
+	                    newItem: null
+	                });
+	            }
+	        } else {
+	            AppDispatcher.dispatch({
+	                eventName: 'data-not-changed',
+	                newItem: null
+	            });
+	        }
+	    },
+
+	    render: function render() {
+	        var storage = window.GlobalStorage;
+
+	        var className = 'inactive';
+	        if (!storage.dataInAction) {
+	            className = 'active';
+	        }
+
+	        return _react2.default.createElement(
+	            'div',
+	            { className: 'footer-button-dock ' + className },
+	            _react2.default.createElement(
+	                'button',
+	                { onClick: this._handleClick, disabled: storage.dataInAction },
+	                'Send'
+	            )
+	        );
+	    }
+	});
+
+	module.exports = FooterButtonDock;
 
 /***/ },
 /* 457 */
