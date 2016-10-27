@@ -81,16 +81,21 @@
       .tabs-wrapper .tab-content .view-options .line {
         float: left;
         clear: both;
-        width: 600px; }
+        width: 650px; }
         .tabs-wrapper .tab-content .view-options .line .label {
           min-width: 50%; }
       .tabs-wrapper .tab-content .view-options .b-weather-preview {
         position: absolute;
         right: 20px;
-        top: 50px; }
+        top: 80px;
+        margin: 15px;
+        background: #efeeee;
+        border: 1px dashed #ff6f00; }
     .tabs-wrapper .tab-content .line {
-      position: relative; }
+      position: relative;
+      margin: 5px 0; }
       .tabs-wrapper .tab-content .line .label {
+        margin: 0 !important;
         font-family: "Helvetica Neue Light", "HelveticaNeue-Light", "Helvetica Neue", Calibri, Helvetica, Arial, sans-serif;
         min-width: 15%;
         color: #333;
@@ -116,7 +121,7 @@ a.active {
   text-decoration: underline !important; }
 
 .yandex-map {
-  padding: 25px; }
+  width: 90%; }
 
 .content-list .tab-content {
   padding: 10px; }
@@ -124,11 +129,11 @@ a.active {
     width: 50%;
     float: left;
     padding: 10px;
-    margin: 10px 0; }
+    margin: 0 auto; }
     @media (max-width: 14000px) {
       .content-list .tab-content .b-option {
         /*fuck*/
-        width: 100%;
+        width: 95%;
         float: none;
         border-right: none !important; } }
     .content-list .tab-content .b-option:not(:last-child) {
@@ -144,7 +149,8 @@ a.active {
     font-weight: bold;
     padding-bottom: 5px;
     border-bottom: 1px solid #b00c0c;
-    text-indent: 10px; }
+    text-indent: 10px;
+    margin-top: 0 !important; }
 
 .clearfix:after {
   content: "";

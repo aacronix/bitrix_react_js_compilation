@@ -149,6 +149,9 @@
 	            case 'change-bg-color':
 	                widgetStore.widgetsList[payload.newItem[0]].options.information.background_color = payload.newItem[1];
 	                break;
+	            case 'change-border-color':
+	                widgetStore.widgetsList[payload.newItem[0]].options.information.border_color = payload.newItem[1];
+	                break;
 	            case 'change-major-text-color':
 	                widgetStore.widgetsList[payload.newItem[0]].options.information.major_text_color = payload.newItem[1];
 	                break;
@@ -26632,7 +26635,8 @@
 	            provider: this.props.activeProvider,
 	            showColorBgPicker: false,
 	            showColorMajorTextPicker: false,
-	            showColorExtraTextPicker: false
+	            showColorExtraTextPicker: false,
+	            showBorderColorPicker: false
 	        };
 	    },
 
@@ -26657,6 +26661,13 @@
 	        });
 	    },
 
+	    _handleChangeBorderColor: function _handleChangeBorderColor(color) {
+	        AppDispatcher.dispatch({
+	            eventName: 'change-border-color',
+	            newItem: [this.state.provider, color.hex]
+	        });
+	    },
+
 	    _handleChangeBgColorPickerActivity: function _handleChangeBgColorPickerActivity() {
 	        this.setState({ showColorBgPicker: !this.state.showColorBgPicker });
 	    },
@@ -26667,6 +26678,10 @@
 
 	    _handleChangeExtraTextColorPickerActivity: function _handleChangeExtraTextColorPickerActivity() {
 	        this.setState({ showColorExtraTextPicker: !this.state.showColorExtraTextPicker });
+	    },
+
+	    _handleChangeBorderColorPickerActivity: function _handleChangeBorderColorPickerActivity() {
+	        this.setState({ showBorderColorPicker: !this.state.showBorderColorPicker });
 	    },
 
 	    _handleTitleChange: function _handleTitleChange(event) {
@@ -26729,6 +26744,12 @@
 	                    height: '14px',
 	                    borderRadius: '2px',
 	                    background: information.extra_text_color
+	                },
+	                borderColor: {
+	                    width: '36px',
+	                    height: '14px',
+	                    borderRadius: '2px',
+	                    background: information.border_color
 	                },
 	                swatch: {
 	                    padding: '5px',
@@ -26856,6 +26877,29 @@
 	                    _react2.default.createElement("div", { style: styles.cover, onClick: this._handleChangeExtraTextColorPickerActivity }),
 	                    _react2.default.createElement(_reactColor.SketchPicker, { disableAlpha: true, color: information.extra_text_color,
 	                        onChange: this._handleChangeExtraTextColor,
+	                        presetColors: colorPreset,
+	                        style: styles.picker })
+	                ) : null
+	            ),
+	            _react2.default.createElement(
+	                "div",
+	                { className: "line clearfix" },
+	                _react2.default.createElement(
+	                    "p",
+	                    { className: "label" },
+	                    "\u0426\u0432\u0435\u0442 \u0433\u0440\u0430\u043D\u0438\u0446 \u0432\u0438\u0434\u0436\u0435\u0442\u0430"
+	                ),
+	                _react2.default.createElement(
+	                    "div",
+	                    { style: styles.swatch, onClick: this._handleChangeBorderColorPickerActivity },
+	                    _react2.default.createElement("div", { style: styles.borderColor })
+	                ),
+	                this.state.showBorderColorPicker ? _react2.default.createElement(
+	                    "div",
+	                    { style: styles.popover },
+	                    _react2.default.createElement("div", { style: styles.cover, onClick: this._handleChangeBorderColorPickerActivity }),
+	                    _react2.default.createElement(_reactColor.SketchPicker, { disableAlpha: true, color: information.border_color,
+	                        onChange: this._handleChangeBorderColor,
 	                        presetColors: colorPreset,
 	                        style: styles.picker })
 	                ) : null
@@ -40448,9 +40492,6 @@
 	        var storage = window.GlobalStorage;
 	        var activeTabId = storage.activeTabId;
 
-	        console.log('tname ' + this.state.templateName);
-	        console.log('atab ' + activeTabId);
-
 	        return _react2.default.createElement(
 	            "div",
 	            { className: "b-weather-preview" },
@@ -40466,7 +40507,8 @@
 	                    icon: 'wi-rain',
 	                    hasProviderInfo: storage.widgetsList[activeTabId].options.information.show_provider_info,
 	                    from: 'options',
-	                    providerName: storage.widgetsList[activeTabId].options.information.weather_provider
+	                    providerName: storage.widgetsList[activeTabId].options.information.weather_provider,
+	                    borderColor: storage.widgetsList[activeTabId].options.information.border_color
 	                } })
 	        );
 	    }

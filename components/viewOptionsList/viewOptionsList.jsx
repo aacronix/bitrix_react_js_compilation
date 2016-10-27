@@ -15,7 +15,8 @@ var ViewOptionsList = React.createClass({
             provider: this.props.activeProvider,
             showColorBgPicker: false,
             showColorMajorTextPicker: false,
-            showColorExtraTextPicker: false
+            showColorExtraTextPicker: false,
+            showBorderColorPicker: false
         };
     },
 
@@ -40,6 +41,13 @@ var ViewOptionsList = React.createClass({
         });
     },
 
+    _handleChangeBorderColor: function (color) {
+        AppDispatcher.dispatch({
+            eventName: 'change-border-color',
+            newItem: [this.state.provider, color.hex]
+        });
+    },
+
     _handleChangeBgColorPickerActivity: function () {
         this.setState({showColorBgPicker: !this.state.showColorBgPicker});
     },
@@ -50,6 +58,10 @@ var ViewOptionsList = React.createClass({
 
     _handleChangeExtraTextColorPickerActivity: function () {
         this.setState({showColorExtraTextPicker: !this.state.showColorExtraTextPicker});
+    },
+
+    _handleChangeBorderColorPickerActivity: function () {
+        this.setState({showBorderColorPicker: !this.state.showBorderColorPicker});
     },
 
     _handleTitleChange: function (event) {
@@ -113,6 +125,12 @@ var ViewOptionsList = React.createClass({
                     height: '14px',
                     borderRadius: '2px',
                     background: information.extra_text_color
+                },
+                borderColor: {
+                    width: '36px',
+                    height: '14px',
+                    borderRadius: '2px',
+                    background: information.border_color
                 },
                 swatch: {
                     padding: '5px',
@@ -197,6 +215,19 @@ var ViewOptionsList = React.createClass({
                         <div style={ styles.cover } onClick={ this._handleChangeExtraTextColorPickerActivity }/>
                         <SketchPicker disableAlpha={true} color={ information.extra_text_color }
                                       onChange={ this._handleChangeExtraTextColor }
+                                      presetColors={colorPreset}
+                                      style={ styles.picker }/>
+                    </div> : null }
+                </div>
+                <div className="line clearfix">
+                    <p className="label">Цвет границ виджета</p>
+                    <div style={ styles.swatch } onClick={ this._handleChangeBorderColorPickerActivity }>
+                        <div style={ styles.borderColor }/>
+                    </div>
+                    { this.state.showBorderColorPicker ? <div style={ styles.popover }>
+                        <div style={ styles.cover } onClick={ this._handleChangeBorderColorPickerActivity }/>
+                        <SketchPicker disableAlpha={true} color={ information.border_color }
+                                      onChange={ this._handleChangeBorderColor }
                                       presetColors={colorPreset}
                                       style={ styles.picker }/>
                     </div> : null }

@@ -79,6 +79,9 @@ window.AppDispatcher = {
             case 'change-bg-color':
                 widgetStore.widgetsList[payload.newItem[0]].options.information.background_color = payload.newItem[1];
                 break;
+            case 'change-border-color':
+                widgetStore.widgetsList[payload.newItem[0]].options.information.border_color = payload.newItem[1];
+                break;
             case 'change-major-text-color':
                 widgetStore.widgetsList[payload.newItem[0]].options.information.major_text_color = payload.newItem[1];
                 break;

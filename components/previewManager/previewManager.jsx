@@ -43,9 +43,6 @@ var PreviewManager = React.createClass({
         var storage = window.GlobalStorage;
         var activeTabId = storage.activeTabId;
 
-        console.log('tname ' + this.state.templateName);
-        console.log('atab ' + activeTabId);
-
         return (
             <div className="b-weather-preview">
                 <ReactMustache template={this.state.template} data={{widgetId: storage.widgetsList[activeTabId].widget.widget_id,
@@ -60,7 +57,8 @@ var PreviewManager = React.createClass({
                                                                     icon: 'wi-rain',
                                                                     hasProviderInfo: storage.widgetsList[activeTabId].options.information.show_provider_info,
                                                                     from: 'options',
-                                                                    providerName: storage.widgetsList[activeTabId].options.information.weather_provider
+                                                                    providerName: storage.widgetsList[activeTabId].options.information.weather_provider,
+                                                                    borderColor: storage.widgetsList[activeTabId].options.information.border_color
                                                                     }}/>
             </div>
         );
