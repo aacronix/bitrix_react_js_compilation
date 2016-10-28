@@ -12,7 +12,7 @@ var PreviewManager = React.createClass({
     },
 
     componentDidMount: function () {
-        window.GlobalStorage.bind('change', this.changeState);
+        // window.GlobalStorage.bind('change', this.changeState);
         this._loadTemplateFromServer();
     },
 

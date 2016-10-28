@@ -24206,7 +24206,7 @@
 	  },
 
 	  componentDidMount: function componentDidMount() {
-	    window.GlobalStorage.bind('change', this.changeState);
+	    // window.GlobalStorage.bind('change', this.changeState);
 	  },
 
 	  changeState: function changeState() {
@@ -40500,7 +40500,7 @@
 	    },
 
 	    componentDidMount: function componentDidMount() {
-	        window.GlobalStorage.bind('change', this.changeState);
+	        // window.GlobalStorage.bind('change', this.changeState);
 	        this._loadTemplateFromServer();
 	    },
 

@@ -12,7 +12,7 @@ var TabContent = React.createClass({
   },
 
   componentDidMount: function () {
-    window.GlobalStorage.bind('change', this.changeState);
+    // window.GlobalStorage.bind('change', this.changeState);
   },
 
   changeState: function () {
