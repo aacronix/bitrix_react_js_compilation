@@ -1,6 +1,6 @@
 'use strict';
 
-import React from 'react';
+import React from "react";
 
 var FooterButtonDock = React.createClass({
     getInitialState: function () {
@@ -90,9 +90,9 @@ var FooterButtonDock = React.createClass({
         }
 
         return (
-            <div className={'footer-button-dock ' + className}>
-                <button onClick={this._handleClick} disabled={storage.dataInAction}>Send</button>
-            </div>
+          <div className={'footer-button-dock ' + className}>
+              <button onClick={this._handleClick} disabled={storage.dataInAction}>Send</button>
+          </div>
         );
     }
 });

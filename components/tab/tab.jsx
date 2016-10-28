@@ -24,7 +24,7 @@ var Tab = React.createClass({
     },
 
     _copyWidget: function (widget) {
-        var url = '/bitrix/tools/weather_service/copy_widget.php';
+        var url = '/bitrix/tools/weather_service/api.php';
 
         var newName = 'Copy of ' + widget.widget.name;
 
@@ -33,15 +33,23 @@ var Tab = React.createClass({
             url: url,
             dataType: 'json',
             data: {
+                action: 'copy_widget',
                 name: newName,
                 information: widget.options.information,
-                providers_list: widget.options.providers_list
+                providersList: widget.options.providers_list
             },
             success: function (data) {
-                AppDispatcher.dispatch({
-                    eventName: 'copy-widget',
-                    newItem: data
-                });
+                if (data.code){
+                    AppDispatcher.dispatch({
+                        eventName: 'copy-widget-success',
+                        newItem: data
+                    });
+                } else {
+                    AppDispatcher.dispatch({
+                        eventName: 'copy-widget-failed',
+                        newItem: null
+                    });
+                }
             }.bind(this)
         });
     },

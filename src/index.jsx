@@ -97,20 +97,26 @@ window.AppDispatcher = {
             case 'change-show-provider-info':
                 widgetStore.widgetsList[payload.newItem[0]].options.information.show_provider_info = payload.newItem[1];
                 break;
-            case 'copy-widget':
-                widgetStore.widgetsList.push(payload.newItem);
-                // widgetStore.dataHash = JSON.stringify(widgetStore.widgetsList).hashCode();
+            case 'copy-widget-success':
+                widgetStore.widgetsList.push(payload.newItem.content);
                 widgetStore.savedWS = true;
+                notificationTrigger('Виджет скопирован', 'Виджет успешно скопирован и готов к настройке', 'success');
                 break;
-            case 'delete-widget':
+            case 'copy-widget-failed':
+                notificationTrigger('Виджет не скопирован', 'Виджет не скопирован. Возможно ошибки в форме', 'warning');
+                break;
+            case 'delete-widget-success':
                 widgetStore.widgetsList.splice(widgetStore.activeTabId, 1);
                 widgetStore.activeTabId--;
+                notificationTrigger('Виджет удален', 'Виджет успешно удален из системы', 'success');
                 widgetStore.trigger('delete-widget');
+                break;
+            case 'delete-widget-failed':
+                notificationTrigger('Виджет не удален', '', 'warning');
                 break;
             case 'options-information-loaded':
                 widgetStore.widgetsList = payload.newItem;
                 widgetStore.dataHash = JSON.stringify(widgetStore.widgetsList).hashCode();
-                console.log(widgetStore.dataHash);
                 break;
             case 'change-api-key-input':
                 widgetStore.widgetsList[payload.newItem[0]].options.providers_list[payload.newItem[1].id].api_key = payload.newItem[1].value;
@@ -135,7 +141,6 @@ window.AppDispatcher = {
                 widgetStore.trigger('widgets-updated-failed');
                 break;
             case 'data-validation':
-                console.log('data-validation');
                 widgetStore.globalValid = true;
                 widgetStore.trigger('validation-require');
                 break;

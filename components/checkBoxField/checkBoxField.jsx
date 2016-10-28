@@ -6,7 +6,8 @@ var CheckBoxField = React.createClass({
     getInitialState: function () {
         return {
             provider: this.props.provider,
-            name: this.props.name
+            name: this.props.name,
+            check: false
         }
     },
 
@@ -15,7 +16,22 @@ var CheckBoxField = React.createClass({
 
         AppDispatcher.dispatch({
             eventName: 'change-show-provider-info',
-            newItem: [this.state.provider, !widgetsList[this.state.provider].options.information.show_provider_info]
+            newItem: [this.state.provider, !this.state.check]
+        });
+
+        this.setState({
+            check: !this.state.check
+        })
+    },
+
+    componentDidMount: function () {
+        var storage = window.GlobalStorage.widgetsList;
+
+        var activeWidget = this.state.provider;
+        var information = storage[activeWidget].options.information;
+
+        this.setState({
+            check: ((information.show_provider_info.toString() === "true") ? true : false)
         });
     },
 
@@ -25,16 +41,11 @@ var CheckBoxField = React.createClass({
         var activeWidget = this.state.provider;
         var information = storage[activeWidget].options.information;
 
-        var check = false;
-
-        if (information.show_provider_info.toString() == 'true'){
-            check = true;
-        }
-
+        console.log('cc ' + this.state.check);
         return (
             <div className="line clearfix">
                 <p className="label">{this.props.name}</p>
-                <input type="checkbox" name="show_provider_info" checked={check} onChange={this._handleChangeShowProviderInfo}/>
+                <input type="checkbox" name="show_provider_info" checked={this.state.check} onChange={this._handleChangeShowProviderInfo}/>
             </div>
         );
     }

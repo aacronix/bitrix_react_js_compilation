@@ -167,20 +167,26 @@
 	            case 'change-show-provider-info':
 	                widgetStore.widgetsList[payload.newItem[0]].options.information.show_provider_info = payload.newItem[1];
 	                break;
-	            case 'copy-widget':
-	                widgetStore.widgetsList.push(payload.newItem);
-	                // widgetStore.dataHash = JSON.stringify(widgetStore.widgetsList).hashCode();
+	            case 'copy-widget-success':
+	                widgetStore.widgetsList.push(payload.newItem.content);
 	                widgetStore.savedWS = true;
+	                notificationTrigger('Виджет скопирован', 'Виджет успешно скопирован и готов к настройке', 'success');
 	                break;
-	            case 'delete-widget':
+	            case 'copy-widget-failed':
+	                notificationTrigger('Виджет не скопирован', 'Виджет не скопирован. Возможно ошибки в форме', 'warning');
+	                break;
+	            case 'delete-widget-success':
 	                widgetStore.widgetsList.splice(widgetStore.activeTabId, 1);
 	                widgetStore.activeTabId--;
+	                notificationTrigger('Виджет удален', 'Виджет успешно удален из системы', 'success');
 	                widgetStore.trigger('delete-widget');
+	                break;
+	            case 'delete-widget-failed':
+	                notificationTrigger('Виджет не удален', '', 'warning');
 	                break;
 	            case 'options-information-loaded':
 	                widgetStore.widgetsList = payload.newItem;
 	                widgetStore.dataHash = JSON.stringify(widgetStore.widgetsList).hashCode();
-	                console.log(widgetStore.dataHash);
 	                break;
 	            case 'change-api-key-input':
 	                widgetStore.widgetsList[payload.newItem[0]].options.providers_list[payload.newItem[1].id].api_key = payload.newItem[1].value;
@@ -205,7 +211,6 @@
 	                widgetStore.trigger('widgets-updated-failed');
 	                break;
 	            case 'data-validation':
-	                console.log('data-validation');
 	                widgetStore.globalValid = true;
 	                widgetStore.trigger('validation-require');
 	                break;
@@ -24192,36 +24197,35 @@
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var TabContent = _react2.default.createClass({
-	    displayName: 'TabContent',
+	  displayName: "TabContent",
 
-	    getInitialState: function getInitialState() {
-	        return {
-	            id: this.props.id,
-	            DomId: 'tab_content_' + this.props.id
-	        };
-	    },
+	  getInitialState: function getInitialState() {
+	    return {
+	      id: this.props.id
+	    };
+	  },
 
-	    componentDidMount: function componentDidMount() {
-	        window.GlobalStorage.bind('change', this.changeState);
-	    },
+	  componentDidMount: function componentDidMount() {
+	    window.GlobalStorage.bind('change', this.changeState);
+	  },
 
-	    changeState: function changeState() {
-	        this.forceUpdate();
-	    },
+	  changeState: function changeState() {
+	    this.forceUpdate();
+	  },
 
-	    render: function render() {
-	        var storage = window.GlobalStorage;
-	        var id = this.state.id;
+	  render: function render() {
+	    var storage = window.GlobalStorage;
+	    var id = this.state.id;
 
-	        var activeClass = storage.activeTabId === id ? 'active' : '';
+	    var activeClass = storage.activeTabId === id ? 'active' : '';
 
-	        return _react2.default.createElement(
-	            'div',
-	            { id: 'tab_content_' + id, className: activeClass + ' tab-content clearfix' },
-	            _react2.default.createElement(_providerList2.default, { key: 'tab_content_' + id, widgetId: id }),
-	            _react2.default.createElement(_viewOptionsList2.default, { activeProvider: id })
-	        );
-	    }
+	    return _react2.default.createElement(
+	      "div",
+	      { id: 'tab_content_' + id, className: activeClass + ' tab-content clearfix' },
+	      _react2.default.createElement(_providerList2.default, { key: 'tab_content_' + id, widgetId: id }),
+	      _react2.default.createElement(_viewOptionsList2.default, { activeProvider: id })
+	    );
+	  }
 	});
 
 	module.exports = TabContent;
@@ -26643,7 +26647,7 @@
 	    _handleChangeBgColor: function _handleChangeBgColor(color) {
 	        AppDispatcher.dispatch({
 	            eventName: 'change-bg-color',
-	            newItem: [this.state.provider, "rgba(" + color.rgb.r + ", " + color.rgb.g + ", " + color.rgb.b + ", " + color.rgb.a + ")"]
+	            newItem: [this.state.provider, 'rgba(' + color.rgb.r + ', ' + color.rgb.g + ', ' + color.rgb.b + ', ' + color.rgb.a + ')']
 	        });
 	    },
 
@@ -26664,7 +26668,7 @@
 	    _handleChangeBorderColor: function _handleChangeBorderColor(color) {
 	        AppDispatcher.dispatch({
 	            eventName: 'change-border-color',
-	            newItem: [this.state.provider, color.hex]
+	            newItem: [this.state.provider, 'rgba(' + color.rgb.r + ', ' + color.rgb.g + ', ' + color.rgb.b + ', ' + color.rgb.a + ')']
 	        });
 	    },
 
@@ -26700,19 +26704,39 @@
 	    },
 
 	    _deleteWidget: function _deleteWidget(id) {
-	        var url = '/bitrix/tools/weather_service/delete_widget.php';
+	        var url = '/bitrix/tools/weather_service/api.php';
 
 	        $.ajax({
-	            type: "POST",
+	            type: 'POST',
 	            url: url,
 	            dataType: 'json',
 	            data: {
+	                action: 'delete_widget',
 	                id: id
 	            },
-	            success: function success() {
+	            success: function success(data) {
+	                if (data.code) {
+	                    AppDispatcher.dispatch({
+	                        eventName: 'delete-widget-success',
+	                        newItem: null
+	                    });
+	                } else {
+	                    AppDispatcher.dispatch({
+	                        eventName: 'delete-widget-failed',
+	                        newItem: null
+	                    });
+	                }
+	            },
+	            beforeSend: function beforeSend() {
 	                AppDispatcher.dispatch({
-	                    eventName: 'delete-widget',
-	                    newItem: null
+	                    eventName: 'set-data-action',
+	                    newItem: true
+	                });
+	            },
+	            complete: function complete() {
+	                AppDispatcher.dispatch({
+	                    eventName: 'set-data-action',
+	                    newItem: false
 	                });
 	            }
 	        });
@@ -26782,13 +26806,17 @@
 	        var deletePermission = _react2.default.createElement(
 	            "div",
 	            { className: "line clearfix" },
-	            _react2.default.createElement("input", { type: "button", name: "delete_widget", value: "\u0423\u0434\u0430\u043B\u0438\u0442\u044C \u0432\u0438\u0434\u0436\u0435\u0442",
-	                onClick: this._handleDeleteWidgetButtonClick })
+	            _react2.default.createElement(
+	                "button",
+	                { disabled: window.GlobalStorage.dataInAction, name: "delete_widget",
+	                    onClick: this._handleDeleteWidgetButtonClick },
+	                "\u0423\u0434\u0430\u043B\u0438\u0442\u044C \u0432\u0438\u0434\u0436\u0435\u0442"
+	            )
 	        );
 
 	        // TODO: какая-то хэ с БД, а именно с bool
 	        if (storage[activeWidget].widget.super == "1") {
-	            deletePermission = '';
+	            deletePermission = "";
 	        }
 
 	        return _react2.default.createElement(
@@ -26898,7 +26926,7 @@
 	                    "div",
 	                    { style: styles.popover },
 	                    _react2.default.createElement("div", { style: styles.cover, onClick: this._handleChangeBorderColorPickerActivity }),
-	                    _react2.default.createElement(_reactColor.SketchPicker, { disableAlpha: true, color: information.border_color,
+	                    _react2.default.createElement(_reactColor.SketchPicker, { color: information.border_color,
 	                        onChange: this._handleChangeBorderColor,
 	                        presetColors: colorPreset,
 	                        style: styles.picker })
@@ -40247,7 +40275,8 @@
 	    getInitialState: function getInitialState() {
 	        return {
 	            provider: this.props.provider,
-	            name: this.props.name
+	            name: this.props.name,
+	            check: false
 	        };
 	    },
 
@@ -40256,7 +40285,22 @@
 
 	        AppDispatcher.dispatch({
 	            eventName: 'change-show-provider-info',
-	            newItem: [this.state.provider, !widgetsList[this.state.provider].options.information.show_provider_info]
+	            newItem: [this.state.provider, !this.state.check]
+	        });
+
+	        this.setState({
+	            check: !this.state.check
+	        });
+	    },
+
+	    componentDidMount: function componentDidMount() {
+	        var storage = window.GlobalStorage.widgetsList;
+
+	        var activeWidget = this.state.provider;
+	        var information = storage[activeWidget].options.information;
+
+	        this.setState({
+	            check: information.show_provider_info.toString() === "true" ? true : false
 	        });
 	    },
 
@@ -40266,12 +40310,7 @@
 	        var activeWidget = this.state.provider;
 	        var information = storage[activeWidget].options.information;
 
-	        var check = false;
-
-	        if (information.show_provider_info.toString() == 'true') {
-	            check = true;
-	        }
-
+	        console.log('cc ' + this.state.check);
 	        return _react2.default.createElement(
 	            'div',
 	            { className: 'line clearfix' },
@@ -40280,7 +40319,7 @@
 	                { className: 'label' },
 	                this.props.name
 	            ),
-	            _react2.default.createElement('input', { type: 'checkbox', name: 'show_provider_info', checked: check, onChange: this._handleChangeShowProviderInfo })
+	            _react2.default.createElement('input', { type: 'checkbox', name: 'show_provider_info', checked: this.state.check, onChange: this._handleChangeShowProviderInfo })
 	        );
 	    }
 	});
@@ -40505,7 +40544,7 @@
 	                    temp: -33,
 	                    tempUnit: 'C',
 	                    icon: 'wi-rain',
-	                    hasProviderInfo: storage.widgetsList[activeTabId].options.information.show_provider_info,
+	                    hasProviderInfo: storage.widgetsList[activeTabId].options.information.show_provider_info.toString() === "true",
 	                    from: 'options',
 	                    providerName: storage.widgetsList[activeTabId].options.information.weather_provider,
 	                    borderColor: storage.widgetsList[activeTabId].options.information.border_color
@@ -41257,7 +41296,7 @@
 	    },
 
 	    _copyWidget: function _copyWidget(widget) {
-	        var url = '/bitrix/tools/weather_service/copy_widget.php';
+	        var url = '/bitrix/tools/weather_service/api.php';
 
 	        var newName = 'Copy of ' + widget.widget.name;
 
@@ -41266,15 +41305,23 @@
 	            url: url,
 	            dataType: 'json',
 	            data: {
+	                action: 'copy_widget',
 	                name: newName,
 	                information: widget.options.information,
-	                providers_list: widget.options.providers_list
+	                providersList: widget.options.providers_list
 	            },
 	            success: function (data) {
-	                AppDispatcher.dispatch({
-	                    eventName: 'copy-widget',
-	                    newItem: data
-	                });
+	                if (data.code) {
+	                    AppDispatcher.dispatch({
+	                        eventName: 'copy-widget-success',
+	                        newItem: data
+	                    });
+	                } else {
+	                    AppDispatcher.dispatch({
+	                        eventName: 'copy-widget-failed',
+	                        newItem: null
+	                    });
+	                }
 	            }.bind(this)
 	        });
 	    },

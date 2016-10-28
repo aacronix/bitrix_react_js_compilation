@@ -10,7 +10,7 @@ import DropDownMeasurementSystemField from "../dropDownMeasurementSystemField/dr
 import PreviewManager from "../previewManager/previewManager.jsx";
 
 var ViewOptionsList = React.createClass({
-    getInitialState: function () {
+    getInitialState: function getInitialState() {
         return {
             provider: this.props.activeProvider,
             showColorBgPicker: false,
@@ -20,10 +20,10 @@ var ViewOptionsList = React.createClass({
         };
     },
 
-    _handleChangeBgColor: function (color) {
+    _handleChangeBgColor: function _handleChangeBgColor(color) {
         AppDispatcher.dispatch({
             eventName: 'change-bg-color',
-            newItem: [this.state.provider, "rgba(" + color.rgb.r + ", " + color.rgb.g + ", " + color.rgb.b + ", " + color.rgb.a + ")"]
+            newItem: [this.state.provider, 'rgba(' + color.rgb.r + ', ' + color.rgb.g + ', ' + color.rgb.b + ', ' + color.rgb.a + ')']
         });
     },
 
@@ -44,7 +44,7 @@ var ViewOptionsList = React.createClass({
     _handleChangeBorderColor: function (color) {
         AppDispatcher.dispatch({
             eventName: 'change-border-color',
-            newItem: [this.state.provider, color.hex]
+            newItem: [this.state.provider, 'rgba(' + color.rgb.r + ', ' + color.rgb.g + ', ' + color.rgb.b + ', ' + color.rgb.a + ')']
         });
     },
 
@@ -80,19 +80,39 @@ var ViewOptionsList = React.createClass({
     },
 
     _deleteWidget: function (id) {
-        var url = '/bitrix/tools/weather_service/delete_widget.php';
+        var url = '/bitrix/tools/weather_service/api.php';
 
         $.ajax({
-            type: "POST",
+            type: 'POST',
             url: url,
             dataType: 'json',
             data: {
+                action: 'delete_widget',
                 id: id
             },
-            success: function () {
+            success: function (data) {
+                if (data.code){
+                    AppDispatcher.dispatch({
+                        eventName: 'delete-widget-success',
+                        newItem: null
+                    });
+                } else {
+                    AppDispatcher.dispatch({
+                        eventName: 'delete-widget-failed',
+                        newItem: null
+                    });
+                }
+            },
+            beforeSend: function () {
                 AppDispatcher.dispatch({
-                    eventName: 'delete-widget',
-                    newItem: null
+                    eventName: 'set-data-action',
+                    newItem: true
+                });
+            },
+            complete: function () {
+                AppDispatcher.dispatch({
+                    eventName: 'set-data-action',
+                    newItem: false
                 });
             }
         });
@@ -152,7 +172,7 @@ var ViewOptionsList = React.createClass({
                     right: '0px',
                     bottom: '0px',
                     left: '0px',
-                    zIndex: '100',
+                    zIndex: '100'
                 },
                 picker: {
                     zIndex: '1000'
@@ -161,82 +181,83 @@ var ViewOptionsList = React.createClass({
         });
 
         var deletePermission = <div className="line clearfix">
-            <input type="button" name="delete_widget" value="Удалить виджет"
-                   onClick={this._handleDeleteWidgetButtonClick}/>
+            <button disabled={window.GlobalStorage.dataInAction} name="delete_widget"
+                    onClick={this._handleDeleteWidgetButtonClick}>Удалить виджет
+            </button>
         </div>;
 
         // TODO: какая-то хэ с БД, а именно с bool
         if (storage[activeWidget].widget.super == "1") {
-            deletePermission = '';
+            deletePermission = "";
         }
 
         return (
-            <div className="view-options b-option">
-                <p className="title">Настройка отображения</p>
-                <div className="line clearfix">
-                    <p className="label">Заголовок виджета</p>
-                    <input type="text" name="widget_title" value={information.widget_title}
-                           onChange={this._handleTitleChange}/>
-                </div>
-                <DropDownUpdateTimeField provider={activeWidget} name='Интервал обновления'/>
-                <DropDownMeasurementSystemField provider={activeWidget} name='Система измерений'/>
-                <div className="line clearfix">
-                    <p className="label">Цвет заднего фона</p>
-                    <div style={ styles.swatch } onClick={ this._handleChangeBgColorPickerActivity }>
-                        <div style={ styles.bgColor }/>
-                    </div>
-                    { this.state.showColorBgPicker ? <div style={ styles.popover }>
-                        <div style={ styles.cover } onClick={ this._handleChangeBgColorPickerActivity }/>
-                        <SketchPicker color={ information.background_color }
-                                      onChange={ this._handleChangeBgColor }
-                                      presetColors={colorPreset}
-                                      style={ styles.picker }/>
-                    </div> : null }
-                </div>
-                <div className="line clearfix">
-                    <p className="label">Цвет основного текста</p>
-                    <div style={ styles.swatch } onClick={ this._handleChangeMajorTextColorPickerActivity }>
-                        <div style={ styles.majorTextColor }/>
-                    </div>
-                    { this.state.showColorMajorTextPicker ? <div style={ styles.popover }>
-                        <div style={ styles.cover } onClick={ this._handleChangeMajorTextColorPickerActivity }/>
-                        <SketchPicker disableAlpha={true} color={ information.major_text_color }
-                                      onChange={ this._handleChangeMajorTextColor }
-                                      presetColors={colorPreset}
-                                      style={ styles.picker }/>
-                    </div> : null }
-                </div>
-                <div className="line clearfix">
-                    <p className="label">Цвет дополнительного текста</p>
-                    <div style={ styles.swatch } onClick={ this._handleChangeExtraTextColorPickerActivity }>
-                        <div style={ styles.extraTextColor }/>
-                    </div>
-                    { this.state.showColorExtraTextPicker ? <div style={ styles.popover }>
-                        <div style={ styles.cover } onClick={ this._handleChangeExtraTextColorPickerActivity }/>
-                        <SketchPicker disableAlpha={true} color={ information.extra_text_color }
-                                      onChange={ this._handleChangeExtraTextColor }
-                                      presetColors={colorPreset}
-                                      style={ styles.picker }/>
-                    </div> : null }
-                </div>
-                <div className="line clearfix">
-                    <p className="label">Цвет границ виджета</p>
-                    <div style={ styles.swatch } onClick={ this._handleChangeBorderColorPickerActivity }>
-                        <div style={ styles.borderColor }/>
-                    </div>
-                    { this.state.showBorderColorPicker ? <div style={ styles.popover }>
-                        <div style={ styles.cover } onClick={ this._handleChangeBorderColorPickerActivity }/>
-                        <SketchPicker disableAlpha={true} color={ information.border_color }
-                                      onChange={ this._handleChangeBorderColor }
-                                      presetColors={colorPreset}
-                                      style={ styles.picker }/>
-                    </div> : null }
-                </div>
-                <CheckBoxField provider={activeWidget} name='Показывать провайдера на виджете?'/>
-                <InputField provider={activeWidget} name='Название виджета'/>
-                {deletePermission}
-                <PreviewManager templateName={widget.template_name}/>
-            </div>
+          <div className="view-options b-option">
+              <p className="title">Настройка отображения</p>
+              <div className="line clearfix">
+                  <p className="label">Заголовок виджета</p>
+                  <input type="text" name="widget_title" value={information.widget_title}
+                         onChange={this._handleTitleChange}/>
+              </div>
+              <DropDownUpdateTimeField provider={activeWidget} name="Интервал обновления"/>
+              <DropDownMeasurementSystemField provider={activeWidget} name="Система измерений"/>
+              <div className="line clearfix">
+                  <p className="label">Цвет заднего фона</p>
+                  <div style={ styles.swatch } onClick={ this._handleChangeBgColorPickerActivity }>
+                      <div style={ styles.bgColor }/>
+                  </div>
+                  { this.state.showColorBgPicker ? <div style={ styles.popover }>
+                      <div style={ styles.cover } onClick={ this._handleChangeBgColorPickerActivity }/>
+                      <SketchPicker color={ information.background_color }
+                                    onChange={ this._handleChangeBgColor }
+                                    presetColors={colorPreset}
+                                    style={ styles.picker }/>
+                  </div> : null }
+              </div>
+              <div className="line clearfix">
+                  <p className="label">Цвет основного текста</p>
+                  <div style={ styles.swatch } onClick={ this._handleChangeMajorTextColorPickerActivity }>
+                      <div style={ styles.majorTextColor }/>
+                  </div>
+                  { this.state.showColorMajorTextPicker ? <div style={ styles.popover }>
+                      <div style={ styles.cover } onClick={ this._handleChangeMajorTextColorPickerActivity }/>
+                      <SketchPicker disableAlpha={true} color={ information.major_text_color }
+                                    onChange={ this._handleChangeMajorTextColor }
+                                    presetColors={colorPreset}
+                                    style={ styles.picker }/>
+                  </div> : null }
+              </div>
+              <div className="line clearfix">
+                  <p className="label">Цвет дополнительного текста</p>
+                  <div style={ styles.swatch } onClick={ this._handleChangeExtraTextColorPickerActivity }>
+                      <div style={ styles.extraTextColor }/>
+                  </div>
+                  { this.state.showColorExtraTextPicker ? <div style={ styles.popover }>
+                      <div style={ styles.cover } onClick={ this._handleChangeExtraTextColorPickerActivity }/>
+                      <SketchPicker disableAlpha={true} color={ information.extra_text_color }
+                                    onChange={ this._handleChangeExtraTextColor }
+                                    presetColors={colorPreset}
+                                    style={ styles.picker }/>
+                  </div> : null }
+              </div>
+              <div className="line clearfix">
+                  <p className="label">Цвет границ виджета</p>
+                  <div style={ styles.swatch } onClick={ this._handleChangeBorderColorPickerActivity }>
+                      <div style={ styles.borderColor }/>
+                  </div>
+                  { this.state.showBorderColorPicker ? <div style={ styles.popover }>
+                      <div style={ styles.cover } onClick={ this._handleChangeBorderColorPickerActivity }/>
+                      <SketchPicker color={ information.border_color }
+                                    onChange={ this._handleChangeBorderColor }
+                                    presetColors={colorPreset}
+                                    style={ styles.picker }/>
+                  </div> : null }
+              </div>
+              <CheckBoxField provider={activeWidget} name="Показывать провайдера на виджете?"/>
+              <InputField provider={activeWidget} name="Название виджета"/>
+              {deletePermission}
+              <PreviewManager templateName={widget.template_name}/>
+          </div>
         );
     }
 });
