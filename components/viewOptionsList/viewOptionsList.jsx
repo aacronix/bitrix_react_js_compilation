@@ -3,6 +3,7 @@
 import React from "react";
 import {SketchPicker} from "react-color";
 import reactCSS from "reactcss";
+import RCSlider from "rc-slider";
 import InputField from "../inputField/inputField.jsx";
 import CheckBoxField from "../checkBoxField/checkBoxField.jsx";
 import DropDownUpdateTimeField from "../dropDownUpdateTimeField/dropDownUpdateTimeTime.jsx";
@@ -79,6 +80,41 @@ var ViewOptionsList = React.createClass({
         this._deleteWidget(id);
     },
 
+    _changeMajorTextSize: function (value) {
+        AppDispatcher.dispatch({
+            eventName: 'major-text-size-change',
+            newItem: [this.state.provider, value]
+        });
+    },
+
+    _changeExtraTextSize: function (value) {
+        AppDispatcher.dispatch({
+            eventName: 'extra-text-size-change',
+            newItem: [this.state.provider, value]
+        });
+    },
+
+    _changeIconSize: function (value) {
+        AppDispatcher.dispatch({
+            eventName: 'weather-icon-size-change',
+            newItem: [this.state.provider, value]
+        });
+    },
+
+    _changeTemperatureTextSize: function (value) {
+        AppDispatcher.dispatch({
+            eventName: 'temperature-text-size-change',
+            newItem: [this.state.provider, value]
+        });
+    },
+
+    _changeTemperatureIconSize: function (value) {
+        AppDispatcher.dispatch({
+            eventName: 'temperature-icon-size-change',
+            newItem: [this.state.provider, value]
+        });
+    },
+
     _deleteWidget: function (id) {
         var url = '/bitrix/tools/weather_service/api.php';
 
@@ -91,7 +127,7 @@ var ViewOptionsList = React.createClass({
                 id: id
             },
             success: function (data) {
-                if (data.code){
+                if (data.code) {
                     AppDispatcher.dispatch({
                         eventName: 'delete-widget-success',
                         newItem: null
@@ -201,7 +237,7 @@ var ViewOptionsList = React.createClass({
                          onChange={this._handleTitleChange}/>
               </div>
               <DropDownUpdateTimeField provider={activeWidget} name={langFile.update_interval}/>
-              <DropDownMeasurementSystemField provider={activeWidget} name={langFile.update_interval}/>
+              <DropDownMeasurementSystemField provider={activeWidget} name={langFile.measurement_system}/>
               <div className="line clearfix">
                   <p className="label">{langFile.background_color}</p>
                   <div style={ styles.swatch } onClick={ this._handleChangeBgColorPickerActivity }>
@@ -253,6 +289,26 @@ var ViewOptionsList = React.createClass({
                                     presetColors={colorPreset}
                                     style={ styles.picker }/>
                   </div> : null }
+              </div>
+              <div className="line clearfix">
+                  <p className="label">{langFile.font_size_slider.major_text_size}</p>
+                  <RCSlider min={1} max={150} defaultValue={parseInt(information.major_text_size)} onChange={this._changeMajorTextSize} />
+              </div>
+              <div className="line clearfix">
+                  <p className="label">{langFile.font_size_slider.temperature_text_size}</p>
+                  <RCSlider min={1} max={150} defaultValue={parseInt(information.temperature_text_size)} onChange={this._changeTemperatureTextSize} />
+              </div>
+              <div className="line clearfix">
+                  <p className="label">{langFile.font_size_slider.temperature_icon_size}</p>
+                  <RCSlider min={1} max={150} defaultValue={parseInt(information.temperature_icon_size)} onChange={this._changeTemperatureIconSize} />
+              </div>
+              <div className="line clearfix">
+                  <p className="label">{langFile.font_size_slider.extra_text_size}</p>
+                  <RCSlider min={1} max={150} defaultValue={parseInt(information.extra_text_size)} onChange={this._changeExtraTextSize} />
+              </div>
+              <div className="line clearfix">
+                  <p className="label">{langFile.font_size_slider.weather_icon_size}</p>
+                  <RCSlider min={1} max={150} defaultValue={parseInt(information.weather_icon_size)} onChange={this._changeIconSize} />
               </div>
               <CheckBoxField provider={activeWidget} name={langFile.show_provider_on_widget}/>
               <InputField provider={activeWidget} name={langFile.widget_name}/>

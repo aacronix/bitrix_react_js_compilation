@@ -18,10 +18,17 @@
       "metrical": "Metrical"
     },
     "update_interval_dropdown": {
-      "update_interval_30_min" : "30 ьштгеуы",
+      "update_interval_30_min" : "30 minutes",
       "update_interval_60_min" : "1 hour",
       "update_interval_120_min" : "2 hours",
       "update_interval_360_min" : "6 hours"
+    },
+    "font_size_slider": {
+      "major_text_size": "Main text size",
+      "temperature_text_size": "Temperature text size",
+      "temperature_icon_size": "Temperature sign size",
+      "extra_text_size": "Additional text size",
+      "weather_icon_size": "Weather icon size"
     }
   },
   "notifies": {

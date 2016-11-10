@@ -17,6 +17,11 @@
         "major_text_color": "#ffffff",
         "extra_text_color": "#ffffff",
         "update_interval": 120,
+        "temperature_text_size": 14,
+        "temperature_sign_size": 14,
+        "major_text_size": 14,
+        "weather_icon_size": 14,
+        "extra_text_size": 14,
         "show_provider_info": 0,
         "measurement_system": "metrical"
       },

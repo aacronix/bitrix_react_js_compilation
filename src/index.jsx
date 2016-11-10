@@ -170,6 +170,21 @@ window.AppDispatcher = {
             case 'app-information-loaded':
                 window.appInformation = payload.newItem;
                 break;
+            case 'major-text-size-change':
+                widgetStore.widgetsList[payload.newItem[0]].options.information.major_text_size = payload.newItem[1];
+                break;
+            case 'extra-text-size-change':
+                widgetStore.widgetsList[payload.newItem[0]].options.information.extra_text_size = payload.newItem[1];
+                break;
+            case 'weather-icon-size-change':
+                widgetStore.widgetsList[payload.newItem[0]].options.information.weather_icon_size = payload.newItem[1];
+                break;
+            case 'temperature-text-size-change':
+                widgetStore.widgetsList[payload.newItem[0]].options.information.temperature_text_size = payload.newItem[1];
+                break;
+            case 'temperature-icon-size-change':
+                widgetStore.widgetsList[payload.newItem[0]].options.information.temperature_icon_size = payload.newItem[1];
+                break;
             default:
                 widgetStore.savedWS = false;
         }
