@@ -1,0 +1,52 @@
+{
+  "text": {
+    "view_settings": "Настройка отображения",
+    "widget_title": "Заголовок виджета",
+    "update_interval": "Интервал обновления",
+    "measurement_system": "Система измерений",
+    "background_color": "Цвет заднего фона",
+    "major_text_color": "Цвет основного текста",
+    "extra_text_color": "Цвет дополнительного текста",
+    "widget_border_color": "Цвет границ виджета",
+    "show_provider_on_widget": "Показывать провайдера на виджете?",
+    "widget_name": "Название виджета",
+    "delete_widget": "Удалить виджет",
+    "providers_list_title": "Провайдеры",
+    "send_button": "Отправить",
+    "measure_system_dropdown":{
+      "britain" : "Британская",
+      "metrical": "Метрическая"
+    },
+    "update_interval_dropdown": {
+      "update_interval_30_min" : "30 минут",
+      "update_interval_60_min" : "1 час",
+      "update_interval_120_min" : "2 часа",
+      "update_interval_360_min" : "6 часов"
+    }
+  },
+  "notifies": {
+    "widget_copied_title": "Виджет скопирован",
+    "widget_copied_body": "Виджет успешно скопирован и готов к настройке",
+
+    "widget_copied_fail_title": "Виджет не скопирован",
+    "widget_copied_fail_body": "Виджет не скопирован. Возможно ошибки в форме",
+
+    "widget_delete_title": "Виджет удален",
+    "widget_delete_body": "Виджет успешно удален из системы",
+
+    "widget_delete_fail_title": "Виджет не удален",
+    "widget_delete_fail_body": "",
+
+    "widget_update_title": "Форма отправлена",
+    "widget_update_body": "Форма успешно сохранена",
+
+    "widget_send_data_not_changed_title": "Форма не отправлена",
+    "widget_send_data_not_changed_body": "Форма не отправлена, т.к. на ней не были внесены изменения",
+
+    "widget_send_has_error_title": "Форма не отправлена",
+    "widget_send_has_error_body": "Форма не отправлена, т.к. как содержит ошибки",
+
+    "widget_send_server_error_title": "Форма не отправлена",
+    "widget_send_server_error_body": "Форма не отправлена, проблемы с сервером"
+  }
+}

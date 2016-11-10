@@ -1,0 +1,52 @@
+{
+  "text": {
+    "view_settings": "Setting display",
+    "widget_title": "Widget heading",
+    "update_interval": "Updating interval",
+    "measurement_system": "Measuring system",
+    "background_color": "Background color",
+    "major_text_color": "Color of the main text",
+    "extra_text_color": "Color of the additional text",
+    "widget_border_color": "Color of borders of a widget",
+    "show_provider_on_widget": "To show provider on a widget?",
+    "widget_name": "Name of a widget",
+    "delete_widget": "Remove widget",
+    "providers_list_title": "Providers",
+    "send_button": "Send",
+    "measure_system_dropdown":{
+      "britain" : "Britain",
+      "metrical": "Metrical"
+    },
+    "update_interval_dropdown": {
+      "update_interval_30_min" : "30 ьштгеуы",
+      "update_interval_60_min" : "1 hour",
+      "update_interval_120_min" : "2 hours",
+      "update_interval_360_min" : "6 hours"
+    }
+  },
+  "notifies": {
+    "widget_copied_title": "The widget is copied",
+    "widget_copied_body": "The widget is successfully copied and ready to setup",
+
+    "widget_copied_fail_title": "The widget isn't copied",
+    "widget_copied_fail_body": "The widget isn't copied. Perhaps errors in send form",
+
+    "widget_delete_title": "The widget is removed",
+    "widget_delete_body": "The widget is successfully removed from system",
+
+    "widget_delete_fail_title": "The widget isn't removed",
+    "widget_delete_fail_body": "",
+
+    "widget_update_title": "The form is sent",
+    "widget_update_body": "The form is successfully kept",
+
+    "widget_send_data_not_changed_title": "The form isn't sent",
+    "widget_send_data_not_changed_body": "The form isn't sent since on it changes haven't been made",
+
+    "widget_send_has_error_title": "The form isn't sent",
+    "widget_send_has_error_body": "The form isn't sent since as contains mistakes",
+
+    "widget_send_server_error_title": "The form isn't sent",
+    "widget_send_server_error_body": "The form isn't sent, problems with the server"
+  }
+}
