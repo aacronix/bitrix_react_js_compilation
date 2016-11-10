@@ -26,6 +26,7 @@ var ProviderList = React.createClass({
 
     render: function () {
         var storage = window.GlobalStorage;
+        var langFile = window.langFile.text;
 
         var className = 'active';
         if (!storage.globalCollapse){
@@ -33,7 +34,7 @@ var ProviderList = React.createClass({
         }
         return (
             <div className="providers b-option">
-                <p className="title">Провайдеры<span className={'collapse-control ' + className} onClick={this._changeCollapse}></span></p>
+                <p className="title">{langFile.providers_list_title}<span className={'collapse-control ' + className} onClick={this._changeCollapse}></span></p>
                 <ReactCollapse isOpened={storage.globalCollapse}>
                     {storage.widgetsList[this.state.widgetId].options.providers_list.map((element, i) => (
                         <ProviderItem key={'provider_item_' + i}

@@ -29,6 +29,7 @@ var DropDownUpdateTimeField = React.createClass({
     
     render: function () {
         var storage = window.GlobalStorage.widgetsList;
+        var langFile = window.langFile.text.update_interval_dropdown;
 
         var activeWidget = this.state.provider;
         var information = storage[activeWidget].options.information;
@@ -37,10 +38,10 @@ var DropDownUpdateTimeField = React.createClass({
             <div className="line clearfix">
                 <p className="label">{this.props.name}</p>
                 <select onChange={this._handleUpdateIntervalChange} value={information.update_interval}>
-                    <option value='30'>30 минут</option>
-                    <option value='60'>1 час</option>
-                    <option value='120'>2 часа</option>
-                    <option value='360'>6 часов</option>
+                    <option value='30'>{langFile.update_interval_30_min}</option>
+                    <option value='60'>{langFile.update_interval_60_min}</option>
+                    <option value='120'>{langFile.update_interval_120_min}</option>
+                    <option value='360'>{langFile.update_interval_360_min}</option>
                 </select>
             </div>
         );

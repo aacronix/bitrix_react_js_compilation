@@ -83,6 +83,7 @@ var FooterButtonDock = React.createClass({
 
     render: function () {
         var storage = window.GlobalStorage;
+        var langFile = window.langFile.text;
 
         var className = 'inactive';
         if (!storage.dataInAction) {
@@ -91,7 +92,7 @@ var FooterButtonDock = React.createClass({
 
         return (
           <div className={'footer-button-dock ' + className}>
-              <button onClick={this._handleClick} disabled={storage.dataInAction}>Send</button>
+              <button onClick={this._handleClick} disabled={storage.dataInAction}>{langFile.send_button}</button>
           </div>
         );
     }

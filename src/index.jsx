@@ -15,6 +15,7 @@ console.log(window.pageLang);
 window.appInformation = {};
 
 window.providersInfo = {};
+window.langFile = {};
 
 String.prototype.hashCode = function () {
     var hash = 0, i, chr, len;
@@ -52,6 +53,7 @@ MicroEvent.mixin(GlobalStorage);
 window.AppDispatcher = {
     register: function (payload) {
         var widgetStore = window.GlobalStorage;
+        var langFile = window.langFile.notifies;
         widgetStore.savedWS = false;
 
         switch (payload.eventName) {
@@ -100,19 +102,19 @@ window.AppDispatcher = {
             case 'copy-widget-success':
                 widgetStore.widgetsList.push(payload.newItem.content);
                 widgetStore.savedWS = true;
-                notificationTrigger('Виджет скопирован', 'Виджет успешно скопирован и готов к настройке', 'success');
+                notificationTrigger(langFile.widget_copied_title, langFile.widget_copied_body, 'success');
                 break;
             case 'copy-widget-failed':
-                notificationTrigger('Виджет не скопирован', 'Виджет не скопирован. Возможно ошибки в форме', 'warning');
+                notificationTrigger(langFile.widget_copied_fail_title, langFile.widget_copied_fail_body, 'warning');
                 break;
             case 'delete-widget-success':
                 widgetStore.widgetsList.splice(widgetStore.activeTabId, 1);
                 widgetStore.activeTabId--;
-                notificationTrigger('Виджет удален', 'Виджет успешно удален из системы', 'success');
+                notificationTrigger(langFile.widget_delete_title, langFile.widget_delete_body, 'success');
                 widgetStore.trigger('delete-widget');
                 break;
             case 'delete-widget-failed':
-                notificationTrigger('Виджет не удален', '', 'warning');
+                notificationTrigger(langFile.widget_delete_fail_title, langFile.widget_delete_fail_body, 'warning');
                 break;
             case 'options-information-loaded':
                 widgetStore.widgetsList = payload.newItem;
@@ -128,16 +130,16 @@ window.AppDispatcher = {
                 widgetStore.trigger('widgets-updated-success');
                 widgetStore.dataHash = JSON.stringify(widgetStore.widgetsList).hashCode();
                 widgetStore.trigger('notify-system');
-                notificationTrigger('Форма отправлена', 'Форма успешно сохранена', 'success');
+                notificationTrigger(langFile.widget_update_title, langFile.widget_update_body, 'success');
                 break;
             case 'data-not-changed':
-                notificationTrigger('Форма не отправлена', 'Форма не отправлена, т.к. на ней не были внесены изменения', 'info');
+                notificationTrigger(langFile.widget_send_data_not_changed_title, langFile.widget_send_data_not_changed_body, 'info');
                 break;
             case 'form-has-errors':
-                notificationTrigger('Форма не отправлена', 'Форма не отправлена, т.к. как содержит ошибки', 'warning');
+                notificationTrigger(langFile.widget_send_has_error_title, langFile.widget_send_has_error_body, 'warning');
                 break;
             case 'widgets-updated-failed':
-                notificationTrigger('Форма не отправлена', 'Форма не отправлена, проблемы с сервером', 'warning');
+                notificationTrigger(langFile.widget_send_server_error_title, langFile.widget_send_server_error_body, 'warning');
                 widgetStore.trigger('widgets-updated-failed');
                 break;
             case 'data-validation':
@@ -160,6 +162,10 @@ window.AppDispatcher = {
                 break;
             case 'providers-information-loaded':
                 window.providersInfo = payload.newItem;
+                break;
+            case 'lang-information-loaded':
+                console.log(payload.newItem);
+                window.langFile = payload.newItem;
                 break;
             case 'app-information-loaded':
                 window.appInformation = payload.newItem;
@@ -204,6 +210,15 @@ var App = React.createClass({
         });
     },
 
+    _loadLangFile: function () {
+        $.getJSON("/react/src/lang/" + window.pageLang + "/text.json", function (json) {
+            AppDispatcher.dispatch({
+                eventName: 'lang-information-loaded',
+                newItem: json
+            });
+        });
+    },
+
     _loadProviderInfo: function () {
         $.getJSON("/react/src/providersInfo.json", function (json) {
             AppDispatcher.dispatch({
@@ -232,24 +247,25 @@ var App = React.createClass({
         this._loadAppInfo();
         this._loadProviderInfo();
         this._loadParametersFromServer();
+        this._loadLangFile();
     },
 
     render: function () {
         var renderContent =
-            <div>
-                <YandexMap/>
-                <TabsList/>
-                <FooterButtonDock />
-            </div>;
+          <div>
+              <YandexMap/>
+              <TabsList/>
+              <FooterButtonDock />
+          </div>;
 
         if (!this.state.componentLoadedData) {
             renderContent = null
         }
         return (
-            <div className='bitrix-frendly'>
-                <NotificationSystem ref='notificationSystem'/>
-                {renderContent}
-            </div>
+          <div className='bitrix-frendly'>
+              <NotificationSystem ref='notificationSystem'/>
+              {renderContent}
+          </div>
         )
     }
 });

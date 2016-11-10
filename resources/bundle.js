@@ -82,6 +82,7 @@
 	window.appInformation = {};
 
 	window.providersInfo = {};
+	window.langFile = {};
 
 	String.prototype.hashCode = function () {
 	    var hash = 0,
@@ -122,6 +123,7 @@
 	window.AppDispatcher = {
 	    register: function register(payload) {
 	        var widgetStore = window.GlobalStorage;
+	        var langFile = window.langFile.notifies;
 	        widgetStore.savedWS = false;
 
 	        switch (payload.eventName) {
@@ -170,19 +172,19 @@
 	            case 'copy-widget-success':
 	                widgetStore.widgetsList.push(payload.newItem.content);
 	                widgetStore.savedWS = true;
-	                notificationTrigger('Виджет скопирован', 'Виджет успешно скопирован и готов к настройке', 'success');
+	                notificationTrigger(langFile.widget_copied_title, langFile.widget_copied_body, 'success');
 	                break;
 	            case 'copy-widget-failed':
-	                notificationTrigger('Виджет не скопирован', 'Виджет не скопирован. Возможно ошибки в форме', 'warning');
+	                notificationTrigger(langFile.widget_copied_fail_title, langFile.widget_copied_fail_body, 'warning');
 	                break;
 	            case 'delete-widget-success':
 	                widgetStore.widgetsList.splice(widgetStore.activeTabId, 1);
 	                widgetStore.activeTabId--;
-	                notificationTrigger('Виджет удален', 'Виджет успешно удален из системы', 'success');
+	                notificationTrigger(langFile.widget_delete_title, langFile.widget_delete_body, 'success');
 	                widgetStore.trigger('delete-widget');
 	                break;
 	            case 'delete-widget-failed':
-	                notificationTrigger('Виджет не удален', '', 'warning');
+	                notificationTrigger(langFile.widget_delete_fail_title, langFile.widget_delete_fail_body, 'warning');
 	                break;
 	            case 'options-information-loaded':
 	                widgetStore.widgetsList = payload.newItem;
@@ -198,16 +200,16 @@
 	                widgetStore.trigger('widgets-updated-success');
 	                widgetStore.dataHash = JSON.stringify(widgetStore.widgetsList).hashCode();
 	                widgetStore.trigger('notify-system');
-	                notificationTrigger('Форма отправлена', 'Форма успешно сохранена', 'success');
+	                notificationTrigger(langFile.widget_update_title, langFile.widget_update_body, 'success');
 	                break;
 	            case 'data-not-changed':
-	                notificationTrigger('Форма не отправлена', 'Форма не отправлена, т.к. на ней не были внесены изменения', 'info');
+	                notificationTrigger(langFile.widget_send_data_not_changed_title, langFile.widget_send_data_not_changed_body, 'info');
 	                break;
 	            case 'form-has-errors':
-	                notificationTrigger('Форма не отправлена', 'Форма не отправлена, т.к. как содержит ошибки', 'warning');
+	                notificationTrigger(langFile.widget_send_has_error_title, langFile.widget_send_has_error_body, 'warning');
 	                break;
 	            case 'widgets-updated-failed':
-	                notificationTrigger('Форма не отправлена', 'Форма не отправлена, проблемы с сервером', 'warning');
+	                notificationTrigger(langFile.widget_send_server_error_title, langFile.widget_send_server_error_body, 'warning');
 	                widgetStore.trigger('widgets-updated-failed');
 	                break;
 	            case 'data-validation':
@@ -230,6 +232,10 @@
 	                break;
 	            case 'providers-information-loaded':
 	                window.providersInfo = payload.newItem;
+	                break;
+	            case 'lang-information-loaded':
+	                console.log(payload.newItem);
+	                window.langFile = payload.newItem;
 	                break;
 	            case 'app-information-loaded':
 	                window.appInformation = payload.newItem;
@@ -276,6 +282,15 @@
 	        });
 	    },
 
+	    _loadLangFile: function _loadLangFile() {
+	        $.getJSON("/react/src/lang/" + window.pageLang + "/text.json", function (json) {
+	            AppDispatcher.dispatch({
+	                eventName: 'lang-information-loaded',
+	                newItem: json
+	            });
+	        });
+	    },
+
 	    _loadProviderInfo: function _loadProviderInfo() {
 	        $.getJSON("/react/src/providersInfo.json", function (json) {
 	            AppDispatcher.dispatch({
@@ -304,6 +319,7 @@
 	        this._loadAppInfo();
 	        this._loadProviderInfo();
 	        this._loadParametersFromServer();
+	        this._loadLangFile();
 	    },
 
 	    render: function render() {
@@ -24277,6 +24293,7 @@
 	        var _this = this;
 
 	        var storage = window.GlobalStorage;
+	        var langFile = window.langFile.text;
 
 	        var className = 'active';
 	        if (!storage.globalCollapse) {
@@ -24288,7 +24305,7 @@
 	            _react2.default.createElement(
 	                "p",
 	                { className: "title" },
-	                "\u041F\u0440\u043E\u0432\u0430\u0439\u0434\u0435\u0440\u044B",
+	                langFile.providers_list_title,
 	                _react2.default.createElement("span", { className: 'collapse-control ' + className, onClick: this._changeCollapse })
 	            ),
 	            _react2.default.createElement(
@@ -26744,6 +26761,7 @@
 
 	    render: function render() {
 	        var storage = window.GlobalStorage.widgetsList;
+	        var langFile = window.langFile.text;
 
 	        var activeWidget = this.state.provider;
 	        var information = storage[activeWidget].options.information;
@@ -26810,7 +26828,7 @@
 	                "button",
 	                { disabled: window.GlobalStorage.dataInAction, name: "delete_widget",
 	                    onClick: this._handleDeleteWidgetButtonClick },
-	                "\u0423\u0434\u0430\u043B\u0438\u0442\u044C \u0432\u0438\u0434\u0436\u0435\u0442"
+	                langFile.delete_widget
 	            )
 	        );
 
@@ -26825,7 +26843,7 @@
 	            _react2.default.createElement(
 	                "p",
 	                { className: "title" },
-	                "\u041D\u0430\u0441\u0442\u0440\u043E\u0439\u043A\u0430 \u043E\u0442\u043E\u0431\u0440\u0430\u0436\u0435\u043D\u0438\u044F"
+	                langFile.view_settings
 	            ),
 	            _react2.default.createElement(
 	                "div",
@@ -26833,20 +26851,20 @@
 	                _react2.default.createElement(
 	                    "p",
 	                    { className: "label" },
-	                    "\u0417\u0430\u0433\u043E\u043B\u043E\u0432\u043E\u043A \u0432\u0438\u0434\u0436\u0435\u0442\u0430"
+	                    langFile.widget_title
 	                ),
 	                _react2.default.createElement("input", { type: "text", name: "widget_title", value: information.widget_title,
 	                    onChange: this._handleTitleChange })
 	            ),
-	            _react2.default.createElement(_dropDownUpdateTimeTime2.default, { provider: activeWidget, name: "\u0418\u043D\u0442\u0435\u0440\u0432\u0430\u043B \u043E\u0431\u043D\u043E\u0432\u043B\u0435\u043D\u0438\u044F" }),
-	            _react2.default.createElement(_dropDownMeasurementSystemField2.default, { provider: activeWidget, name: "\u0421\u0438\u0441\u0442\u0435\u043C\u0430 \u0438\u0437\u043C\u0435\u0440\u0435\u043D\u0438\u0439" }),
+	            _react2.default.createElement(_dropDownUpdateTimeTime2.default, { provider: activeWidget, name: langFile.update_interval }),
+	            _react2.default.createElement(_dropDownMeasurementSystemField2.default, { provider: activeWidget, name: langFile.update_interval }),
 	            _react2.default.createElement(
 	                "div",
 	                { className: "line clearfix" },
 	                _react2.default.createElement(
 	                    "p",
 	                    { className: "label" },
-	                    "\u0426\u0432\u0435\u0442 \u0437\u0430\u0434\u043D\u0435\u0433\u043E \u0444\u043E\u043D\u0430"
+	                    langFile.background_color
 	                ),
 	                _react2.default.createElement(
 	                    "div",
@@ -26869,7 +26887,7 @@
 	                _react2.default.createElement(
 	                    "p",
 	                    { className: "label" },
-	                    "\u0426\u0432\u0435\u0442 \u043E\u0441\u043D\u043E\u0432\u043D\u043E\u0433\u043E \u0442\u0435\u043A\u0441\u0442\u0430"
+	                    langFile.major_text_color
 	                ),
 	                _react2.default.createElement(
 	                    "div",
@@ -26892,7 +26910,7 @@
 	                _react2.default.createElement(
 	                    "p",
 	                    { className: "label" },
-	                    "\u0426\u0432\u0435\u0442 \u0434\u043E\u043F\u043E\u043B\u043D\u0438\u0442\u0435\u043B\u044C\u043D\u043E\u0433\u043E \u0442\u0435\u043A\u0441\u0442\u0430"
+	                    langFile.extra_text_color
 	                ),
 	                _react2.default.createElement(
 	                    "div",
@@ -26915,7 +26933,7 @@
 	                _react2.default.createElement(
 	                    "p",
 	                    { className: "label" },
-	                    "\u0426\u0432\u0435\u0442 \u0433\u0440\u0430\u043D\u0438\u0446 \u0432\u0438\u0434\u0436\u0435\u0442\u0430"
+	                    langFile.widget_border_color
 	                ),
 	                _react2.default.createElement(
 	                    "div",
@@ -26932,8 +26950,8 @@
 	                        style: styles.picker })
 	                ) : null
 	            ),
-	            _react2.default.createElement(_checkBoxField2.default, { provider: activeWidget, name: "\u041F\u043E\u043A\u0430\u0437\u044B\u0432\u0430\u0442\u044C \u043F\u0440\u043E\u0432\u0430\u0439\u0434\u0435\u0440\u0430 \u043D\u0430 \u0432\u0438\u0434\u0436\u0435\u0442\u0435?" }),
-	            _react2.default.createElement(_inputField2.default, { provider: activeWidget, name: "\u041D\u0430\u0437\u0432\u0430\u043D\u0438\u0435 \u0432\u0438\u0434\u0436\u0435\u0442\u0430" }),
+	            _react2.default.createElement(_checkBoxField2.default, { provider: activeWidget, name: langFile.show_provider_on_widget }),
+	            _react2.default.createElement(_inputField2.default, { provider: activeWidget, name: langFile.widget_name }),
 	            deletePermission,
 	            _react2.default.createElement(_previewManager2.default, { templateName: widget.template_name })
 	        );
@@ -40367,6 +40385,7 @@
 
 	    render: function render() {
 	        var storage = window.GlobalStorage.widgetsList;
+	        var langFile = window.langFile.text.update_interval_dropdown;
 
 	        var activeWidget = this.state.provider;
 	        var information = storage[activeWidget].options.information;
@@ -40385,22 +40404,22 @@
 	                _react2.default.createElement(
 	                    'option',
 	                    { value: '30' },
-	                    '30 \u043C\u0438\u043D\u0443\u0442'
+	                    langFile.update_interval_30_min
 	                ),
 	                _react2.default.createElement(
 	                    'option',
 	                    { value: '60' },
-	                    '1 \u0447\u0430\u0441'
+	                    langFile.update_interval_60_min
 	                ),
 	                _react2.default.createElement(
 	                    'option',
 	                    { value: '120' },
-	                    '2 \u0447\u0430\u0441\u0430'
+	                    langFile.update_interval_120_min
 	                ),
 	                _react2.default.createElement(
 	                    'option',
 	                    { value: '360' },
-	                    '6 \u0447\u0430\u0441\u043E\u0432'
+	                    langFile.update_interval_360_min
 	                )
 	            )
 	        );
@@ -40440,6 +40459,7 @@
 
 	    render: function render() {
 	        var storage = window.GlobalStorage.widgetsList;
+	        var langFile = window.langFile.text.measure_system_dropdown;
 
 	        var activeWidget = this.state.provider;
 	        var information = storage[activeWidget].options.information;
@@ -40459,12 +40479,12 @@
 	                _react2.default.createElement(
 	                    'option',
 	                    { value: 'metrical' },
-	                    '\u041C\u0435\u0442\u0440\u0438\u0447\u0435\u0441\u043A\u0430\u044F'
+	                    langFile.metrical
 	                ),
 	                _react2.default.createElement(
 	                    'option',
 	                    { value: 'britain' },
-	                    '\u0411\u0440\u0438\u0442\u0430\u043D\u0441\u043A\u0430\u044F'
+	                    langFile.britain
 	                )
 	            )
 	        );
@@ -41480,6 +41500,7 @@
 
 	    render: function render() {
 	        var storage = window.GlobalStorage;
+	        var langFile = window.langFile.text;
 
 	        var className = 'inactive';
 	        if (!storage.dataInAction) {
@@ -41492,7 +41513,7 @@
 	            _react2.default.createElement(
 	                'button',
 	                { onClick: this._handleClick, disabled: storage.dataInAction },
-	                'Send'
+	                langFile.send_button
 	            )
 	        );
 	    }

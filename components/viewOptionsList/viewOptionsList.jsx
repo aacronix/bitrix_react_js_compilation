@@ -120,6 +120,7 @@ var ViewOptionsList = React.createClass({
 
     render: function () {
         var storage = window.GlobalStorage.widgetsList;
+        var langFile = window.langFile.text;
 
         var activeWidget = this.state.provider;
         var information = storage[activeWidget].options.information;
@@ -182,7 +183,7 @@ var ViewOptionsList = React.createClass({
 
         var deletePermission = <div className="line clearfix">
             <button disabled={window.GlobalStorage.dataInAction} name="delete_widget"
-                    onClick={this._handleDeleteWidgetButtonClick}>Удалить виджет
+                    onClick={this._handleDeleteWidgetButtonClick}>{langFile.delete_widget}
             </button>
         </div>;
 
@@ -193,16 +194,16 @@ var ViewOptionsList = React.createClass({
 
         return (
           <div className="view-options b-option">
-              <p className="title">Настройка отображения</p>
+              <p className="title">{langFile.view_settings}</p>
               <div className="line clearfix">
-                  <p className="label">Заголовок виджета</p>
+                  <p className="label">{langFile.widget_title}</p>
                   <input type="text" name="widget_title" value={information.widget_title}
                          onChange={this._handleTitleChange}/>
               </div>
-              <DropDownUpdateTimeField provider={activeWidget} name="Интервал обновления"/>
-              <DropDownMeasurementSystemField provider={activeWidget} name="Система измерений"/>
+              <DropDownUpdateTimeField provider={activeWidget} name={langFile.update_interval}/>
+              <DropDownMeasurementSystemField provider={activeWidget} name={langFile.update_interval}/>
               <div className="line clearfix">
-                  <p className="label">Цвет заднего фона</p>
+                  <p className="label">{langFile.background_color}</p>
                   <div style={ styles.swatch } onClick={ this._handleChangeBgColorPickerActivity }>
                       <div style={ styles.bgColor }/>
                   </div>
@@ -215,7 +216,7 @@ var ViewOptionsList = React.createClass({
                   </div> : null }
               </div>
               <div className="line clearfix">
-                  <p className="label">Цвет основного текста</p>
+                  <p className="label">{langFile.major_text_color}</p>
                   <div style={ styles.swatch } onClick={ this._handleChangeMajorTextColorPickerActivity }>
                       <div style={ styles.majorTextColor }/>
                   </div>
@@ -228,7 +229,7 @@ var ViewOptionsList = React.createClass({
                   </div> : null }
               </div>
               <div className="line clearfix">
-                  <p className="label">Цвет дополнительного текста</p>
+                  <p className="label">{langFile.extra_text_color}</p>
                   <div style={ styles.swatch } onClick={ this._handleChangeExtraTextColorPickerActivity }>
                       <div style={ styles.extraTextColor }/>
                   </div>
@@ -241,7 +242,7 @@ var ViewOptionsList = React.createClass({
                   </div> : null }
               </div>
               <div className="line clearfix">
-                  <p className="label">Цвет границ виджета</p>
+                  <p className="label">{langFile.widget_border_color}</p>
                   <div style={ styles.swatch } onClick={ this._handleChangeBorderColorPickerActivity }>
                       <div style={ styles.borderColor }/>
                   </div>
@@ -253,8 +254,8 @@ var ViewOptionsList = React.createClass({
                                     style={ styles.picker }/>
                   </div> : null }
               </div>
-              <CheckBoxField provider={activeWidget} name="Показывать провайдера на виджете?"/>
-              <InputField provider={activeWidget} name="Название виджета"/>
+              <CheckBoxField provider={activeWidget} name={langFile.show_provider_on_widget}/>
+              <InputField provider={activeWidget} name={langFile.widget_name}/>
               {deletePermission}
               <PreviewManager templateName={widget.template_name}/>
           </div>
@@ -283,6 +284,6 @@ var colorPreset = [
     '#c0392b',
     '#bdc3c7',
     '#7f8c8d'
-]
+];
 
 module.exports = ViewOptionsList;

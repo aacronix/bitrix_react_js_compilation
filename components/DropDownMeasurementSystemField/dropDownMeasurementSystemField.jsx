@@ -19,6 +19,7 @@ var DropDownMeasurementSystemField = React.createClass({
 
     render: function () {
         var storage = window.GlobalStorage.widgetsList;
+        var langFile = window.langFile.text.measure_system_dropdown;
 
         var activeWidget = this.state.provider;
         var information = storage[activeWidget].options.information;
@@ -28,8 +29,8 @@ var DropDownMeasurementSystemField = React.createClass({
                 <p className="label">{this.state.name}</p>
                 <select onChange={this._handleMeasurementSystemChange}
                         value={information.measurement_system}>
-                    <option value="metrical">Метрическая</option>
-                    <option value="britain">Британская</option>
+                    <option value="metrical">{langFile.metrical}</option>
+                    <option value="britain">{langFile.britain}</option>
                 </select>
             </div>
         );
