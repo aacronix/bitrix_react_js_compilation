@@ -2,6 +2,7 @@
   "text": {
     "view_settings": "Setting display",
     "widget_title": "Widget heading",
+    "font_family": "Family font",
     "update_interval": "Updating interval",
     "measurement_system": "Measuring system",
     "background_color": "Background color",

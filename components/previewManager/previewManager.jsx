@@ -57,6 +57,7 @@ var PreviewManager = React.createClass({
                                                                     windDirectionMessage: 'северный',
                                                                     time: 'Четверг, 27 Октября',
                                                                     widgetTitle: storage.widgetsList[activeTabId].options.information.widget_title,
+                                                                    fontFamily: storage.widgetsList[activeTabId].options.information.font_family,
                                                                     temp: -33,
                                                                     tempUnit: 'C',
                                                                     icon: 'wi-rain',

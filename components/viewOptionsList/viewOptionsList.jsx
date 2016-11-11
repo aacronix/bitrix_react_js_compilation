@@ -17,8 +17,19 @@ var ViewOptionsList = React.createClass({
             showColorBgPicker: false,
             showColorMajorTextPicker: false,
             showColorExtraTextPicker: false,
-            showBorderColorPicker: false
+            showBorderColorPicker: false,
+            fontFamily: ''
         };
+    },
+
+    componentDidMount: function () {
+        var storage = window.GlobalStorage.widgetsList;
+        var activeWidget = this.state.provider;
+        var fontFamily = storage[activeWidget].options.information.font_family;
+
+        this.setState({
+            fontFamily: fontFamily
+        });
     },
 
     _handleChangeBgColor: function _handleChangeBgColor(color) {
@@ -152,6 +163,17 @@ var ViewOptionsList = React.createClass({
                 });
             }
         });
+    },
+
+    _handleFontFamilyBlur: function (event) {
+        AppDispatcher.dispatch({
+            eventName: 'font-family-change',
+            newItem: [this.state.provider, event.target.value]
+        });
+    },
+
+    _handleFontFamilyChange: function (event) {
+        this.setState({fontFamily: event.target.value});
     },
 
     render: function () {
@@ -291,24 +313,35 @@ var ViewOptionsList = React.createClass({
                   </div> : null }
               </div>
               <div className="line clearfix">
+                  <p className="label">{langFile.font_family}</p>
+                  <input type="text" name="font_family" value={this.state.fontFamily}
+                         onChange={this._handleFontFamilyChange}
+                         onBlur={this._handleFontFamilyBlur}/>
+              </div>
+              <div className="line clearfix">
                   <p className="label">{langFile.font_size_slider.major_text_size}</p>
-                  <RCSlider min={1} max={150} defaultValue={parseInt(information.major_text_size)} onChange={this._changeMajorTextSize} />
+                  <RCSlider min={1} max={150} defaultValue={parseInt(information.major_text_size)}
+                            onChange={this._changeMajorTextSize}/>
               </div>
               <div className="line clearfix">
                   <p className="label">{langFile.font_size_slider.temperature_text_size}</p>
-                  <RCSlider min={1} max={150} defaultValue={parseInt(information.temperature_text_size)} onChange={this._changeTemperatureTextSize} />
+                  <RCSlider min={1} max={150} defaultValue={parseInt(information.temperature_text_size)}
+                            onChange={this._changeTemperatureTextSize}/>
               </div>
               <div className="line clearfix">
                   <p className="label">{langFile.font_size_slider.temperature_icon_size}</p>
-                  <RCSlider min={1} max={150} defaultValue={parseInt(information.temperature_icon_size)} onChange={this._changeTemperatureIconSize} />
+                  <RCSlider min={1} max={150} defaultValue={parseInt(information.temperature_icon_size)}
+                            onChange={this._changeTemperatureIconSize}/>
               </div>
               <div className="line clearfix">
                   <p className="label">{langFile.font_size_slider.extra_text_size}</p>
-                  <RCSlider min={1} max={150} defaultValue={parseInt(information.extra_text_size)} onChange={this._changeExtraTextSize} />
+                  <RCSlider min={1} max={150} defaultValue={parseInt(information.extra_text_size)}
+                            onChange={this._changeExtraTextSize}/>
               </div>
               <div className="line clearfix">
                   <p className="label">{langFile.font_size_slider.weather_icon_size}</p>
-                  <RCSlider min={1} max={150} defaultValue={parseInt(information.weather_icon_size)} onChange={this._changeIconSize} />
+                  <RCSlider min={1} max={150} defaultValue={parseInt(information.weather_icon_size)}
+                            onChange={this._changeIconSize}/>
               </div>
               <CheckBoxField provider={activeWidget} name={langFile.show_provider_on_widget}/>
               <InputField provider={activeWidget} name={langFile.widget_name}/>

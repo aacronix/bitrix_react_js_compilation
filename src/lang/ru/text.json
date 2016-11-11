@@ -2,6 +2,7 @@
   "text": {
     "view_settings": "Настройка отображения",
     "widget_title": "Заголовок виджета",
+    "font_family": "Семейство шрифтов",
     "update_interval": "Интервал обновления",
     "measurement_system": "Система измерений",
     "background_color": "Цвет заднего фона",

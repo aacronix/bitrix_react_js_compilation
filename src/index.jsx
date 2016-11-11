@@ -185,6 +185,9 @@ window.AppDispatcher = {
             case 'temperature-icon-size-change':
                 widgetStore.widgetsList[payload.newItem[0]].options.information.temperature_icon_size = payload.newItem[1];
                 break;
+            case 'font-family-change':
+                widgetStore.widgetsList[payload.newItem[0]].options.information.font_family = payload.newItem[1];
+                break;
             default:
                 widgetStore.savedWS = false;
         }
@@ -268,6 +271,7 @@ var App = React.createClass({
     render: function () {
         var renderContent =
           <div>
+              <img src="https://travis-ci.org/aacronix/bitrix_react_js_compilation.svg?branch=master"/>
               <YandexMap/>
               <TabsList/>
               <FooterButtonDock />

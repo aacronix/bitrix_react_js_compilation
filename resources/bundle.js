@@ -255,6 +255,9 @@
 	            case 'temperature-icon-size-change':
 	                widgetStore.widgetsList[payload.newItem[0]].options.information.temperature_icon_size = payload.newItem[1];
 	                break;
+	            case 'font-family-change':
+	                widgetStore.widgetsList[payload.newItem[0]].options.information.font_family = payload.newItem[1];
+	                break;
 	            default:
 	                widgetStore.savedWS = false;
 	        }
@@ -341,6 +344,7 @@
 	        var renderContent = _react2.default.createElement(
 	            "div",
 	            null,
+	            _react2.default.createElement("img", { src: "https://travis-ci.org/aacronix/bitrix_react_js_compilation.svg?branch=master" }),
 	            _react2.default.createElement(_yandexMap2.default, null),
 	            _react2.default.createElement(_tabsList2.default, null),
 	            _react2.default.createElement(_footerButtonDock2.default, null)
@@ -26676,8 +26680,19 @@
 	            showColorBgPicker: false,
 	            showColorMajorTextPicker: false,
 	            showColorExtraTextPicker: false,
-	            showBorderColorPicker: false
+	            showBorderColorPicker: false,
+	            fontFamily: ''
 	        };
+	    },
+
+	    componentDidMount: function componentDidMount() {
+	        var storage = window.GlobalStorage.widgetsList;
+	        var activeWidget = this.state.provider;
+	        var fontFamily = storage[activeWidget].options.information.font_family;
+
+	        this.setState({
+	            fontFamily: fontFamily
+	        });
 	    },
 
 	    _handleChangeBgColor: function _handleChangeBgColor(color) {
@@ -26811,6 +26826,17 @@
 	                });
 	            }
 	        });
+	    },
+
+	    _handleFontFamilyBlur: function _handleFontFamilyBlur(event) {
+	        AppDispatcher.dispatch({
+	            eventName: 'font-family-change',
+	            newItem: [this.state.provider, event.target.value]
+	        });
+	    },
+
+	    _handleFontFamilyChange: function _handleFontFamilyChange(event) {
+	        this.setState({ fontFamily: event.target.value });
 	    },
 
 	    render: function render() {
@@ -27010,9 +27036,22 @@
 	                _react2.default.createElement(
 	                    "p",
 	                    { className: "label" },
+	                    langFile.font_family
+	                ),
+	                _react2.default.createElement("input", { type: "text", name: "font_family", value: this.state.fontFamily,
+	                    onChange: this._handleFontFamilyChange,
+	                    onBlur: this._handleFontFamilyBlur })
+	            ),
+	            _react2.default.createElement(
+	                "div",
+	                { className: "line clearfix" },
+	                _react2.default.createElement(
+	                    "p",
+	                    { className: "label" },
 	                    langFile.font_size_slider.major_text_size
 	                ),
-	                _react2.default.createElement(_rcSlider2.default, { min: 1, max: 150, defaultValue: parseInt(information.major_text_size), onChange: this._changeMajorTextSize })
+	                _react2.default.createElement(_rcSlider2.default, { min: 1, max: 150, defaultValue: parseInt(information.major_text_size),
+	                    onChange: this._changeMajorTextSize })
 	            ),
 	            _react2.default.createElement(
 	                "div",
@@ -27022,7 +27061,8 @@
 	                    { className: "label" },
 	                    langFile.font_size_slider.temperature_text_size
 	                ),
-	                _react2.default.createElement(_rcSlider2.default, { min: 1, max: 150, defaultValue: parseInt(information.temperature_text_size), onChange: this._changeTemperatureTextSize })
+	                _react2.default.createElement(_rcSlider2.default, { min: 1, max: 150, defaultValue: parseInt(information.temperature_text_size),
+	                    onChange: this._changeTemperatureTextSize })
 	            ),
 	            _react2.default.createElement(
 	                "div",
@@ -27032,7 +27072,8 @@
 	                    { className: "label" },
 	                    langFile.font_size_slider.temperature_icon_size
 	                ),
-	                _react2.default.createElement(_rcSlider2.default, { min: 1, max: 150, defaultValue: parseInt(information.temperature_icon_size), onChange: this._changeTemperatureIconSize })
+	                _react2.default.createElement(_rcSlider2.default, { min: 1, max: 150, defaultValue: parseInt(information.temperature_icon_size),
+	                    onChange: this._changeTemperatureIconSize })
 	            ),
 	            _react2.default.createElement(
 	                "div",
@@ -27042,7 +27083,8 @@
 	                    { className: "label" },
 	                    langFile.font_size_slider.extra_text_size
 	                ),
-	                _react2.default.createElement(_rcSlider2.default, { min: 1, max: 150, defaultValue: parseInt(information.extra_text_size), onChange: this._changeExtraTextSize })
+	                _react2.default.createElement(_rcSlider2.default, { min: 1, max: 150, defaultValue: parseInt(information.extra_text_size),
+	                    onChange: this._changeExtraTextSize })
 	            ),
 	            _react2.default.createElement(
 	                "div",
@@ -27052,7 +27094,8 @@
 	                    { className: "label" },
 	                    langFile.font_size_slider.weather_icon_size
 	                ),
-	                _react2.default.createElement(_rcSlider2.default, { min: 1, max: 150, defaultValue: parseInt(information.weather_icon_size), onChange: this._changeIconSize })
+	                _react2.default.createElement(_rcSlider2.default, { min: 1, max: 150, defaultValue: parseInt(information.weather_icon_size),
+	                    onChange: this._changeIconSize })
 	            ),
 	            _react2.default.createElement(_checkBoxField2.default, { provider: activeWidget, name: langFile.show_provider_on_widget }),
 	            _react2.default.createElement(_inputField2.default, { provider: activeWidget, name: langFile.widget_name }),
@@ -47998,6 +48041,7 @@
 	                    windDirectionMessage: 'северный',
 	                    time: 'Четверг, 27 Октября',
 	                    widgetTitle: storage.widgetsList[activeTabId].options.information.widget_title,
+	                    fontFamily: storage.widgetsList[activeTabId].options.information.font_family,
 	                    temp: -33,
 	                    tempUnit: 'C',
 	                    icon: 'wi-rain',
