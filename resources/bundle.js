@@ -66,13 +66,13 @@
 
 	var _tabsList2 = _interopRequireDefault(_tabsList);
 
-	var _footerButtonDock = __webpack_require__(598);
+	var _footerButtonDock = __webpack_require__(603);
 
 	var _footerButtonDock2 = _interopRequireDefault(_footerButtonDock);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var deepcopy = __webpack_require__(599);
+	var deepcopy = __webpack_require__(604);
 
 	var WS_TAG = "bitrix_weather_module";
 
@@ -24164,7 +24164,7 @@
 
 	var _tabContent2 = _interopRequireDefault(_tabContent);
 
-	var _tab = __webpack_require__(597);
+	var _tab = __webpack_require__(602);
 
 	var _tab2 = _interopRequireDefault(_tab);
 
@@ -26653,15 +26653,15 @@
 
 	var _checkBoxField2 = _interopRequireDefault(_checkBoxField);
 
-	var _dropDownUpdateTimeTime = __webpack_require__(592);
+	var _dropDownUpdateTimeTime = __webpack_require__(597);
 
 	var _dropDownUpdateTimeTime2 = _interopRequireDefault(_dropDownUpdateTimeTime);
 
-	var _dropDownMeasurementSystemField = __webpack_require__(593);
+	var _dropDownMeasurementSystemField = __webpack_require__(598);
 
 	var _dropDownMeasurementSystemField2 = _interopRequireDefault(_dropDownMeasurementSystemField);
 
-	var _previewManager = __webpack_require__(594);
+	var _previewManager = __webpack_require__(599);
 
 	var _previewManager2 = _interopRequireDefault(_previewManager);
 
@@ -47499,6 +47499,10 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
+	var _reactToggle = __webpack_require__(592);
+
+	var _reactToggle2 = _interopRequireDefault(_reactToggle);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var CheckBoxField = _react2.default.createClass({
@@ -47508,41 +47512,22 @@
 	        return {
 	            provider: this.props.provider,
 	            name: this.props.name,
-	            check: false
+	            check: window.GlobalStorage.widgetsList[this.props.provider].options.information.show_provider_info.toString() === "true" ? true : false
 	        };
 	    },
 
-	    _handleChangeShowProviderInfo: function _handleChangeShowProviderInfo() {
-	        var widgetsList = window.GlobalStorage.widgetsList;
-
+	    _handleChangeShowProviderInfo: function _handleChangeShowProviderInfo(event) {
 	        AppDispatcher.dispatch({
 	            eventName: 'change-show-provider-info',
-	            newItem: [this.state.provider, !this.state.check]
+	            newItem: [this.state.provider, event.target.checked]
 	        });
 
 	        this.setState({
-	            check: !this.state.check
-	        });
-	    },
-
-	    componentDidMount: function componentDidMount() {
-	        var storage = window.GlobalStorage.widgetsList;
-
-	        var activeWidget = this.state.provider;
-	        var information = storage[activeWidget].options.information;
-
-	        this.setState({
-	            check: information.show_provider_info.toString() === "true" ? true : false
+	            check: event.target.checked
 	        });
 	    },
 
 	    render: function render() {
-	        var storage = window.GlobalStorage.widgetsList;
-
-	        var activeWidget = this.state.provider;
-	        var information = storage[activeWidget].options.information;
-
-	        console.log('cc ' + this.state.check);
 	        return _react2.default.createElement(
 	            'div',
 	            { className: 'line clearfix' },
@@ -47551,7 +47536,10 @@
 	                { className: 'label' },
 	                this.props.name
 	            ),
-	            _react2.default.createElement('input', { type: 'checkbox', name: 'show_provider_info', checked: this.state.check, onChange: this._handleChangeShowProviderInfo })
+	            _react2.default.createElement(_reactToggle2.default, {
+	                name: 'show_provider_info',
+	                defaultChecked: this.state.check,
+	                onChange: this._handleChangeShowProviderInfo })
 	        );
 	    }
 	});
@@ -47560,6 +47548,236 @@
 
 /***/ },
 /* 592 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	var _interopRequire = function (obj) { return obj && obj.__esModule ? obj["default"] : obj; };
+
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+	var React = _interopRequire(__webpack_require__(1));
+
+	var classNames = _interopRequire(__webpack_require__(593));
+
+	var Check = _interopRequire(__webpack_require__(594));
+
+	var X = _interopRequire(__webpack_require__(595));
+
+	var PureRenderMixin = _interopRequire(__webpack_require__(596));
+
+	module.exports = React.createClass({
+	  mixins: [PureRenderMixin],
+
+	  displayName: "Toggle",
+
+	  propTypes: {
+	    checked: React.PropTypes.bool,
+	    defaultChecked: React.PropTypes.bool,
+	    onChange: React.PropTypes.func,
+	    name: React.PropTypes.string,
+	    value: React.PropTypes.string,
+	    id: React.PropTypes.string,
+	    "aria-labelledby": React.PropTypes.string,
+	    "aria-label": React.PropTypes.string
+	  },
+
+	  getInitialState: function getInitialState() {
+	    var checked = false;
+	    if ("checked" in this.props) {
+	      checked = this.props.checked;
+	    } else if ("defaultChecked" in this.props) {
+	      checked = this.props.defaultChecked;
+	    }
+	    return {
+	      checked: !!checked,
+	      hasFocus: false
+	    };
+	  },
+
+	  componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
+	    if ("checked" in nextProps) {
+	      this.setState({ checked: !!nextProps.checked });
+	    }
+	  },
+
+	  handleClick: function handleClick(event) {
+	    var checkbox = this.refs.input;
+	    if (event.target !== checkbox) {
+	      event.preventDefault();
+	      checkbox.focus();
+	      checkbox.click();
+	      return;
+	    }
+
+	    if (!("checked" in this.props)) {
+	      this.setState({ checked: checkbox.checked });
+	    }
+	  },
+
+	  handleFocus: function handleFocus() {
+	    this.setState({ hasFocus: true });
+	  },
+
+	  handleBlur: function handleBlur() {
+	    this.setState({ hasFocus: false });
+	  },
+
+	  render: function render() {
+	    var classes = classNames("react-toggle", {
+	      "react-toggle--checked": this.state.checked,
+	      "react-toggle--focus": this.state.hasFocus,
+	      "react-toggle--disabled": this.props.disabled
+	    });
+
+	    return React.createElement(
+	      "div",
+	      { className: classes, onClick: this.handleClick },
+	      React.createElement(
+	        "div",
+	        { className: "react-toggle-track" },
+	        React.createElement(
+	          "div",
+	          { className: "react-toggle-track-check" },
+	          React.createElement(Check, null)
+	        ),
+	        React.createElement(
+	          "div",
+	          { className: "react-toggle-track-x" },
+	          React.createElement(X, null)
+	        )
+	      ),
+	      React.createElement("div", { className: "react-toggle-thumb" }),
+	      React.createElement("input", _extends({
+	        ref: "input",
+	        onFocus: this.handleFocus,
+	        onBlur: this.handleBlur,
+	        className: "react-toggle-screenreader-only",
+	        type: "checkbox"
+	      }, this.props))
+	    );
+	  }
+	});
+
+
+/***/ },
+/* 593 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
+	  Copyright (c) 2016 Jed Watson.
+	  Licensed under the MIT License (MIT), see
+	  http://jedwatson.github.io/classnames
+	*/
+	/* global define */
+
+	(function () {
+		'use strict';
+
+		var hasOwn = {}.hasOwnProperty;
+
+		function classNames () {
+			var classes = [];
+
+			for (var i = 0; i < arguments.length; i++) {
+				var arg = arguments[i];
+				if (!arg) continue;
+
+				var argType = typeof arg;
+
+				if (argType === 'string' || argType === 'number') {
+					classes.push(arg);
+				} else if (Array.isArray(arg)) {
+					classes.push(classNames.apply(null, arg));
+				} else if (argType === 'object') {
+					for (var key in arg) {
+						if (hasOwn.call(arg, key) && arg[key]) {
+							classes.push(key);
+						}
+					}
+				}
+			}
+
+			return classes.join(' ');
+		}
+
+		if (typeof module !== 'undefined' && module.exports) {
+			module.exports = classNames;
+		} else if (true) {
+			// register as 'classnames', consistent with npm package name
+			!(__WEBPACK_AMD_DEFINE_ARRAY__ = [], __WEBPACK_AMD_DEFINE_RESULT__ = function () {
+				return classNames;
+			}.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+		} else {
+			window.classNames = classNames;
+		}
+	}());
+
+
+/***/ },
+/* 594 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	var _interopRequire = function (obj) { return obj && obj.__esModule ? obj["default"] : obj; };
+
+	var React = _interopRequire(__webpack_require__(1));
+
+	module.exports = React.createClass({
+	  displayName: "check.es6",
+
+	  render: function render() {
+	    return React.createElement(
+	      "svg",
+	      { width: "14", height: "11", viewBox: "0 0 14 11" },
+	      React.createElement(
+	        "title",
+	        null,
+	        "switch-check"
+	      ),
+	      React.createElement("path", { d: "M11.264 0L5.26 6.004 2.103 2.847 0 4.95l5.26 5.26 8.108-8.107L11.264 0", fill: "#fff", fillRule: "evenodd" })
+	    );
+	  }
+	});
+
+
+/***/ },
+/* 595 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	var _interopRequire = function (obj) { return obj && obj.__esModule ? obj["default"] : obj; };
+
+	var React = _interopRequire(__webpack_require__(1));
+
+	module.exports = React.createClass({
+	  displayName: "x.es6",
+
+	  render: function render() {
+	    return React.createElement(
+	      "svg",
+	      { width: "10", height: "10", viewBox: "0 0 10 10" },
+	      React.createElement(
+	        "title",
+	        null,
+	        "switch-x"
+	      ),
+	      React.createElement("path", { d: "M9.9 2.12L7.78 0 4.95 2.828 2.12 0 0 2.12l2.83 2.83L0 7.776 2.123 9.9 4.95 7.07 7.78 9.9 9.9 7.776 7.072 4.95 9.9 2.12", fill: "#fff", fillRule: "evenodd" })
+	    );
+	  }
+	});
+
+
+/***/ },
+/* 596 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = __webpack_require__(205);
+
+/***/ },
+/* 597 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -47643,7 +47861,7 @@
 	module.exports = DropDownUpdateTimeField;
 
 /***/ },
-/* 593 */
+/* 598 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -47708,7 +47926,7 @@
 	module.exports = DropDownMeasurementSystemField;
 
 /***/ },
-/* 594 */
+/* 599 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -47717,7 +47935,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _reactMustache = __webpack_require__(595);
+	var _reactMustache = __webpack_require__(600);
 
 	var _reactMustache2 = _interopRequireDefault(_reactMustache);
 
@@ -47783,7 +48001,7 @@
 	                    temp: -33,
 	                    tempUnit: 'C',
 	                    icon: 'wi-rain',
-	                    hasProviderInfo: storage.widgetsList[activeTabId].options.information.show_provider_info.toString() === "true",
+	                    hasProviderInfo: storage.widgetsList[activeTabId].options.information.show_provider_info.toString() === "true" ? true : false,
 	                    from: 'options',
 	                    providerName: storage.widgetsList[activeTabId].options.information.weather_provider,
 	                    borderColor: storage.widgetsList[activeTabId].options.information.border_color
@@ -47795,7 +48013,7 @@
 	module.exports = PreviewManager;
 
 /***/ },
-/* 595 */
+/* 600 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -47818,7 +48036,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var Mustache = __webpack_require__(596);
+	var Mustache = __webpack_require__(601);
 
 	var ReactMustache = (function (_React$Component) {
 	  _inherits(ReactMustache, _React$Component);
@@ -47863,7 +48081,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 596 */
+/* 601 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -48498,7 +48716,7 @@
 
 
 /***/ },
-/* 597 */
+/* 602 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -48625,7 +48843,7 @@
 	module.exports = Tab;
 
 /***/ },
-/* 598 */
+/* 603 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -48661,6 +48879,8 @@
 	    _sendWidgetsToServer: function _sendWidgetsToServer() {
 	        var storage = window.GlobalStorage.widgetsList;
 	        var url = '/bitrix/tools/weather_service/update_widgets.php';
+
+	        console.log(storage);
 
 	        $.ajax({
 	            type: "POST",
@@ -48741,23 +48961,23 @@
 	module.exports = FooterButtonDock;
 
 /***/ },
-/* 599 */
+/* 604 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(600);
+	module.exports = __webpack_require__(605);
 
 
 /***/ },
-/* 600 */
+/* 605 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
 	exports.__esModule = true;
 
-	var _copy = __webpack_require__(601);
+	var _copy = __webpack_require__(606);
 
-	var _polyfill = __webpack_require__(606);
+	var _polyfill = __webpack_require__(611);
 
 	function defaultCustomizer(target) {
 	  return void 0;
@@ -48845,7 +49065,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 601 */
+/* 606 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(Buffer) {'use strict';
@@ -48853,7 +49073,7 @@
 	exports.__esModule = true;
 	exports.copyValue = exports.copyCollection = exports.copy = void 0;
 
-	var _polyfill = __webpack_require__(606);
+	var _polyfill = __webpack_require__(611);
 
 	var toString = Object.prototype.toString;
 
@@ -48991,10 +49211,10 @@
 	exports.copy = copy;
 	exports.copyCollection = copyCollection;
 	exports.copyValue = copyValue;
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(602).Buffer))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(607).Buffer))
 
 /***/ },
-/* 602 */
+/* 607 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(Buffer, global) {/*!
@@ -49007,9 +49227,9 @@
 
 	'use strict'
 
-	var base64 = __webpack_require__(603)
-	var ieee754 = __webpack_require__(604)
-	var isArray = __webpack_require__(605)
+	var base64 = __webpack_require__(608)
+	var ieee754 = __webpack_require__(609)
+	var isArray = __webpack_require__(610)
 
 	exports.Buffer = Buffer
 	exports.SlowBuffer = SlowBuffer
@@ -50787,10 +51007,10 @@
 	  return val !== val // eslint-disable-line no-self-compare
 	}
 
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(602).Buffer, (function() { return this; }())))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(607).Buffer, (function() { return this; }())))
 
 /***/ },
-/* 603 */
+/* 608 */
 /***/ function(module, exports) {
 
 	'use strict'
@@ -50910,7 +51130,7 @@
 
 
 /***/ },
-/* 604 */
+/* 609 */
 /***/ function(module, exports) {
 
 	exports.read = function (buffer, offset, isLE, mLen, nBytes) {
@@ -51000,7 +51220,7 @@
 
 
 /***/ },
-/* 605 */
+/* 610 */
 /***/ function(module, exports) {
 
 	var toString = {}.toString;
@@ -51011,7 +51231,7 @@
 
 
 /***/ },
-/* 606 */
+/* 611 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(Buffer) {'use strict';
@@ -51088,7 +51308,7 @@
 	exports.getSymbols = getSymbols;
 	exports.indexOf = indexOf;
 	exports.isBuffer = isBuffer;
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(602).Buffer))
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(607).Buffer))
 
 /***/ }
 /******/ ]);

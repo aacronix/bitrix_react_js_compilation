@@ -26,6 +26,8 @@ var FooterButtonDock = React.createClass({
         var storage = window.GlobalStorage.widgetsList;
         var url = '/bitrix/tools/weather_service/update_widgets.php';
 
+        console.log(storage);
+
         $.ajax({
             type: "POST",
             url: url,

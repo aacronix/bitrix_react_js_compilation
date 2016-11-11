@@ -1,51 +1,36 @@
 'use strict';
 
 import React from 'react';
+import Toggle from 'react-toggle';
 
 var CheckBoxField = React.createClass({
     getInitialState: function () {
         return {
             provider: this.props.provider,
             name: this.props.name,
-            check: false
+            check: ((window.GlobalStorage.widgetsList[this.props.provider].options.information.show_provider_info.toString() === "true") ? true : false)
         }
     },
 
-    _handleChangeShowProviderInfo: function () {
-        var widgetsList = window.GlobalStorage.widgetsList;
-
+    _handleChangeShowProviderInfo: function (event) {
         AppDispatcher.dispatch({
             eventName: 'change-show-provider-info',
-            newItem: [this.state.provider, !this.state.check]
+            newItem: [this.state.provider, event.target.checked]
         });
 
         this.setState({
-            check: !this.state.check
+            check: event.target.checked
         })
     },
 
-    componentDidMount: function () {
-        var storage = window.GlobalStorage.widgetsList;
-
-        var activeWidget = this.state.provider;
-        var information = storage[activeWidget].options.information;
-
-        this.setState({
-            check: ((information.show_provider_info.toString() === "true") ? true : false)
-        });
-    },
-
     render: function () {
-        var storage = window.GlobalStorage.widgetsList;
-
-        var activeWidget = this.state.provider;
-        var information = storage[activeWidget].options.information;
-
-        console.log('cc ' + this.state.check);
         return (
             <div className="line clearfix">
                 <p className="label">{this.props.name}</p>
-                <input type="checkbox" name="show_provider_info" checked={this.state.check} onChange={this._handleChangeShowProviderInfo}/>
+                <Toggle
+                  name="show_provider_info"
+                  defaultChecked={this.state.check}
+                  onChange={this._handleChangeShowProviderInfo} />
             </div>
         );
     }

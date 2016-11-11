@@ -60,7 +60,7 @@ var PreviewManager = React.createClass({
                                                                     temp: -33,
                                                                     tempUnit: 'C',
                                                                     icon: 'wi-rain',
-                                                                    hasProviderInfo: ((storage.widgetsList[activeTabId].options.information.show_provider_info.toString() === "true")),
+                                                                    hasProviderInfo: ((storage.widgetsList[activeTabId].options.information.show_provider_info.toString() === "true") ? true : false),
                                                                     from: 'options',
                                                                     providerName: storage.widgetsList[activeTabId].options.information.weather_provider,
                                                                     borderColor: storage.widgetsList[activeTabId].options.information.border_color
